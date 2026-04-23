@@ -1,11 +1,10 @@
-
 import React from 'react';
-import { Target, Eye, Star } from 'lucide-react';
+import { Target, Eye, Star, Map } from 'lucide-react';
 
 const About: React.FC = () => {
   return (
-    <div className="container mx-auto px-4 md:px-6">
-      <div className="flex flex-col lg:flex-row gap-16 items-center">
+    <div className="container mx-auto px-4 md:px-6 py-12">
+      <div className="flex flex-col lg:flex-row gap-16 items-center mb-20">
         {/* Text Content */}
         <div className="lg:w-1/2">
           <span className="text-[#b8860b] font-bold tracking-widest uppercase text-sm mb-4 block">Nuestra Razón de Ser</span>
@@ -24,17 +23,17 @@ const About: React.FC = () => {
                 <h4 className="font-montserrat font-bold text-lg text-[#003366]">Misión</h4>
               </div>
               <ul className="space-y-2 text-gray-600 text-sm">
-                <li className="flex gap-2">
+                <li className="flex gap-2 text-balance">
                   <Star className="text-[#b8860b] flex-shrink-0" size={14} /> 
-                  Garantizar la tenencia de la tierra.
+                  Gestión y democratización de tierras.
                 </li>
                 <li className="flex gap-2">
                   <Star className="text-[#b8860b] flex-shrink-0" size={14} /> 
-                  Consolidar el Poder Popular.
+                  Garantía de seguridad jurídica.
                 </li>
                 <li className="flex gap-2">
                   <Star className="text-[#b8860b] flex-shrink-0" size={14} /> 
-                  Justicia social en el hábitat urbano.
+                  Impulso al desarrollo habitacional.
                 </li>
               </ul>
             </div>
@@ -47,15 +46,15 @@ const About: React.FC = () => {
               <ul className="space-y-2 text-gray-600 text-sm">
                 <li className="flex gap-2">
                   <Star className="text-[#b8860b] flex-shrink-0" size={14} /> 
-                  Ser referentes en gestión territorial.
+                  Institución pública vanguardista.
                 </li>
                 <li className="flex gap-2">
                   <Star className="text-[#b8860b] flex-shrink-0" size={14} /> 
-                  Uso eficiente y humano del suelo.
+                  Equidad y justicia social.
                 </li>
                 <li className="flex gap-2">
                   <Star className="text-[#b8860b] flex-shrink-0" size={14} /> 
-                  Territorios libres de latifundio urbano.
+                  Talento humano comprometido.
                 </li>
               </ul>
             </div>
@@ -79,7 +78,45 @@ const About: React.FC = () => {
           {/* Badge */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#003366] text-white p-8 rounded-full border-8 border-white/20 flex flex-col items-center justify-center shadow-2xl">
             <span className="text-3xl font-extrabold font-montserrat">10+</span>
-            <span className="text-[10px] uppercase font-bold text-center">Años de Logros</span>
+            <span className="text-[10px] uppercase font-bold text-center leading-tight">Años de Logros</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Strategic Plans Section */}
+      <div className="mt-20">
+        <div className="text-center mb-12">
+          <h3 className="text-[#003366] font-montserrat font-extrabold text-3xl mb-4">Planes Estratégicos</h3>
+          <div className="w-24 h-1 bg-[#b8860b] mx-auto"></div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Regularización Nacional</h5>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Coadyuvamos con OTM y CTU en la regularización de la tenencia de tierra urbana en todo el país.
+            </p>
+          </div>
+
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Cartografía Social</h5>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Abordaje participativo mediante la Agenda Concreta de Acción (ACA) y microzonificación de riesgos.
+            </p>
+          </div>
+
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Transformación Integral</h5>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Basado en la Carta del Barrio, articulamos políticas de rehabilitación de viviendas y espacios públicos.
+            </p>
+          </div>
+
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Reordenamiento Básico</h5>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Definición de normas urbanísticas y uso de espacios, validados por la Asamblea de Ciudadanos.
+            </p>
           </div>
         </div>
       </div>

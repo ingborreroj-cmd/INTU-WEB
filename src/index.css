@@ -1,0 +1,12 @@
+/* Estilos globales del proyecto */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+}
+* {
+  box-sizing: border-box;
+}

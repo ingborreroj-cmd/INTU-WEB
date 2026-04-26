@@ -8,7 +8,7 @@ import News from './components/News';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import GeminiChat from './components/GeminiChat';
-import ModalBienvenida from './components/ModalBienvenida.tsx'; // Importación del Modal
+import ModalBienvenida from './components/ModalBienvenida'; // Importación del Modal
 
 const App: React.FC = () => {
   return (

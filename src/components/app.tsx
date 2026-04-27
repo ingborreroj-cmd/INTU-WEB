@@ -1,14 +1,14 @@
 import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Tramites from './components/Tramites';
-import About from './components/About';
-import News from './components/News';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import GeminiChat from './components/Intubot';
-import ModalBienvenida from './components/ModalBienvenida'; // Importación del Modal
+import Header from './Header';
+import Hero from './Hero';
+import Services from './Services';
+import Tramites from './Tramites';
+import About from './About';
+import News from './News';
+import Contact from './Contact';
+import Footer from './Footer';
+import GeminiChat from './Intubot';
+import ModalBienvenida from './ModalBienvenida'; // Importación del Modal
 
 const App: React.FC = () => {
   return (

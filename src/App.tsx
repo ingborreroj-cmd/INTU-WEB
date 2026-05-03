@@ -7,7 +7,7 @@ import About from './components/About';
 import News from './components/News';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import GeminiChat from './components/Intubot';
+import INTUBot from './components/Intubot';
 import ModalBienvenida from './components/ModalBienvenida'; // Importación del Modal
 
 const App: React.FC = () => {
@@ -48,7 +48,7 @@ const App: React.FC = () => {
       <Footer />
 
       {/* Asistente IA flotante */}
-      <GeminiChat />
+      <INTUBot />
     </div>
   );
 };

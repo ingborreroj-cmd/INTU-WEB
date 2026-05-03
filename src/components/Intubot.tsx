@@ -4,28 +4,76 @@ import { MessageSquare, Send, X, Bot, Loader2, HelpCircle } from 'lucide-react';
 const INTUBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'bot', text: string}[]>([
-    {role: 'bot', text: '¡Hola! Soy el Asistente Virtual del INTU. ¿En qué puedo ayudarte hoy? Selecciona una opción o escribe tu duda.'}
+    {role: 'bot', text: '¡Hola! Soy el Asistente Virtual del INTU. Puedo ayudarte con información sobre trámites, requisitos y guiarte paso a paso. ¿Qué necesitas saber?'}
   ]);
   const [input, setInput] = useState('');
+  const [conversationState, setConversationState] = useState<{
+    activeFlow: string | null;
+    step: number;
+    data: Record<string, any>;
+  }>({ activeFlow: null, step: 0, data: {} });
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Base de datos de Preguntas Frecuentes
+  // Flujos de conversación para trámites
+  const CONVERSATION_FLOWS = {
+    'titulo_tierra': {
+      steps: [
+        { question: '¿Estás censado por un Comité de Tierra Urbana (CTU)?', key: 'censado_ctu', options: ['Sí', 'No'] },
+        { question: '¿Tienes copia de tu cédula de identidad?', key: 'cedula', options: ['Sí', 'No'] },
+        { question: '¿Posees documento de ocupación previa de la tierra?', key: 'ocupacion_previa', options: ['Sí', 'No'] },
+        { question: '¿Dónde está ubicada tu propiedad? (Estado/Ciudad)', key: 'ubicacion', type: 'text' },
+        { question: '¿Cuántas familias conforman tu comunidad?', key: 'familias', type: 'number' }
+      ],
+      finalMessage: 'Gracias por la información. Basado en tus respuestas, te recomendamos los siguientes pasos para obtener tu Título de Adjudicación de Tierras. Acude a la sede del INTU más cercana con los documentos requeridos.'
+    },
+    'ctu_formacion': {
+      steps: [
+        { question: '¿Cuántas familias hay en tu comunidad?', key: 'familias_comunidad', type: 'number' },
+        { question: '¿Han realizado una asamblea constitutiva?', key: 'asamblea', options: ['Sí', 'No'] },
+        { question: '¿Tienen un croquis del sector?', key: 'croquis', options: ['Sí', 'No'] },
+        { question: '¿Cuál es el nombre de tu comunidad?', key: 'nombre_comunidad', type: 'text' }
+      ],
+      finalMessage: 'Para conformar un CTU, necesitas al menos 15 familias y realizar una asamblea constitutiva avalada por el INTU. Te ayudaremos en el proceso.'
+    }
+  };
+
+  // Base de datos de Preguntas Frecuentes expandida
   const FAQ_DATA = [
     {
       keywords: ['título', 'tierra', 'propiedad', 'regularización'],
-      response: "Para obtener tu Título de Adjudicación de Tierras, debes estar censado por un Comité de Tierra Urbana (CTU) y presentar copia de cédula y documento de ocupación previa."
+      response: "Para obtener tu Título de Adjudicación de Tierras, debes estar censado por un Comité de Tierra Urbana (CTU) y presentar copia de cédula y documento de ocupación previa. ¿Te gustaría que te haga unas preguntas para evaluar tu caso?",
+      action: 'start_flow',
+      flow: 'titulo_tierra'
     },
     {
-      keywords: ['ctu', 'comité', 'comite', 'organizarse'],
-      response: "Los CTU son la organización base. Para conformar uno, necesitas al menos 15 familias de tu comunidad y realizar una asamblea constitutiva avalada por el INTU."
+      keywords: ['ctu', 'comité', 'comite', 'organizarse', 'formar'],
+      response: "Los CTU son la organización base para acceder a los trámites del INTU. Para conformar uno, necesitas al menos 15 familias y realizar una asamblea constitutiva avalada por el INTU. ¿Quieres que te pregunte sobre tu comunidad?",
+      action: 'start_flow',
+      flow: 'ctu_formacion'
     },
     {
-      keywords: ['sede', 'donde queda', 'ubicación', 'direccion'],
-      response: "Nuestra sede principal está en Caracas, Av. Francisco de Miranda, Edif. Minhvi. También tenemos gerencias estadales en todo el país."
+      keywords: ['sede', 'donde queda', 'ubicación', 'direccion', 'oficina'],
+      response: "Nuestra sede principal está en Caracas, Av. Francisco de Miranda, Edif. Minhvi. También tenemos gerencias estadales en todo el país. ¿En qué estado te encuentras?"
     },
     {
-      keywords: ['requisitos', 'documentos', 'papeles'],
-      response: "Los requisitos básicos son: 1. Carta de residencia, 2. Copia de Cédula, 3. Croquis del sector y 4. Aval del CTU de tu comunidad."
+      keywords: ['requisitos', 'documentos', 'papeles', 'necesito'],
+      response: "Los requisitos básicos son: 1. Carta de residencia, 2. Copia de Cédula, 3. Croquis del sector y 4. Aval del CTU de tu comunidad. ¿Para qué trámite necesitas estos documentos?"
+    },
+    {
+      keywords: ['tramites', 'procedimientos', 'que puedo hacer'],
+      response: "Los principales trámites son: Título de Adjudicación de Tierras, Formación de CTU, Regularización de Propiedad Urbana, y Asesoría Técnica. ¿Cuál te interesa?"
+    },
+    {
+      keywords: ['tiempo', 'cuanto tarda', 'duracion'],
+      response: "Los tiempos varían según el trámite: Títulos de Tierra (3-6 meses), Formación CTU (1-2 meses), Regularización (2-4 meses). Depende de la complejidad y documentación presentada."
+    },
+    {
+      keywords: ['costo', 'pago', 'precio', 'cuanto cuesta'],
+      response: "Los trámites del INTU son gratuitos. No hay costos asociados a la regularización de tierras urbanas ni formación de comités."
+    },
+    {
+      keywords: ['telefono', 'llamar', 'contacto'],
+      response: "Puedes llamarnos al 0800-MINHVI-00 (0800-646484-00) de lunes a viernes de 8:00 AM a 4:00 PM. ¿Necesitas información sobre algún trámite específico?"
     }
   ];
 
@@ -35,6 +83,36 @@ const INTUBot: React.FC = () => {
 
   const processResponse = (userText: string) => {
     const text = userText.toLowerCase();
+
+    // Si estamos en un flujo activo, procesar la respuesta del usuario
+    if (conversationState.activeFlow) {
+      const flow = CONVERSATION_FLOWS[conversationState.activeFlow as keyof typeof CONVERSATION_FLOWS];
+      const currentStep = flow.steps[conversationState.step];
+
+      // Guardar la respuesta del usuario
+      setConversationState(prev => ({
+        ...prev,
+        data: { ...prev.data, [currentStep.key]: userText },
+        step: prev.step + 1
+      }));
+
+      // Si hay más pasos, hacer la siguiente pregunta
+      if (conversationState.step + 1 < flow.steps.length) {
+        setTimeout(() => {
+          const nextStep = flow.steps[conversationState.step + 1];
+          setMessages(prev => [...prev, { role: 'bot', text: nextStep.question }]);
+        }, 600);
+      } else {
+        // Flujo completado
+        setTimeout(() => {
+          setMessages(prev => [...prev, { role: 'bot', text: flow.finalMessage }]);
+          setConversationState({ activeFlow: null, step: 0, data: {} });
+        }, 600);
+      }
+      return;
+    }
+
+    // Buscar coincidencia en FAQ
     const match = FAQ_DATA.find(item => 
       item.keywords.some(key => text.includes(key))
     );
@@ -42,9 +120,20 @@ const INTUBot: React.FC = () => {
     setTimeout(() => {
       const botText = match 
         ? match.response 
-        : "Lo siento, no tengo información específica sobre eso. Te sugiero acudir a la sede más cercana o llamar al 0800-MINHVI.";
+        : "Lo siento, no tengo información específica sobre eso. Te sugiero acudir a la sede más cercana o llamar al 0800-MINHVI. ¿En qué más puedo ayudarte?";
       
       setMessages(prev => [...prev, { role: 'bot', text: botText }]);
+
+      // Si hay una acción, ejecutarla
+      if (match?.action === 'start_flow' && match.flow) {
+        setTimeout(() => {
+          const flow = CONVERSATION_FLOWS[match.flow as keyof typeof CONVERSATION_FLOWS];
+          if (flow) {
+            setConversationState({ activeFlow: match.flow, step: 0, data: {} });
+            setMessages(prev => [...prev, { role: 'bot', text: flow.steps[0].question }]);
+          }
+        }, 1200);
+      }
     }, 600);
   };
 
@@ -119,10 +208,29 @@ const INTUBot: React.FC = () => {
 
           {/* Sugerencias Rápidas */}
           <div className="px-4 py-3 bg-gray-50 flex flex-wrap gap-2 border-t border-gray-100">
-            <QuickOption text="Título de Tierra" />
-            <QuickOption text="¿Qué es un CTU?" />
-            <QuickOption text="Requisitos" />
-            <QuickOption text="Ubicación" />
+            {conversationState.activeFlow ? (
+              // Mostrar opciones del flujo activo
+              (() => {
+                const flow = CONVERSATION_FLOWS[conversationState.activeFlow as keyof typeof CONVERSATION_FLOWS];
+                const currentStep = flow.steps[conversationState.step];
+                if (currentStep?.options) {
+                  return currentStep.options.map(option => (
+                    <QuickOption key={option} text={option} />
+                  ));
+                }
+                return null;
+              })()
+            ) : (
+              // Opciones por defecto
+              <>
+                <QuickOption text="Título de Tierra" />
+                <QuickOption text="Formar CTU" />
+                <QuickOption text="Requisitos" />
+                <QuickOption text="Ubicación Sedes" />
+                <QuickOption text="¿Cuánto tarda?" />
+                <QuickOption text="¿Es gratuito?" />
+              </>
+            )}
           </div>
 
           {/* Input de Texto */}

@@ -65,12 +65,12 @@ const About: React.FC = () => {
         <div className="lg:w-1/2 relative">
           <div className="grid grid-cols-2 gap-4">
             <img 
-              src="https://picsum.photos/seed/intu1/400/500" 
+              src="/assets/img/About_1.jpeg" 
               alt="Comunidad organizada" 
               className="rounded-[15px] shadow-xl transform translate-y-8"
             />
             <img 
-              src="https://picsum.photos/seed/intu2/400/500" 
+              src="/assets/img/About_2.jpg" 
               alt="Entrega de títulos" 
               className="rounded-[15px] shadow-xl"
             />

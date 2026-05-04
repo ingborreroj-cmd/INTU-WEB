@@ -38,7 +38,7 @@ const Header: React.FC = () => {
             {/* Espacio para Logo 1 */}
             <div className="flex items-center">
               <img 
-                src="/assets/img/logo-gobierno.png" 
+                src="/assets/img/intu_logo2.png" 
                 alt="Logo Gobierno" 
                 className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`} 
               />
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
             {/* Espacio para Logo 2 (Seguido del primero) */}
             <div className="flex items-center border-l border-gray-300/30 pl-4 lg:pl-8">
               <img 
-                src="/assets/img/logo-intu.png" 
+                src="/assets/img/ministerio_logo.png" 
                 alt="Logo INTU" 
                 className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`}
               />

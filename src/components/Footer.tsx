@@ -22,8 +22,8 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex gap-4">
               <a href="#" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Twitter size={18} /></a>
-              <a href="#" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Facebook size={18} /></a>
-              <a href="#" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Instagram size={18} /></a>
+              <a href="https://www.facebook.com/IntuVe/" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Facebook size={18} /></a>
+              <a href="https://www.instagram.com/intu_ve/" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Instagram size={18} /></a>
               <a href="#" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Youtube size={18} /></a>
             </div>
           </div>
@@ -35,11 +35,10 @@ const Footer: React.FC = () => {
               Enlaces de Interés
             </h4>
             <ul className="space-y-3 text-sm text-white/70">
-              <li><a href="#" className="hover:text-white transition-colors">Ministerio de Vivienda</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Patria.org.ve</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Gran Misión Vivienda</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Banco Nacional de Vivienda</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Gaceta Oficial</a></li>
+              <li><a href="https://www.minhvi.gob.ve/minhvi/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Ministerio de Vivienda</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Ejemplo 2</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Ejemplo 3</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Ejemplo 4</a></li>
             </ul>
           </div>
 
@@ -50,11 +49,10 @@ const Footer: React.FC = () => {
               Legal e Institucional
             </h4>
             <ul className="space-y-3 text-sm text-white/70">
-              <li><a href="#" className="hover:text-white transition-colors">Ley de Tierras Urbanas</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Políticas de Privacidad</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Transparencia Ciudadana</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Estructura Organizativa</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Memorias y Cuentas</a></li>
+              <li><a href="https://www.asambleanacional.gob.ve/leyes/sancionadas/ley-de-tierras-urbanas" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Ley de Tierras Urbanas</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Ejemplo 2</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Ejemplo 3</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Ejemplo 4</a></li>
             </ul>
           </div>
 

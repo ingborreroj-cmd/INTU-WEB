@@ -8,15 +8,27 @@ import News from './components/News';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import INTUBot from './components/Intubot';
-import ModalBienvenida from './components/ModalBienvenida'; // Importación del Modal
+import ModalBienvenida from './components/ModalBienvenida';
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden">
-      {/* 1. Componente Global de Bienvenida (se activa al cargar) */}
-      <ModalBienvenida />
+    <div className="min-h-screen flex flex-col overflow-x-hidden relative">
+      {/* Fondo sutil de líneas */}
+      <div
+        className="fixed inset-0 pointer-events-none z-[-1] opacity-[0.2]"
+        style={{
+          backgroundImage: `url('./assets/img/lineas_fondo.png')`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '150px 150px'
+        }}
+      />
+      
+      {/* Contenido principal */}
+      <div className="relative z-10">
+        {/* 1. Componente Global de Bienvenida (se activa al cargar) */}
+        <ModalBienvenida />
 
-      <Header />
+        <Header />
       
       <main className="flex-grow">
         <section id="inicio">
@@ -49,6 +61,7 @@ const App: React.FC = () => {
 
       {/* Asistente IA flotante */}
       <INTUBot />
+      </div>
     </div>
   );
 };

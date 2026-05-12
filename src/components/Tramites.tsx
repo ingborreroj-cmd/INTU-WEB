@@ -1,42 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ClipboardCheck, FileText, CreditCard, MapPin, Search } from 'lucide-react'; 
 
-/*
-  NOTAS DE CAMBIOS 
-
-  1) Uso de imágenes como cubiertas: Las tapas de los "libros" ahora cargan imágenes desde
-    `/assets/img/tramite-{id}.jpg`. Durante el desarrollo añadimos placeholders SVG en
-    `assets/img/tramite-1.svg`..`tramite-5.svg` para probar; finalmente se configuró la ruta
-    en el componente a `.png` para que, cuando se suban los JPG reales con esos nombres, se muestren.
-
-  2) Hover y iconos circulares: Quitamos el texto superpuesto en las imágenes (evitar redundancia)
-    y colocamos un icono circular por encima de cada libro. El icono está fuera del <img> (absoluto)
-    con `-top-10` y tiene animación `group-hover` para pasar a dorado y escalar.
-
-  3) Línea conectora: Se colocó la línea conectora entre libros con z-index alto (`z-20`) y
-    `pointer-events-none` para que quede visualmente por encima de las cubiertas pero no bloquee clicks.
-
-  4) Modal: Implementamos un modal reutilizable que abre al hacer click en cada libro (Enter/Space también funciona).
-    - Escape cierra el modal (listener global en useEffect).
-    - El modal es scrollable (`max-h: 80vh`) para contenido largo.
-
-  5) Contenido de los modales: Añadimos contenido detallado por trámite (1..5):
-    - Paso 1: requisitos para título de tierras urbanas (incluye datos bancarios).
-    - Paso 2: cómo regularizar un local comercial (pasos + beneficios).
-    - Paso 3: requisitos para regularización de locales comerciales (9 puntos).
-    - Paso 4: requisitos para tramitar título de propiedad de vivienda (se movió aquí según corrección).
-    - Paso 5: procedimiento y pasos para conformar el CTU (asambleas, registro, regularización).
-
-  6) Accesibilidad: los botones tienen `role="button"`, `tabIndex=0` y manejadores de teclado
-    (Enter/Space) para abrir el modal.
-
-  7) Notas adicionales: se corrigió un error de JSX (reemplazar ">" por `&gt;` dentro de texto) para evitar fallo de compilación.
-
-
-*/
 
 const Tramites = () => {
-  // Reordered to match the images (left-to-right)
   const pasos = [
     {
       id: 1,
@@ -99,21 +65,13 @@ const Tramites = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 items-start">
         {pasos.map((paso) => (
           <div key={paso.id} className="relative group flex justify-center">
-            {/* circular icon above the book (desktop)
-                Cambio: movimos el icono FUERA del <img> para que quede por encima de la tapa
-                y le dimos animación con `group-hover` para pasar a tono dorado. */}
             <div className="absolute left-1/2 -translate-x-1/2 -top-10 z-30 pointer-events-none">
-              {/* Nota: este contenedor es no interactivo (pointer-events-none arriba), la animación responde al `group-hover` del padre */}
               <div className="w-14 h-14 rounded-full bg-white border-4 border-[#6b2aa6] flex items-center justify-center text-[#003366] transition-all duration-300 shadow-lg transform group-hover:scale-105 group-hover:bg-[#b8860b] group-hover:border-[#b8860b] group-hover:text-white">
                 {paso.icono}
               </div>
             </div>
 
-            {/* Línea conectora (desktop only between books)
-                Cambio: la línea se colocó por encima de las tapas con z-20
-                y `pointer-events-none` para no bloquear clicks en las tarjetas. */}
             {paso.id !== pasos.length && (
-              // connector line: place above the books (higher z) and non-interactive
               <div className="hidden lg:block absolute -top-6 left-full w-32 h-0.5 bg-[#b8860b]/20 z-20 pointer-events-none" />
             )}
 
@@ -128,10 +86,7 @@ const Tramites = () => {
                 ` ${paso.id === pasos.length ? 'ring-4 ring-[#6b2aa6]/80 rounded-xl' : ''}`
               }
             >
-              {/* Book cover as image */}
               <div className="w-48 lg:w-56 rounded-lg shadow-2xl overflow-hidden relative bg-slate-100">
-                {/* Nota: la ruta final apunta a /assets/img/tramite-{id}.jpg en producción.
-                    Se usaron placeholders SVG durante desarrollo. */}
                 <img
                   src={`/assets/img/tramite-${paso.id}.png`}
                   alt={paso.titulo}
@@ -139,8 +94,6 @@ const Tramites = () => {
                   className="w-full h-72 object-cover block"
                 />
 
-                {/* subtle overlay gradient for contrast (no text to avoid redundancy with the image)
-                    Cambio: dejamos solo un degradado para que la imagen no pierda su contenido. */}
                 <div className="absolute inset-0 flex items-end pointer-events-none">
                   <div className="w-full h-24 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
@@ -155,7 +108,6 @@ const Tramites = () => {
       </div>
 
       {/* Modal */}
-      {/* Modal: abre al hacer click en la tarjeta. Mantiene comportamiento de teclado y Escape. */}
       {openPaso && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpenPaso(null)} />

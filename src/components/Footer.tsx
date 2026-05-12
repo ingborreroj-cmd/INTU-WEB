@@ -1,25 +1,53 @@
-
 import React from 'react';
 import { Facebook, Twitter, Instagram, Youtube, Landmark, Globe, Shield } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#003366] text-white pt-20 pb-10">
-      <div className="container mx-auto px-4 md:px-6">
+    <footer 
+      className="relative bg-[#003366] text-white pt-20 pb-10 overflow-hidden"
+    >
+      {/* Capa de textura cartográfica */}
+      <div 
+        className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+        style={{
+          backgroundImage: 'url("/assets/img/lineas_fondo.png")', // Reemplaza con tu ruta
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          mixBlendMode: 'luminosity' // Esto ayuda a que las líneas se integren con el azul
+        }}
+      ></div>
+
+      {/* Contenido con z-index para estar sobre la imagen */}
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          
           {/* Logo and About */}
           <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-3">
-              <Landmark className="text-[#b8860b] w-8 h-8" />
-              <div className="flex flex-col">
-                <span className="font-montserrat font-bold text-2xl leading-tight">INTU</span>
-                <span className="text-[10px] uppercase tracking-widest text-white/60">Tierras Urbanas</span>
+            <div className="inline-flex items-center gap-4 lg:gap-6 bg-white p-4 rounded-xl shadow-sm w-fit">
+              <div className="flex items-center">
+                <img 
+                  src="/assets/img/intu_logo2.png" 
+                  alt="Logo INTU" 
+                  className="h-10 md:h-12 w-auto object-contain" 
+                />
+              </div>
+
+              <div className="flex items-center border-l border-gray-200 pl-4 lg:pl-6">
+                <img 
+                  src="/assets/img/ministerio_logo.png" 
+                  alt="Logo Ministerio" 
+                  className="h-10 md:h-12 w-auto object-contain" 
+                />
               </div>
             </div>
+
             <p className="text-white/60 text-sm leading-relaxed">
               Ente adscrito al Ministerio del Poder Popular para Hábitat y Vivienda. Comprometidos con la democratización del suelo urbano en Venezuela.
             </p>
+
             <div className="flex gap-4">
               <a href="#" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Twitter size={18} /></a>
               <a href="https://www.facebook.com/IntuVe/" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-lg hover:bg-[#b8860b] transition-colors"><Facebook size={18} /></a>

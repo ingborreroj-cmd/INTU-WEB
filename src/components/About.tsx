@@ -92,30 +92,30 @@ const About: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Regularización Nacional</h5>
+            <h5 className="font-bold text-[#003366] mb-3">Reordenamiento Urbano</h5>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Definición de normas urbanísticas y uso de espacios, validados por la Asamblea de Ciudadanos.
+            </p>
+          </div>
+
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Regularizacion Nacional</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Coadyuvamos con OTM y CTU en la regularización de la tenencia de tierra urbana en todo el país.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Cartografía Social</h5>
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Cartografia Popular</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Abordaje participativo mediante la Agenda Concreta de Acción (ACA) y microzonificación de riesgos.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Transformación Integral</h5>
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#003366] mb-3">Transformacion Integral</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Basado en la Carta del Barrio, articulamos políticas de rehabilitación de viviendas y espacios públicos.
-            </p>
-          </div>
-
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Reordenamiento Básico</h5>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Definición de normas urbanísticas y uso de espacios, validados por la Asamblea de Ciudadanos.
             </p>
           </div>
         </div>

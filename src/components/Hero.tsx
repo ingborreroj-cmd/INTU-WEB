@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { ArrowRight, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { HERO_SLIDES } from '../data/heroSlides';
 
 const Hero: React.FC = () => {
@@ -13,14 +13,6 @@ const Hero: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const handlePrev = () => {
-    setActiveIndex((current) => (current - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
-
-  const handleNext = () => {
-    setActiveIndex((current) => (current + 1) % HERO_SLIDES.length);
-  };
 
   return (
     <div className="relative h-[85vh] md:h-[80vh] flex items-center overflow-hidden">
@@ -68,23 +60,6 @@ const Hero: React.FC = () => {
             </a>
           </div>
         </div>
-      </div>
-
-      <div className="absolute left-6 top-1/2 z-20 flex -translate-y-1/2 gap-3">
-        <button
-          onClick={handlePrev}
-          className="h-12 w-12 rounded-full bg-white/15 text-white shadow-lg backdrop-blur transition-all duration-300 hover:bg-white/25 hover:scale-110 hover:shadow-xl"
-          aria-label="Anterior"
-        >
-          <ChevronLeft size={22} />
-        </button>
-        <button
-          onClick={handleNext}
-          className="h-12 w-12 rounded-full bg-white/15 text-white shadow-lg backdrop-blur transition-all duration-300 hover:bg-white/25 hover:scale-110 hover:shadow-xl"
-          aria-label="Siguiente"
-        >
-          <ChevronRight size={22} />
-        </button>
       </div>
 
       <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3">

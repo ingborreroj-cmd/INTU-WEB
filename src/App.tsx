@@ -12,55 +12,53 @@ import ModalBienvenida from './components/ModalBienvenida';
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden relative">
-      {/* Fondo sutil de líneas */}
-      <div
-        className="fixed inset-0 pointer-events-none z-[-1] opacity-[0.2]"
-        style={{
-          backgroundImage: `url('./assets/img/lineas_fondo.png')`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '150px 150px'
-        }}
-      />
+    <div className="min-h-screen flex flex-col overflow-x-hidden relative bg-[#fcfcfc]">
       
-      {/* Contenido principal */}
-      <div className="relative z-10">
-        {/* 1. Componente Global de Bienvenida (se activa al cargar) */}
+      {/* 1. Fondo de líneas - Asegúrate de que la imagen esté en public/assets/img/ */}
+<div
+  className="fixed inset-0 pointer-events-none z-0"
+  style={{
+    // IMPORTANTE: La ruta comienza con "/" que apunta directamente a "public"
+    backgroundImage: "url('/assets/lineas_fondo.png')",
+    backgroundRepeat: 'repeat',
+    backgroundSize: '400px 400px',
+    opacity: 0.15
+  }}
+/>
+      
+      {/* 2. Contenedor principal */}
+      <div className="relative z-10 flex flex-col min-h-screen bg-transparent">
         <ModalBienvenida />
-
         <Header />
       
-      <main className="flex-grow">
-        <section id="inicio">
-          <Hero />
-        </section>
-        
-        <section id="servicios" className="py-20 bg-white">
-          <Services />
-        </section>
+        <main className="flex-grow bg-transparent">
+          <section id="inicio" className="bg-transparent">
+            <Hero />
+          </section>
+          
+          <section id="servicios" className="py-20 bg-transparent">
+            <Services />
+          </section>
 
-        {/* 2. Sección de Trámites (posicionada según tu requerimiento) */}
-        <section id="tramites" className="py-20 bg-slate-50 border-y border-slate-100"> 
-          <Tramites />
-        </section>
+          <section id="tramites" className="py-20 border-y border-gray-100 bg-transparent"> 
+            <Tramites />
+          </section>
 
-        <section id="nosotros" className="py-20 bg-[#f8f9fa]">
-          <About />
-        </section>
+          <section id="nosotros" className="py-20 bg-transparent">
+            <About />
+          </section>
 
-        <section id="proyectos" className="py-20 bg-white">
-          <News />
-        </section>
+          <section id="proyectos" className="py-20 bg-transparent">
+            <News />
+          </section>
 
-        <section id="contacto" className="py-20 bg-[#f8f9fa]">
-          <Contact />
-        </section>
-      </main>
+          <section id="contacto" className="py-20 bg-transparent">
+            <Contact />
+          </section>
+        </main>
 
-      <Footer />
-
-      {/* Asistente IA flotante */}
-      <INTUBot />
+        <Footer />
+        <INTUBot />
       </div>
     </div>
   );

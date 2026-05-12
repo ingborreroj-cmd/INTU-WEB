@@ -40,7 +40,7 @@ const Header: React.FC = () => {
               <img 
                 src="/assets/img/intu_logo2.png" 
                 alt="Logo Gobierno" 
-                className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`} 
+                className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? '' : ''}`} 
               />
             </div>
 
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
               <img 
                 src="/assets/img/ministerio_logo.png" 
                 alt="Logo INTU" 
-                className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`}
+                className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? '' : ''}`}
               />
             </div>
           </div>
@@ -74,9 +74,9 @@ const Header: React.FC = () => {
             {/* Espacio para Logo 3 (Esquina derecha) */}
             <div className="hidden md:block">
               <img 
-                src="/assets/img/logo-gmvv.png" 
+                src="/assets/img/cintillo-b-2025.png" 
                 alt="Logo GMVV" 
-                className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`}
+                className={`h-10 md:h-12 w-auto object-contain transition-all ${isScrolled ? '' :''}`}
               />
             </div>
 

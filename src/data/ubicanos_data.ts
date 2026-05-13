@@ -8,6 +8,10 @@ export interface Ubicacion {
   direccion: string;
   directores: string;
   telefonoDirectores: string;
+  coords: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export const locations: Ubicacion[] = [
@@ -18,7 +22,11 @@ export const locations: Ubicacion[] = [
     telefono: '0426-8013498',
     direccion: 'AV EL EJERCITO CRUCE CO AV LA FLORIDA SEDE MINHVI ANTIGUA SEDE INAVI PUERTO AYACUCHO ESTADO AMAZONAS MUNICIPIO ATURES PARROQUIA LUIS ALBERTO GOMEZ',
     directores: 'Angel Sandoval',
-    telefonoDirectores: '0426-1258328'
+    telefonoDirectores: '0426-1258328',
+    coords: {
+      lat: 5.0,
+      lng: -61.0
+    }
   },
   {
     estado: 'Anzoátegui',
@@ -27,7 +35,11 @@ export const locations: Ubicacion[] = [
     telefono: '0424-8738564',
     direccion: 'URBANIZACION BOYACA V, SECTOR 5 CALLE 4 EDIFICIO INAVI, PARROQUIA EL CARMEN, MUNICIPIO SIMON BOLIVAR DEL ESTADO ANZOATEGUI',
     directores: 'Jesús Marcano',
-    telefonoDirectores: '0414-7950048'
+    telefonoDirectores: '0414-7950048',
+    coords: {
+      lat: 10.0,
+      lng: -64.0
+    }
   },
     {
     estado: 'Apure',
@@ -36,7 +48,11 @@ export const locations: Ubicacion[] = [
     telefono: '0424-8738564',
     direccion: 'CALLE PLAZA CRUCE CON CALLE SUCRE, MUNICIPIO SAN FERNANDO DEL ESTADO APURE',
     directores: 'Daicy Mejías',
-    telefonoDirectores: '0424-7381785'
+    telefonoDirectores: '0424-7381785',
+    coords: {
+      lat: 8.0,
+      lng: -68.0
+    }
   },
     {
     estado: 'Aragua',
@@ -45,7 +61,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-9346003',
     direccion: 'PARROQUIA ANDRÉS ELOY BLANCO, SECTOR SUR OESTE III, PROLONGACIÓN CALLE PÉREZ ALMARZA, S/N, CON CALLE NEGRO PRIMERO, MUNICIPIO GIRARDOT DEL ESTADO ARAGUA',
     directores: '-',
-    telefonoDirectores: '-'
+    telefonoDirectores: '-',
+    coords: {
+      lat: 10.0,
+      lng: -68.0
+    }
   },
     {
     estado: 'Barinas',
@@ -54,7 +74,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-2665035',
     direccion: 'INSTALACIONES DE CORPOLLANO, UBICADO EN LA AVENIDA ORLANDO ARAUJO, SECTOR CAMPO LA MESA PARROQUIA ALTO BARINAS MUNICIPIO BARINAS',
     directores: 'José Juan Vivas',
-    telefonoDirectores: '0426-5710307'
+    telefonoDirectores: '0426-5710307',
+    coords: {
+      lat: 9.0,
+      lng: -69.0
+    }
   },
     {
     estado: 'Bolívar',
@@ -63,7 +87,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-1197488',
     direccion: 'AVENIDA ESTADOS UNIDOS CON CALLE MÉXICO, PARROQUIA CACHAMAY, MUNICIPIO CARONÍ DEL ESTADO BOLÍVAR',
     directores: 'Yuraima Patricia Cabrera',
-    telefonoDirectores: '0424-4076756 / 04120494527'
+    telefonoDirectores: '0424-4076756 / 04120494527',
+    coords: {
+      lat: 8.0,
+      lng: -62.0
+    }
   },
     {
     estado: 'Carabobo',
@@ -72,7 +100,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-8434754 / 0414-3410934',
     direccion: 'SECTOR LOS SAUCES, AVENIDA 135, PARCELA N° 98-65, PARROQUIA SAN JOSÉ, MUNICIPIO VALENCIA, ESTADO CARABOBO',
     directores: 'Yulismar Carrillo',
-    telefonoDirectores: '0424-4076756 / 04120494527'
+    telefonoDirectores: '0424-4076756 / 04120494527',
+    coords: {
+      lat: 10.0,
+      lng: -68.0
+    }
   },
     {
     estado: 'Cojedes',
@@ -81,7 +113,11 @@ export const locations: Ubicacion[] = [
     telefono: '0414-5971128',
     direccion: 'AVENIDA INDUSTRIAL, PARCELA N° 13, SECTOR GOB, ZONA INDUSTRIAL, DE SAN CARLOS, PARROQUIA SAN CARLOS DE AUSTRIA, MUNICIPIO EZEQUIEL ZAMORA, ESTADO COJEDES',
     directores: 'Génesis Moreno',
-    telefonoDirectores: '0426-3460523'
+    telefonoDirectores: '0426-3460523',
+    coords: {
+      lat: 9.0,
+      lng: -68.0
+    }
   },
     {
     estado: 'Delta Amacuro',
@@ -90,7 +126,11 @@ export const locations: Ubicacion[] = [
     telefono: '0424-9245489',
     direccion: 'AVENIDA GUASIMAL, DIAGONAL A TRAKI, PARROQUIA J. VIDAL MARCANO, MUNICIPIO TUCUPITA DEL ESTADO DELTA AMACURO',
     directores: 'Oswaldo Gonzalez',
-    telefonoDirectores: '0424-9042172'
+    telefonoDirectores: '0424-9042172',
+    coords: {
+      lat: 9.0,
+      lng: -62.0
+    }
   },
     {
     estado: 'DTTO. Capital',
@@ -99,7 +139,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-7260411 / 0412-9977426',
     direccion: 'EL SILENCIO, PARROQUIA SAN JUAN, MUNICIPIO LIBERTADOR DEL DISTRITO CAPITAL',
     directores: 'Robinson Toro',
-    telefonoDirectores: '0412-2543099'
+    telefonoDirectores: '0412-2543099',
+    coords: {
+      lat: 10.5,
+      lng: -66.9
+    }
   },
     {
     estado: 'Falcón',
@@ -108,7 +152,11 @@ export const locations: Ubicacion[] = [
     telefono: '0424-6497299',
     direccion: 'FALCON INTU CALLE MOZON CON CALLE COMERCIO, SEDE BANAVIH MUNICIPIO MIRANDA PARROQUIA SAN ANTONIO',
     directores: 'Jesús León',
-    telefonoDirectores: '0412-7664294'
+    telefonoDirectores: '0412-7664294',
+    coords: {
+      lat: 10.0,
+      lng: -68.0
+    }
   },
     {
     estado: 'Guárico',
@@ -117,7 +165,11 @@ export const locations: Ubicacion[] = [
     telefono: '0426-4480847',
     direccion: 'AVENIDA ROMULO GALLEGO, LA REDOMA AL LADO DEL MINISTERIO PUBLICO EDIFICIO HABITAT Y VIVIENDA PRIMER PISO OFICINA INTU MUNICIPIO JUAN GERMAN ROCIO SAN JUAN DE LOS MORROS',
     directores: '-',
-    telefonoDirectores: '-'
+    telefonoDirectores: '-',
+    coords: {
+      lat: 9.0,
+      lng: -67.0
+    }
   },
     {
     estado: 'La Guaira',
@@ -126,7 +178,11 @@ export const locations: Ubicacion[] = [
     telefono: '0414-2221217',
     direccion: 'LA GUAIRA, PARROQUIA CARABALLEDA, SECTOR CORAPAL',
     directores: '-',
-    telefonoDirectores: '-'
+    telefonoDirectores: '-',
+    coords: {
+      lat: 10.6,
+      lng: -66.9
+    }
   },
     {
     estado: 'Lara',
@@ -135,7 +191,11 @@ export const locations: Ubicacion[] = [
     telefono: '0414-9546958',
     direccion: 'AVENIDA SEXTA ENTRE LAS CALLES 24 Y 25, PARROQUIA EL SAGRARIO, MUNICIPIO LIBERTADOR DEL ESTADO MÉRIDA',
     directores: 'Pedro González',
-    telefonoDirectores: '0414-7551093'
+    telefonoDirectores: '0414-7551093',
+    coords: {
+      lat: 10.0,
+      lng: -69.0
+    }
   },
     {
     estado: 'Mérida',
@@ -144,7 +204,11 @@ export const locations: Ubicacion[] = [
     telefono: '0414-7488832',
     direccion: 'AVENIDA SEXTA ENTRE LAS CALLES 24 Y 25, PARROQUIA EL SAGRARIO, MUNICIPIO LIBERTADOR DEL ESTADO MÉRIDA',
     directores: 'Pedro González',
-    telefonoDirectores: '0414-7551093'
+    telefonoDirectores: '0414-7551093',
+    coords: {
+      lat: 8.0,
+      lng: -71.0
+    }
   },
     {
     estado: 'Miranda',
@@ -153,7 +217,11 @@ export const locations: Ubicacion[] = [
     telefono: '0424-1948929 / 0412-3901825',
     direccion: 'CALLE ORINOCO CON AV. PRINCIPAL DE LAS MERCEDES, INSTITUTO NACIONAL DE TIERRAS URBANAS, PISO 1 URB. LAS MERCEDES, MUNICIPIO BARUTA, ESTADO MIRANDA',
     directores: 'Henry Gudiño',
-    telefonoDirectores: '0412-0325603'
+    telefonoDirectores: '0412-0325603',
+    coords: {
+      lat: 10.0,
+      lng: -66.8
+    }
   },
     {
     estado: 'Monagas',
@@ -162,7 +230,11 @@ export const locations: Ubicacion[] = [
     telefono: '0426-4881804',
     direccion: 'SECTOR LOS BLOQUES, PARROQUIA SAN SIMÓN, MUNICIPIO MATURÍN DEL ESTADO MONAGAS.',
     directores: 'Crismary Rodríguez',
-    telefonoDirectores: '0424-9539937'
+    telefonoDirectores: '0424-9539937',
+    coords: {
+      lat: 9.0,
+      lng: -63.0
+    }
   },
     {
     estado: 'Nueva Esparta',
@@ -171,7 +243,11 @@ export const locations: Ubicacion[] = [
     telefono: '0414-2021557 / 0426-5963585',
     direccion: 'AVENIDA LA AUYAMA ANTIGUO GOLF MARGARITA PARROQUIA PAMPATAR MUNICIPIO MANEIRO ESTADO NUEVA ESPARTA',
     directores: 'Ashaella Spadafora',
-    telefonoDirectores: '0412-3519739'
+    telefonoDirectores: '0412-3519739',
+    coords: {
+      lat: 11.0,
+      lng: -64.0
+    }
   },
     {
     estado: 'Portuguesa',
@@ -180,7 +256,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-5204215',
     direccion: 'MUNICIPIO PAEZ PARROQUIA ACARIGUA ESTADO PORTUGUESA EDIFICIO GOMEZ LOPEZ CENTRO COMERCIAL MEDITERRANEO',
     directores: '-',
-    telefonoDirectores: '-'
+    telefonoDirectores: '-',
+    coords: {
+      lat: 9.0,
+      lng: -69.0
+    }
   },
     {
     estado: 'Sucre',
@@ -189,7 +269,11 @@ export const locations: Ubicacion[] = [
     telefono: '0426-2225638',
     direccion: 'AVENIDA BERMÚDEZ, CON CALLE SIMÓN RODRÍGUEZ PARROQUIA AYACUCHO, MUNICIPIO SUCRE DEL ESTADO SUCRE',
     directores: '-',
-    telefonoDirectores: '-'
+    telefonoDirectores: '-',
+    coords: {
+      lat: 10.0,
+      lng: -63.0
+    }
   },
     {
     estado: 'Táchira',
@@ -198,7 +282,11 @@ export const locations: Ubicacion[] = [
     telefono: '0426-5758170',
     direccion: 'AVENIDA LUCIO OQUENDO ANTIGUO EDIFICIO INAVI, PARROQUIA LA CONCORDIA, MUNICIPIO SAN CRISTÓBAL DEL ESTADO TÁCHIRA',
     directores: 'Franklin Guerrero',
-    telefonoDirectores: '0426-5758170'
+    telefonoDirectores: '0426-5758170',
+    coords: {
+      lat: 7.0,
+      lng: -72.0
+    }
   },
     {
     estado: 'Trujillo',
@@ -207,7 +295,11 @@ export const locations: Ubicacion[] = [
     telefono: '0426-5757175',
     direccion: 'AVENIDA CUATRICENTENARIA, SECTOR LA VEGA, EDIFICIO INAVI, MUNICIPIO TRUJILLO DEL ESTADO TRUJILLO',
     directores: 'Alexander Maldonado',
-    telefonoDirectores: '0426-9788885'
+    telefonoDirectores: '0426-9788885',
+    coords: {
+      lat: 9.0,
+      lng: -70.0
+    }
   },
     {
     estado: 'Yaracuy',
@@ -216,7 +308,11 @@ export const locations: Ubicacion[] = [
     telefono: '0416-3391609',
     direccion: 'ASCENSIÓN, MUNICIPIO SAN FELIPE DEL ESTADO YARACUY',
     directores: 'Elisa Pagliaris',
-    telefonoDirectores: '0412-8616343'
+    telefonoDirectores: '0412-8616343',
+    coords: {
+      lat: 10.0,
+      lng: -68.0
+    }
   },
 
       {
@@ -226,7 +322,11 @@ export const locations: Ubicacion[] = [
     telefono: '0412-6528900',
     direccion: 'EDIFICIO PAULA PIERINA AVENIDA 4 BELLA VISTA CON 67 MUNICIPIO MARACAIBO PARROQUIA CECILIO ACOSTA ESTADO ZULIA',
     directores: 'Randy Rodríguez',
-    telefonoDirectores: '0412-9984376'
+    telefonoDirectores: '0412-9984376',
+    coords: {
+      lat: 10.0,
+      lng: -71.0
+    }
   },
 
   

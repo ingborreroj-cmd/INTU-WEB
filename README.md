@@ -37,6 +37,8 @@ Para el correcto funcionamiento local, asegúrate de tener instalado **Node.js**
 | `lucide-react` | `^0.563.0` | Iconos del sistema |
 | `@google/genai` | `^1.38.0` | Motor de IA (Gemini) |
 | `vite` | `^6.0.0` | Compilación rápida |
+| `react-leaflet` | `^` | Nuevas Librerias Necesarias |
+| `leaflet` | `^` | Nuevas Librerias Necesarias |
 
 ---
 

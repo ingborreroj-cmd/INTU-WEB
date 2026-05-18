@@ -19,10 +19,10 @@ const App: React.FC = () => {
   className="fixed inset-0 pointer-events-none z-0"
   style={{
     // IMPORTANTE: La ruta comienza con "/" que apunta directamente a "public"
-    backgroundImage: "url('/assets/lineas_fondo.png')",
+    backgroundImage: "url('/assets/img/institucion.jpg')",
     backgroundRepeat: 'repeat',
     backgroundSize: '400px 400px',
-    opacity: 0.15
+    opacity: 0,
   }}
 />
       

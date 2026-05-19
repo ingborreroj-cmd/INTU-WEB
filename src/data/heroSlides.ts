@@ -1,19 +1,12 @@
-// src/data/heroSlides.ts
-
 export interface HeroSlide {
   id: number;
-  imageUrl: string;      // Ruta de la imagen visible en el hero
-  label: string;         // Texto principal que puede cambiar el usuario
-  caption: string;       // Texto secundario para el slide
+  imageUrl: string;
+  label: string;
+  caption: string;
 }
 
-/**
- * EDITA AQUÍ LAS IMÁGENES DEL HERO
- * --------------------------------
- * Para cambiar el carrusel, agrega, elimina o modifica items en este array.
- * Solo se requieren rutas locales dentro de public/assets/img/ o en la carpeta /assets/img/.
- */
-export const HERO_SLIDES: HeroSlide[] = [
+// Datos iniciales por defecto
+export const DEFAULT_SLIDES: HeroSlide[] = [
   {
     id: 1,
     imageUrl: '/assets/img/hero-bg.jpg',
@@ -33,3 +26,16 @@ export const HERO_SLIDES: HeroSlide[] = [
     caption: 'Avanzamos en la entrega de títulos y la regularización de asentamientos urbanos.'
   }
 ];
+
+// Función para obtener los slides activos (ya sean los editados o los por defecto)
+export const getActiveSlides = (): HeroSlide[] => {
+  const savedSlides = localStorage.getItem('intu_hero_slides');
+  if (savedSlides) {
+    try {
+      return JSON.parse(savedSlides);
+    } catch (e) {
+      return DEFAULT_SLIDES;
+    }
+  }
+  return DEFAULT_SLIDES;
+};

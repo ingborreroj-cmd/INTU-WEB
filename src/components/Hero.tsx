@@ -1,21 +1,72 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { ArrowRight, CheckCircle } from 'lucide-react';
-import { HERO_SLIDES } from '../data/heroSlides';
+import { ArrowRight, CheckCircle, Settings } from 'lucide-react';
+import { HeroSlide, getActiveSlides } from '../data/heroSlides';
+import HeroAdminModal from './HeroAdminModal';
 
 const Hero: React.FC = () => {
+  // 1. Estado principal con los slides (se cargan de LocalStorage o Default)
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeSlide = HERO_SLIDES[activeIndex];
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
+  // Carga inicial segura para evitar discrepancias de renderizado
   useEffect(() => {
+    setSlides(getActiveSlides());
+  }, []);
+
+  // 2. Efecto del temporizador: se destruye y se vuelve a crear CADA VEZ que los slides cambian
+  useEffect(() => {
+    if (slides.length === 0) return;
+
     const interval = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % HERO_SLIDES.length);
+      setActiveIndex((current) => (current + 1) % slides.length);
     }, 7000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [slides]); // <-- Esto es vital para que el temporizador use los datos nuevos
+
+  // Garantizamos que si 'slides' está vacío temporalmente, no rompa la app
+  const activeSlide = slides[activeIndex] || slides[0];
+
+  const handleOpenAdmin = () => {
+    const password = prompt('Ingrese la clave de Administrador del INTU para continuar:');
+    if (password === '') {
+      setIsAdminOpen(true);
+    } else if (password !== null) {
+      alert('Clave incorrecta. Acceso denegado.');
+    }
+  };
+
+  // 3. Función de guardado corregida (fuerza un nuevo array en memoria)
+  const handleSaveAdmin = (updatedSlides: HeroSlide[]) => {
+    // Guardamos en el almacenamiento físico del navegador
+    localStorage.setItem('intu_hero_slides', JSON.stringify(updatedSlides));
+    
+    // Forzamos un nuevo mapeo en el estado para que React detecte el cambio de referencia
+    setSlides([...updatedSlides]); 
+    
+    // Reseteamos el índice al primero para que el administrador vea su cambio al instante
+    setActiveIndex(0); 
+    setIsAdminOpen(false);
+  };
+
+  if (slides.length === 0) {
+    return <div className="h-[85vh] bg-[#003366] flex items-center justify-center text-white font-montserrat">Cargando interfaz institucional...</div>;
+  }
 
   return (
     <div className="relative h-[85vh] md:h-[80vh] flex items-center overflow-hidden">
+      
+      {/* BOTÓN FLOTANTE ADMINISTRADOR */}
+      <button 
+        onClick={handleOpenAdmin}
+        className="absolute top-6 right-6 z-50 p-2.5 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white/70 hover:text-white transition-all shadow-lg hover:rotate-45 duration-300"
+        title="Administrar Carrusel"
+      >
+        <Settings size={20} />
+      </button>
+
+      {/* CAPA DE IMAGEN DE FONDO (Leemos directamente del estado 'activeSlide') */}
       <div
         className="absolute inset-0 z-0 scale-105 transition-all duration-700 ease-out filter brightness-110 contrast-105"
         style={{
@@ -29,6 +80,7 @@ const Hero: React.FC = () => {
 
       <div className="absolute inset-0 bg-slate-950/15" />
 
+      {/* CONTENIDO TEXTUAL (Dinámico) */}
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl animate-fade-up">
           <div className="inline-flex items-center gap-2 bg-[#b8860b]/20 text-[#f6d07d] border border-[#b8860b]/30 px-4 py-1.5 rounded-full mb-6 text-sm font-semibold backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -62,8 +114,9 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
+      {/* INDICADORES DE PAGINACIÓN */}
       <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3">
-        {HERO_SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <button
             key={slide.id}
             onClick={() => setActiveIndex(index)}
@@ -73,6 +126,7 @@ const Hero: React.FC = () => {
         ))}
       </div>
 
+      {/* ESTADÍSTICAS FLOTANTES */}
       <div className="hidden lg:flex absolute bottom-12 right-12 gap-10 bg-white/10 backdrop-blur-xl p-8 rounded-[20px] border border-white/20 animate-fade-up shadow-2xl" style={{ animationDelay: '0.4s' }}>
         <div className="text-center">
           <p className="text-[#b8860b] text-3xl font-extrabold font-montserrat drop-shadow-lg">+2.5M</p>
@@ -84,6 +138,15 @@ const Hero: React.FC = () => {
           <p className="text-white/80 text-xs uppercase tracking-widest font-bold">Comités Activos</p>
         </div>
       </div>
+
+      {/* MODAL DE EDICIÓN */}
+      {isAdminOpen && (
+        <HeroAdminModal 
+          slides={slides}
+          onClose={() => setIsAdminOpen(false)}
+          onSave={handleSaveAdmin}
+        />
+      )}
     </div>
   );
 };

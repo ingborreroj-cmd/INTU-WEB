@@ -5,7 +5,6 @@ export interface HeroSlide {
   caption: string;
 }
 
-// Datos iniciales por defecto
 export const DEFAULT_SLIDES: HeroSlide[] = [
   {
     id: 1,
@@ -26,16 +25,3 @@ export const DEFAULT_SLIDES: HeroSlide[] = [
     caption: 'Avanzamos en la entrega de títulos y la regularización de asentamientos urbanos.'
   }
 ];
-
-// Función para obtener los slides activos (ya sean los editados o los por defecto)
-export const getActiveSlides = (): HeroSlide[] => {
-  const savedSlides = localStorage.getItem('intu_hero_slides');
-  if (savedSlides) {
-    try {
-      return JSON.parse(savedSlides);
-    } catch (e) {
-      return DEFAULT_SLIDES;
-    }
-  }
-  return DEFAULT_SLIDES;
-};

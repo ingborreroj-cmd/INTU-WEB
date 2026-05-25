@@ -96,6 +96,14 @@ const Contact: React.FC = () => {
     setSelectedLocation(null);
   };
 
+  // Bloqueo de scroll del body cuando el modal de detalles esté abierto
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [isModalOpen]);
+
   return (
     <div className="bg-transparent py-16">
       <div className="container mx-auto px-4 md:px-6">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Save, X, RefreshCw, Type, Plus, Trash2, Upload, FileImage } from 'lucide-react';
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 
@@ -10,6 +10,13 @@ interface AdminModalProps {
 
 const HeroAdminModal: React.FC<AdminModalProps> = ({ slides, onSave, onClose }) => {
   const [editedSlides, setEditedSlides] = useState<HeroSlide[]>(JSON.parse(JSON.stringify(slides)));
+
+  // Bloqueo de scroll del body mientras el modal de administrador del Hero esté abierto
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
 
   const handleInputChange = (index: number, field: keyof HeroSlide, value: string) => {
     const updated = [...editedSlides];

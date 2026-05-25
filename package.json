@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync-assets": "node scripts/sync-assets.cjs",
+    "sync-assets:remove": "node scripts/sync-assets.cjs --remove"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.8.3",

@@ -11,6 +11,14 @@ const ModalBienvenida: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Bloqueo de scroll del body cuando el modal está abierto
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -21,7 +29,7 @@ const ModalBienvenida: React.FC = () => {
       <div 
         className="absolute inset-0 z-0 animate-fade-in"
         style={{
-          backgroundImage: 'url("assets/img/fondo_modal.jpg")',
+          backgroundImage: 'url("/assets/img/fondo_modal.jpg")',
           backgroundPosition: 'center',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat'

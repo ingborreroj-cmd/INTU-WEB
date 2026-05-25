@@ -40,6 +40,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, descriptio
 const Services: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Bloqueo de scroll del body cuando el modal de servicios está abierto
+  React.useEffect(() => {
+    if (!isModalOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [isModalOpen]);
+
   const technicalServices = [
     { icon: Ruler, title: 'Levantamiento Planimétrico', description: 'Medición detallada y representación gráfica exacta de la configuración de su terreno.', cost: '€40 por plano/informe' },
     { icon: HardHat, title: 'Estudio Geotécnico', description: 'Análisis de suelo completo: perforación, laboratorio e informe técnico de resistencia.', cost: 'Según requerimiento' },

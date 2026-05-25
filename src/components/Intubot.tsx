@@ -81,6 +81,14 @@ const INTUBot: React.FC = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Bloqueo de scroll del body cuando la ventana de chat esté abierta
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [isOpen]);
+
   const processResponse = (userText: string) => {
     const text = userText.toLowerCase();
 

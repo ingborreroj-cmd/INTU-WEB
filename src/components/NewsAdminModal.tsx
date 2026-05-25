@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Save, X, RefreshCw, Type, Plus, Trash2, Upload, FileImage, Link2, Calendar } from 'lucide-react';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 
@@ -10,6 +10,13 @@ interface NewsAdminModalProps {
 
 const NewsAdminModal: React.FC<NewsAdminModalProps> = ({ news, onSave, onClose }) => {
   const [editedNews, setEditedNews] = useState<NewsItem[]>(JSON.parse(JSON.stringify(news)));
+
+  // Bloqueo de scroll del body mientras el modal de noticias esté abierto
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
 
   const handleInputChange = (index: number, field: keyof NewsItem, value: string) => {
     const updated = [...editedNews];

@@ -14,17 +14,18 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden relative bg-[#fcfcfc]">
       
-      {/* 1. Fondo de líneas - Asegúrate de que la imagen esté en public/assets/img/ */}
-<div
-  className="fixed inset-0 pointer-events-none z-0"
-  style={{
-    // IMPORTANTE: La ruta comienza con "/" que apunta directamente a "public"
-    backgroundImage: "url('/assets/img/institucion.jpg')",
-    backgroundRepeat: 'repeat',
-    backgroundSize: '400px 400px',
-    opacity: 0,
-  }}
-/>
+      {/* 1. Fondo de página global */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: "url('/assets/img/lineas_fondo.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundAttachment: 'fixed',
+          opacity: 0.4,
+        }}
+      />
       
       {/* 2. Contenedor principal */}
       <div className="relative z-10 flex flex-col min-h-screen bg-transparent">

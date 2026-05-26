@@ -5,6 +5,7 @@ export interface NewsItem {
   title: string;
   source: string;
   url: string;
+  content?: string;
 }
 
 export const DEFAULT_NEWS: NewsItem[] = [

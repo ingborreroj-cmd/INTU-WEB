@@ -1,14 +1,14 @@
 ﻿import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Settings } from 'lucide-react';
 import { HeroSlide } from '../data/heroSlides';
 import { heroService } from '../services/heroService';
-import HeroAdminModal from './HeroAdminModal';
 
 const Hero: React.FC = () => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initApp = async () => {
@@ -30,30 +30,8 @@ const Hero: React.FC = () => {
   const currentIndex = activeIndex >= slides.length ? 0 : activeIndex;
   const currentSlide = slides[currentIndex] || slides[0];
 
-  const triggerAdminValidation = () => {
-    const token = prompt('Ingrese clave técnica del INTU:');
-      /**
-   * Modificar el Token/Clave para acceder al módulo de administración del carrusel de inicio.
-   * Actualmente esta vacia 
-   */
-    if (token === '') {
-      setIsAdminOpen(true);
-    } else if (token !== null) {
-      alert('Credenciales no autorizadas.');
-    }
-  };
-
-  const processDeployment = async (newConfiguration: HeroSlide[]) => {
-    setLoading(true);
-    const successfullySaved = await heroService.saveSlides(newConfiguration);
-    if (successfullySaved) {
-      setSlides([...newConfiguration]);
-      setActiveIndex(0);
-      setIsAdminOpen(false);
-    } else {
-      alert('Error de E/S en persistencia local.');
-    }
-    setLoading(false);
+  const goToHeroSettings = () => {
+    navigate('/admin/settings/hero');
   };
 
   if (loading || slides.length === 0) {
@@ -67,12 +45,17 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative h-[85vh] md:h-[80vh] flex items-center overflow-hidden w-full">
-      
-      <button onClick={triggerAdminValidation} className="absolute top-6 right-6 z-50 p-2.5 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white/70 hover:text-white transition-all shadow-md hover:rotate-45 duration-300">
+      <button
+        onClick={goToHeroSettings}
+        className="absolute top-6 right-6 z-50 p-2.5 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white/70 hover:text-white transition-all shadow-md hover:rotate-45 duration-300"
+      >
         <Settings size={18} />
       </button>
 
-      <div className="absolute inset-0 z-0 scale-105 transition-all duration-700 ease-out filter brightness-110 contrast-105" style={{ backgroundImage: `url("${currentSlide.imageUrl}")`, backgroundPosition: 'center', backgroundSize: 'cover' }}>
+      <div
+        className="absolute inset-0 z-0 scale-105 transition-all duration-700 ease-out filter brightness-110 contrast-105"
+        style={{ backgroundImage: `url("${currentSlide.imageUrl}")`, backgroundPosition: 'center', backgroundSize: 'cover' }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/70 via-[#003366]/40 to-transparent" />
       </div>
       <div className="absolute inset-0 bg-slate-950/15" />
@@ -102,7 +85,11 @@ const Hero: React.FC = () => {
       {slides.length > 1 && (
         <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2.5">
           {slides.map((_, index) => (
-            <button key={index} onClick={() => setActiveIndex(index)} className={`h-2.5 w-2.5 rounded-full transition-all ${index === currentIndex ? 'bg-[#b8860b] w-6' : 'bg-white/40 hover:bg-white'}`} />
+            <button
+              key={index}
+              onClick={() => setActiveIndex(index)}
+              className={`h-2.5 w-2.5 rounded-full transition-all ${index === currentIndex ? 'bg-[#b8860b] w-6' : 'bg-white/40 hover:bg-white'}`}
+            />
           ))}
         </div>
       )}
@@ -118,8 +105,6 @@ const Hero: React.FC = () => {
           <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold mt-0.5">Comités Activos</p>
         </div>
       </div>
-
-      {isAdminOpen && <HeroAdminModal slides={slides} onClose={() => setIsAdminOpen(false)} onSave={processDeployment} />}
     </div>
   );
 };

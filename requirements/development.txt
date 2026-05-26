@@ -1,0 +1,19 @@
+# Dependencias necesarias para que la página funcione
+@vis.gl/react-google-maps
+leaflet
+lucide-react
+react
+react-dom
+react-leaflet
+react-router-dom
+
+# Dependencias de desarrollo necesarias para el entorno de desarrollo
+@types/leaflet
+@types/react
+@types/react-dom
+@typescript-eslint/eslint-plugin
+@typescript-eslint/parser
+@vitejs/plugin-react
+eslint
+typescript
+vite

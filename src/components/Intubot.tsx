@@ -37,43 +37,47 @@ const INTUBot: React.FC = () => {
     }
   };
 
-  // Base de datos de Preguntas Frecuentes expandida
+  // Base de datos de respuestas simples extraídas de los trámites
   const FAQ_DATA = [
     {
       keywords: ['título', 'tierra', 'propiedad', 'regularización'],
-      response: "Para obtener tu Título de Adjudicación de Tierras, debes estar censado por un Comité de Tierra Urbana (CTU) y presentar copia de cédula y documento de ocupación previa. ¿Te gustaría que te haga unas preguntas para evaluar tu caso?",
+      response: "Para tramitar tu título de propiedad necesitas copia de cédula, carpeta oficio, documento de ocupación y constancia de residencia. ¿Quieres saber el siguiente paso?",
       action: 'start_flow',
       flow: 'titulo_tierra'
     },
     {
-      keywords: ['ctu', 'comité', 'comite', 'organizarse', 'formar'],
-      response: "Los CTU son la organización base para acceder a los trámites del INTU. Para conformar uno, necesitas al menos 15 familias y realizar una asamblea constitutiva avalada por el INTU. ¿Quieres que te pregunte sobre tu comunidad?",
+      keywords: ['local comercial', 'local', 'comercial', 'regularizar'],
+      response: "Para regularizar un local comercial debes llevar la documentación requerida a la gerencia estatal y completar el proceso de asesoría. ¿Quieres más detalles sobre los documentos?"
+    },
+    {
+      keywords: ['ctu', 'comité', 'comite', 'formar', 'conformar'],
+      response: "Para formar un CTU necesitas una asamblea constitutiva y un grupo organizado de vecinos. El INTU te guía con los pasos y los requisitos básicos.",
       action: 'start_flow',
       flow: 'ctu_formacion'
     },
     {
-      keywords: ['sede', 'donde queda', 'ubicación', 'direccion', 'oficina'],
-      response: "Nuestra sede principal está en Caracas, Av. Francisco de Miranda, Edif. Minhvi. También tenemos gerencias estadales en todo el país. ¿En qué estado te encuentras?"
-    },
-    {
       keywords: ['requisitos', 'documentos', 'papeles', 'necesito'],
-      response: "Los requisitos básicos son: 1. Carta de residencia, 2. Copia de Cédula, 3. Croquis del sector y 4. Aval del CTU de tu comunidad. ¿Para qué trámite necesitas estos documentos?"
+      response: "Los requisitos suelen incluir cédula, constancia de residencia, croquis del sector y aval del CTU o comité local. ¿Para qué trámite es tu consulta?"
     },
     {
-      keywords: ['tramites', 'procedimientos', 'que puedo hacer'],
-      response: "Los principales trámites son: Título de Adjudicación de Tierras, Formación de CTU, Regularización de Propiedad Urbana, y Asesoría Técnica. ¿Cuál te interesa?"
+      keywords: ['tramites', 'procedimientos', 'que puedo hacer', 'servicios'],
+      response: "El INTU ofrece trámites como título de tierras, regularización de locales comerciales, formación de CTU y asesoría técnica. Puedes preguntar por cualquiera de ellos."
     },
     {
-      keywords: ['tiempo', 'cuanto tarda', 'duracion'],
-      response: "Los tiempos varían según el trámite: Títulos de Tierra (3-6 meses), Formación CTU (1-2 meses), Regularización (2-4 meses). Depende de la complejidad y documentación presentada."
+      keywords: ['sede', 'donde queda', 'ubicación', 'direccion', 'oficina'],
+      response: "Nuestra sede principal está en Caracas y también operamos a través de gerencias estadales. Indica tu estado y te oriento mejor."
     },
     {
       keywords: ['costo', 'pago', 'precio', 'cuanto cuesta'],
-      response: "Los trámites del INTU son gratuitos. No hay costos asociados a la regularización de tierras urbanas ni formación de comités."
+      response: "Los trámites del INTU no generan costos directos de gestión. Si necesitas, te explico qué documentos llevar."
+    },
+    {
+      keywords: ['tiempo', 'cuanto tarda', 'duracion'],
+      response: "Los tiempos dependen del trámite y de los documentos completos. En general, la respuesta oficial se libera una vez que entregas toda la documentación."
     },
     {
       keywords: ['telefono', 'llamar', 'contacto'],
-      response: "Puedes llamarnos al 0800-MINHVI-00 (0800-646484-00) de lunes a viernes de 8:00 AM a 4:00 PM. ¿Necesitas información sobre algún trámite específico?"
+      response: "Puedes consultarnos usando el chat o visitar la sede del INTU. También está disponible el canal de atención telefónica oficial."
     }
   ];
 
@@ -217,7 +221,6 @@ const INTUBot: React.FC = () => {
           {/* Sugerencias Rápidas */}
           <div className="px-4 py-3 bg-gray-50 flex flex-wrap gap-2 border-t border-gray-100">
             {conversationState.activeFlow ? (
-              // Mostrar opciones del flujo activo
               (() => {
                 const flow = CONVERSATION_FLOWS[conversationState.activeFlow as keyof typeof CONVERSATION_FLOWS];
                 const currentStep = flow.steps[conversationState.step];
@@ -229,14 +232,12 @@ const INTUBot: React.FC = () => {
                 return null;
               })()
             ) : (
-              // Opciones por defecto
               <>
-                <QuickOption text="Título de Tierra" />
+                <QuickOption text="Título de tierra" />
+                <QuickOption text="Regularizar local" />
                 <QuickOption text="Formar CTU" />
                 <QuickOption text="Requisitos" />
-                <QuickOption text="Ubicación Sedes" />
-                <QuickOption text="¿Cuánto tarda?" />
-                <QuickOption text="¿Es gratuito?" />
+                <QuickOption text="Sedes" />
               </>
             )}
           </div>

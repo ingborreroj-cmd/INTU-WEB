@@ -151,7 +151,7 @@ const News: React.FC = () => {
         <span className="text-[#003366] font-bold text-sm uppercase tracking-[0.3em]">Noticias Globales</span>
       </div>
       <h2 className="text-[#003366] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
-        Prensa externa <span className="text-gray-300">y actualizaciones</span>
+       Actualizaciones
       </h2>
     </div>
 

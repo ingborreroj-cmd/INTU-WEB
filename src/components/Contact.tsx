@@ -27,7 +27,7 @@ const GoogleMarker = L.divIcon({
 L.Marker.prototype.options.icon = GoogleMarker;
 
 // --- COMPONENTE PARA MOVER EL MAPA Y CORREGIR EL ERROR DE CARGA (GRIS) ---
-const ChangeView = ({ center }: { center: [number, number] }) => {
+const ChangeView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
   const map = useMap();
   
   useEffect(() => {
@@ -35,10 +35,10 @@ const ChangeView = ({ center }: { center: [number, number] }) => {
       map.invalidateSize();
     }, 300);
     
-    map.setView(center, 15);
+    map.setView(center, zoom);
     
     return () => clearTimeout(timer);
-  }, [center, map]);
+  }, [center, zoom, map]);
   
   return null;
 };
@@ -47,7 +47,8 @@ const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Ubicacion | null>(null);
-  const [currentCoords, setCurrentCoords] = useState<[number, number]>([10.4919, -66.8647]);
+  const [currentCoords, setCurrentCoords] = useState<[number, number]>([7.5, -66.5]);
+  const [currentZoom, setCurrentZoom] = useState<number>(6);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -83,12 +84,14 @@ const Contact: React.FC = () => {
     setSelectedLocation(location);
     setIsModalOpen(true);
     setCurrentCoords([location.coords.lat, location.coords.lng]);
+    setCurrentZoom(15);
   };
 
   // Función para mover el mapa sin abrir modal
   const handleShowOnMap = (e: React.MouseEvent, location: Ubicacion) => {
     e.stopPropagation(); 
     setCurrentCoords([location.coords.lat, location.coords.lng]);
+    setCurrentZoom(15);
   };
 
   const closeModal = () => {
@@ -192,7 +195,7 @@ const Contact: React.FC = () => {
         <section className="w-full">
             <h3 className="text-2xl font-montserrat font-bold text-[#003366] mb-6">Ubicación Geográfica de Sedes</h3>
             <div className="rounded-[30px] overflow-hidden border-4 border-white shadow-2xl h-[550px] relative z-0">
-                <MapContainer center={currentCoords} zoom={12} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+                <MapContainer center={currentCoords} zoom={currentZoom} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                   <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                     attribution='&copy; Google Maps Style'
@@ -211,7 +214,7 @@ const Contact: React.FC = () => {
                       </Popup>
                     </Marker>
                   ))}
-                  <ChangeView center={currentCoords} />
+                  <ChangeView center={currentCoords} zoom={currentZoom} />
                 </MapContainer>
             </div>
         </section>

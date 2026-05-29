@@ -49,11 +49,19 @@ const Footer: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <a href="#" className="bg-white/10 p-2 rounded-xl hover:bg-[#b8860b] transition-colors"><Twitter size={18} /></a>
-              <a href="https://www.facebook.com/IntuVe/" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-xl hover:bg-[#b8860b] transition-colors"><Facebook size={18} /></a>
-              <a href="https://www.instagram.com/intu_ve/" target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-xl hover:bg-[#b8860b] transition-colors"><Instagram size={18} /></a>
-              <a href="#" className="bg-white/10 p-2 rounded-xl hover:bg-[#b8860b] transition-colors"><Youtube size={18} /></a>
+              <a 
+                href="https://www.instagram.com/intu_ve/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center gap-2 bg-white/10 px-3 py-2 rounded-xl hover:bg-[#b8860b] transition-colors group"
+              >
+                <Instagram size={18} className="text-white" />
+                <span className="text-white font-montserrat text-xs font-bold tracking-wider group-hover:text-white">
+                  intu_ve
+                </span>
+              </a>
             </div>
+
           </div>
 
           {/* Institutional */}
@@ -64,18 +72,21 @@ const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-3 text-sm text-white/70">
               <li><a href="https://www.asambleanacional.gob.ve/leyes/sancionadas/ley-de-tierras-urbanas" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Ley de Tierras Urbanas</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Política de Privacidad</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Términos de Uso</a></li>
-            </ul>
+              <li><a href="https://www.minhvi.gob.ve" rel="noopener noreferrer" className="hover:text-white transition-colors">Ministerio Hábitat y Vivienda</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Comités de Tierra Urbana "CTU"</a></li>
+              <li><a href="http://www.inmobiliarianacional.gob.ve" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Inmoviliaria Nacional Wannabe</a></li>           
+              <li><a href="https://www.saren.gob.ve" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">saren</a></li>           
+              
+              </ul>
           </div>
 
           {/* Government Branding */}
           <div className="flex flex-col gap-6">
-            <h4 className="font-montserrat font-bold text-lg mb-4">Venezuela Toda</h4>
+            <h4 className="font-montserrat font-bold text-lg mb-4">Venezuela</h4>
             <div className="bg-white/5 p-6 rounded-xl border border-white/10 flex flex-col items-center">
-              <div className="flex gap-4 mb-4 grayscale brightness-200 opacity-80">
-                <img src="https://picsum.photos/seed/gov1/100/40" alt="Logo Gobierno" className="h-8 object-contain" />
-                <img src="https://picsum.photos/seed/gov2/100/40" alt="Logo GMVV" className="h-8 object-contain" />
+              <div className="flex gap-4 mb-4  brightness-200 opacity-80">
+                <img src="assets/img/bandera_ve.png" alt="Bandera de Venezuela" className="h-8 object-contain" />
+                <img src="assets/img/escudo_ve.png" alt="Escudo de Venezuela" className="h-8 object-contain" />
               </div>
               <p className="text-[10px] text-white/40 text-center uppercase tracking-widest leading-relaxed">
                 Gobierno Bolivariano de Venezuela <br />
@@ -87,12 +98,9 @@ const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40 uppercase tracking-widest font-bold">
-          <p>© 2023 Instituto Nacional de Tierras Urbanas (INTU). RIF: G-20000000-0</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white">Mapa del Sitio</a>
-            <a href="#" className="hover:text-white">Accesibilidad</a>
-            <a href="#" className="hover:text-white">Contacto</a>
-          </div>
+          <p>© Instituto Nacional de Tierras Urbanas (INTU). RIF: G-200101873</p>
+          <p>212, 1060 Av. Orinoco, Caracas 1080, Miranda</p>
+
         </div>
       </div>
     </footer>

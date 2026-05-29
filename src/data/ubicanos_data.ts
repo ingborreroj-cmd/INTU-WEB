@@ -167,8 +167,8 @@ export const locations: Ubicacion[] = [
     directores: '-',
     telefonoDirectores: '-',
     coords: {
-      lat: 10.479519737455295,
-      lng: -66.85849774587535
+      lat: 9.915787613154789, 
+      lng: -67.36251633153618
     }
   },
     {

@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Modal {
+  id             Int      @id @default(autoincrement())
+  title          String?
+  body           String?
+  backgroundPath String?
+  active         Boolean  @default(true)
+  updatedAt      DateTime @updatedAt
+}
+
+model HeroItem {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String?
+  imagePath String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model NewsItem {
+  id        Int      @id @default(autoincrement())
+  title     String
+  excerpt   String?
+  content   String?
+  imagePath String?
+  date      String?
+  source    String?
+  url       String?
+  published DateTime?
+  section   String   @default("news")
+  active    Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}

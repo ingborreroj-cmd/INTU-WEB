@@ -1,6 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { ExternalLink, Calendar, Instagram, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ExternalLink, Calendar, Instagram } from 'lucide-react';
 import { INSTA_POSTS } from '../data/instaData';
 import { NewsItem } from '../data/newsData';
 import { newsService } from '../services/newsService';
@@ -69,7 +68,6 @@ const News: React.FC = () => {
   const [officialNews, setOfficialNews] = useState<NewsItem[]>([]);
   const [globalNews, setGlobalNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -84,14 +82,6 @@ const News: React.FC = () => {
     fetchArticles();
   }, []);
 
-  const goToNewsSettings = () => {
-    navigate('/admin/settings/news');
-  };
-
-  const goToOfficialNewsSettings = () => {
-    navigate('/admin/settings/official-news');
-  };
-
   if (loading) {
     return (
       <div className="py-32 flex flex-col items-center justify-center text-[#003366] gap-3">
@@ -103,16 +93,6 @@ const News: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-20 relative">
-      <div className="absolute top-20 right-8 z-40 flex flex-col gap-2 sm:flex-row sm:items-center">
-        
-        <button
-  onClick={goToOfficialNewsSettings}
-  className="inline-flex items-center justify-center p-2 bg-slate-100 hover:bg-slate-200 border rounded-xl text-slate-500 hover:text-[#003366] transition-all shadow-sm"
-  title="Noticias oficiales"
->
-  <Settings size={16} />
-</button>
-      </div>
 
       <section className="mb-20">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-10">
@@ -157,27 +137,18 @@ const News: React.FC = () => {
 
     {/* Acciones (Lado Derecho: Enlace + Botón de Configuración originales en armonía) */}
     <div className="flex items-center gap-4 self-start md:self-end">
-      <a
-        href="https://minhvi.gob.ve/category/noticias/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group flex items-center gap-3 text-[#003366] font-black text-sm uppercase tracking-widest hover:text-[#b8860b] transition-colors"
-      >
-        Ver todo el portal
-        <div className="p-2 bg-[#003366] text-white rounded-lg group-hover:bg-[#b8860b] transition-all flex items-center justify-center">
-          <ExternalLink size={16} />
-        </div>
-      </a>
-
-      <button
-        onClick={goToNewsSettings}
-        className="inline-flex items-center justify-center p-2 bg-slate-100 hover:bg-slate-200 border rounded-xl text-slate-500 hover:text-[#003366] transition-all shadow-sm"
-        title="Editar noticias externas"
-      >
-        <Settings size={16} />
-      </button>
-    </div>
-    
+        <a
+          href="https://minhvi.gob.ve/category/noticias/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center gap-3 text-[#003366] font-black text-sm uppercase tracking-widest hover:text-[#b8860b] transition-colors"
+        >
+          Ver todo el portal
+          <div className="p-2 bg-[#003366] text-white rounded-lg group-hover:bg-[#b8860b] transition-all flex items-center justify-center">
+            <ExternalLink size={16} />
+          </div>
+        </a>
+      </div>
   </div>
 
   {/* GRID DE PRENSA EXTERNA */}

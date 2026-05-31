@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { X, Bell, ArrowRight } from 'lucide-react';
+import { modalService, ModalData } from '../services/modalService';
+
+const DEFAULT_MODAL: ModalData = {
+  title: '¡Bienvenido al Portal INTU!',
+  body: 'Estamos trabajando para brindarte una mejor atención ciudadana. Consulta tus trámites de regularización de tierras de forma digital.',
+  backgroundPath: '/assets/img/fondo_modal.jpg',
+  active: true,
+};
 
 const ModalBienvenida: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [modalData, setModalData] = useState<ModalData | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 1000);
-    return () => clearTimeout(timer);
+    let timer: number | undefined;
+    const loadModal = async () => {
+      const backendModal = await modalService.getModal();
+      setModalData(backendModal ?? DEFAULT_MODAL);
+      if ((backendModal?.active ?? DEFAULT_MODAL.active) !== false) {
+        timer = window.setTimeout(() => {
+          setIsOpen(true);
+        }, 1000);
+      }
+    };
+    loadModal();
+    return () => {
+      if (timer) window.clearTimeout(timer);
+    };
   }, []);
 
   // Bloqueo de scroll del body cuando el modal está abierto
@@ -19,7 +38,7 @@ const ModalBienvenida: React.FC = () => {
     return () => { document.body.style.overflow = prev; };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !modalData || modalData.active === false) return null;
 
   return (
     /* Cambiamos items-center por justify-center (móvil) y justify-end (escritorio) */
@@ -29,7 +48,7 @@ const ModalBienvenida: React.FC = () => {
       <div 
         className="absolute inset-0 z-0 animate-fade-in"
         style={{
-          backgroundImage: 'url("/assets/img/fondo_modal.jpg")',
+          backgroundImage: `url("${modalData.backgroundPath || '/assets/img/fondo_modal.jpg'}")`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat'
@@ -60,12 +79,11 @@ const ModalBienvenida: React.FC = () => {
             </div>
 
             <h2 className="text-[#003366] font-montserrat font-extrabold text-2xl mb-4">
-              ¡Bienvenido al Portal INTU!
+              {modalData.title || '¡Bienvenido al Portal INTU!'}
             </h2>
             
-            <p className="text-gray-600 text-sm leading-relaxed mb-8">
-              Estamos trabajando para brindarte una mejor atención ciudadana. 
-              Consulta tus trámites de regularización de tierras de forma digital.
+            <p className="text-gray-600 text-sm leading-relaxed mb-8 whitespace-pre-line">
+              {modalData.body || 'Estamos trabajando para brindarte una mejor atención ciudadana. Consulta tus trámites de regularización de tierras de forma digital.'}
             </p>
 
             <div className="grid grid-cols-1 gap-3 w-full">

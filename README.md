@@ -70,4 +70,24 @@ Es el punto de anclaje. Define los colores institucionales mediante variables CS
 * **🖼️ Imágenes:** Actualmente el proyecto usa `picsum.photos` para rellenos visuales. Se deben sustituir por los activos institucionales en la carpeta `/public`.
 
 ---
+
+## 🧩 6. Backend local (nuevo)
+
+Se añadió un backend en `bakend/` (Express + TypeScript + Prisma + SQLite).
+
+Pasos rápidos:
+
+```bash
+cd bakend
+cp .env.example .env
+npm install
+npx prisma generate
+npx prisma migrate dev --name init
+npm run dev
+```
+
+La base de datos SQLite se ubicará en `bakend/prisma/db/intuweb_db.sqlite`.
+
+
+---
 *Documentación generada para INTU Web 2.0 - 2026*

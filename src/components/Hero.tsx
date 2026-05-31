@@ -1,6 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Settings } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { HeroSlide } from '../data/heroSlides';
 import { heroService } from '../services/heroService';
 
@@ -8,7 +7,6 @@ const Hero: React.FC = () => {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const initApp = async () => {
@@ -30,10 +28,6 @@ const Hero: React.FC = () => {
   const currentIndex = activeIndex >= slides.length ? 0 : activeIndex;
   const currentSlide = slides[currentIndex] || slides[0];
 
-  const goToHeroSettings = () => {
-    navigate('/admin/settings/hero');
-  };
-
   if (loading || slides.length === 0) {
     return (
       <div className="h-[85vh] bg-[#003366] flex flex-col items-center justify-center text-white font-montserrat gap-3">
@@ -45,12 +39,6 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative h-[85vh] md:h-[80vh] flex items-center overflow-hidden w-full">
-      <button
-        onClick={goToHeroSettings}
-        className="absolute top-6 right-6 z-50 p-2.5 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full text-white/70 hover:text-white transition-all shadow-md hover:rotate-45 duration-300"
-      >
-        <Settings size={18} />
-      </button>
 
       <div
         className="absolute inset-0 z-0 scale-105 transition-all duration-700 ease-out filter brightness-110 contrast-105"

@@ -15,6 +15,7 @@ import {
 import { modalService, ModalData } from '../services/modalService';
 import { heroService } from '../services/heroService';
 import { newsService } from '../services/newsService';
+import { adminService } from '../services/adminService';
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 
@@ -23,6 +24,26 @@ const DEFAULT_MODAL: ModalData = {
   body: '',
   backgroundPath: '',
   active: true,
+};
+
+interface AdminFormData {
+  name: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  position: string;
+  username: string;
+  password: string;
+}
+
+const DEFAULT_ADMIN_FORM: AdminFormData = {
+  name: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  position: '',
+  username: '',
+  password: '',
 };
 
 const AdminDashboard: React.FC = () => {
@@ -37,6 +58,8 @@ const AdminDashboard: React.FC = () => {
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>(DEFAULT_SLIDES);
   const [newsItems, setNewsItems] = useState<NewsItem[]>(DEFAULT_NEWS);
   const [officialNews, setOfficialNews] = useState<NewsItem[]>([]);
+  const [newAdminData, setNewAdminData] = useState<AdminFormData>(DEFAULT_ADMIN_FORM);
+  const [adminRegisterStatus, setAdminRegisterStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -189,6 +212,25 @@ const AdminDashboard: React.FC = () => {
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleNewAdminChange = (field: keyof AdminFormData, value: string) => {
+    setNewAdminData((current) => ({ ...current, [field]: value }));
+  };
+
+  const registerAdmin = async () => {
+    if (!newAdminData.name || !newAdminData.lastName || !newAdminData.email || !newAdminData.phone || !newAdminData.position || !newAdminData.username || !newAdminData.password) {
+      setAdminRegisterStatus('Todos los campos son obligatorios.');
+      return;
+    }
+
+    try {
+      await adminService.registerAdmin(newAdminData);
+      setAdminRegisterStatus('Administrador creado correctamente.');
+      setNewAdminData(DEFAULT_ADMIN_FORM);
+    } catch (error: any) {
+      setAdminRegisterStatus(error?.message || 'Error al crear el administrador.');
+    }
   };
 
   const addOfficialNewsItem = () => {
@@ -373,7 +415,7 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap gap-3 rounded-[30px] border border-slate-200 bg-white p-5 shadow-sm">
-          {['modal', 'hero', 'news', 'official'].map((section) => (
+          {['modal', 'hero', 'news', 'official', 'admin'].map((section) => (
             <a
               key={section}
               href={`#${section}`}
@@ -383,6 +425,7 @@ const AdminDashboard: React.FC = () => {
               {section === 'hero' && 'Hero'}
               {section === 'news' && 'Noticias'}
               {section === 'official' && 'Noticias Oficiales'}
+              {section === 'admin' && 'Administradores'}
             </a>
           ))}
         </div>
@@ -802,6 +845,97 @@ const AdminDashboard: React.FC = () => {
               <Plus size={16} /> Agregar noticia oficial
             </button>
           </div>
+        </section>
+
+        <section id="admin" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#003366]/10 px-4 py-2 text-sm font-semibold text-[#003366]">
+                <Settings size={16} /> Administradores
+              </div>
+              <h2 className="mt-4 text-2xl font-bold text-[#003366]">Registrar nuevo administrador</h2>
+              <p className="mt-2 text-sm text-slate-500">
+                Crea un nuevo administrador con nombre, apellido, correo, teléfono, cargo, usuario y contraseña.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={registerAdmin}
+              className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67]"
+            >
+              <Save size={16} /> Registrar admin
+            </button>
+          </div>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Nombre</label>
+              <input
+                type="text"
+                value={newAdminData.name}
+                onChange={(e) => handleNewAdminChange('name', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Apellido</label>
+              <input
+                type="text"
+                value={newAdminData.lastName}
+                onChange={(e) => handleNewAdminChange('lastName', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Correo</label>
+              <input
+                type="email"
+                value={newAdminData.email}
+                onChange={(e) => handleNewAdminChange('email', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Teléfono</label>
+              <input
+                type="tel"
+                value={newAdminData.phone}
+                onChange={(e) => handleNewAdminChange('phone', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Cargo</label>
+              <input
+                type="text"
+                value={newAdminData.position}
+                onChange={(e) => handleNewAdminChange('position', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Usuario</label>
+              <input
+                type="text"
+                value={newAdminData.username}
+                onChange={(e) => handleNewAdminChange('username', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Contraseña</label>
+              <input
+                type="password"
+                value={newAdminData.password}
+                onChange={(e) => handleNewAdminChange('password', e.target.value)}
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+              />
+            </div>
+          </div>
+
+          {adminRegisterStatus && (
+            <p className="mt-6 text-sm text-slate-700">{adminRegisterStatus}</p>
+          )}
         </section>
       </div>
     </div>

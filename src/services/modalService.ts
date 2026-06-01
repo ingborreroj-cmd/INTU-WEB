@@ -1,4 +1,4 @@
-import { resolveBackendAssetUrl, API } from './apiUtils';
+import { resolveBackendAssetUrl, API, authHeaders } from './apiUtils';
 
 export interface ModalData {
   id?: number;
@@ -11,7 +11,7 @@ export interface ModalData {
 export const modalService = {
   getModal: async (): Promise<ModalData | null> => {
     try {
-      const res = await fetch(`${API}/admin/modal`, { credentials: 'include' });
+      const res = await fetch(`${API}/admin/modal`, { credentials: 'include', headers: authHeaders() });
       if (!res.ok) return null;
       const modal = await res.json();
       if (!modal) return null;
@@ -30,6 +30,7 @@ export const modalService = {
       const res = await fetch(`${API}/admin/modal`, {
         method: 'PUT',
         credentials: 'include',
+        headers: authHeaders(),
         body: data,
       });
       return res.ok;

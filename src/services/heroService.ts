@@ -10,7 +10,7 @@ export const heroService = {
    */
   getSlides: async (): Promise<HeroSlide[]> => {
     try {
-      const res = await fetch(`${API}/admin/hero`, { credentials: 'include' });
+      const res = await fetch(`${API}/admin/hero`, { credentials: 'include', headers: authHeaders() });
       if (res.ok) {
         const data = await res.json();
         return data.map((item: any) => ({
@@ -58,7 +58,7 @@ export const heroService = {
     }));
       const res = await fetch(`${API}/admin/hero/bulk`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         credentials: 'include',
         body: JSON.stringify(payload)
       });

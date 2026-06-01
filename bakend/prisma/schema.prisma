@@ -10,7 +10,11 @@ datasource db {
 model Admin {
   id        Int      @id @default(autoincrement())
   name      String
+  lastName  String?
   email     String   @unique
+  username  String?  @unique
+  phone     String?
+  position  String?
   password  String
   role      String   @default("admin")
   createdAt DateTime @default(now())

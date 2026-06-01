@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API } from '../services/apiUtils';
+import { API, AUTH_TOKEN_KEY } from '../services/apiUtils';
 
 const AdminLogin: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -15,12 +15,18 @@ const AdminLogin: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identifier, password }),
       });
-      if (!res.ok) throw new Error('Credenciales incorrectas');
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(json?.message || 'Credenciales incorrectas');
+      }
+      if (json?.token) {
+        localStorage.setItem(AUTH_TOKEN_KEY, json.token);
+      }
       navigate('/admin');
     } catch (err: any) {
-      setError(err.message || 'Error');
+      setError(err?.message || 'Error');
     }
   };
 
@@ -30,8 +36,8 @@ const AdminLogin: React.FC = () => {
         <h2 className="text-2xl font-semibold mb-4">Admin Login</h2>
         {error && <div className="text-red-600 mb-2">{error}</div>}
         <div className="mb-4">
-          <label className="block text-sm">Email</label>
-          <input value={email} onChange={e => setEmail(e.target.value)} className="w-full border p-2 rounded" />
+          <label className="block text-sm">Email o usuario</label>
+          <input value={identifier} onChange={e => setIdentifier(e.target.value)} className="w-full border p-2 rounded" />
         </div>
         <div className="mb-4">
           <label className="block text-sm">Password</label>

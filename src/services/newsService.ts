@@ -1,5 +1,5 @@
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
-import { resolveBackendAssetUrl, API } from './apiUtils';
+import { resolveBackendAssetUrl, API, authHeaders } from './apiUtils';
 
 const STORAGE_KEY = 'intu_web_news_persisted_data';
 const OFFICIAL_STORAGE_KEY = 'intu_web_official_news';
@@ -11,7 +11,7 @@ export const newsService = {
   getNews: async (): Promise<NewsItem[]> => {
     // Try backend first
     try {
-      const res = await fetch(`${API}/admin/news?section=news`, { credentials: 'include' });
+      const res = await fetch(`${API}/admin/news?section=news`, { credentials: 'include', headers: authHeaders() });
       if (res.ok) {
         const j = await res.json();
         return j.map((item: any) => ({
@@ -66,7 +66,7 @@ export const newsService = {
       }));
       const res = await fetch(`${API}/admin/news/bulk?section=news`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         credentials: 'include',
         body: JSON.stringify(payload)
       });
@@ -91,7 +91,7 @@ export const newsService = {
    */
   getOfficialNews: async (): Promise<NewsItem[]> => {
     try {
-      const res = await fetch(`${API}/admin/news?section=official`, { credentials: 'include' });
+      const res = await fetch(`${API}/admin/news?section=official`, { credentials: 'include', headers: authHeaders() });
       if (res.ok) {
         const items = await res.json();
         return items.map((item: any) => ({
@@ -145,7 +145,7 @@ export const newsService = {
       }));
       const res = await fetch(`${API}/admin/news/bulk?section=official`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         credentials: 'include',
         body: JSON.stringify(payload)
       });

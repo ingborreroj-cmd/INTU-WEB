@@ -1,5 +1,5 @@
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
-import { resolveBackendAssetUrl, API } from './apiUtils';
+import { resolveBackendAssetUrl, API, authHeaders } from './apiUtils';
 
 const STORAGE_KEY = 'intu_web_hero_persisted_data';
 

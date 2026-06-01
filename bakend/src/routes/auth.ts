@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
   const credential = identifier || email || username;
   if (!credential || !password) return res.status(400).json({ message: 'Missing fields' });
   try {
-    console.log('[auth.login] attempt for', credential);
+    // Avoid logging credentials or identifiers to prevent sensitive data exposure
     const admin = await prisma.admin.findFirst({ where: { OR: [{ email: credential }, { username: credential }] } });
     if (!admin) return res.status(401).json({ message: 'Invalid credentials' });
     const ok = await bcrypt.compare(password, admin.password);

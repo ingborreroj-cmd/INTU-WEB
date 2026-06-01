@@ -1,93 +1,187 @@
-# 🚀 INTU WEB 2.0 - Manual Técnico
+# INTU WEB
 
-¡Bienvenido al repositorio oficial del proyecto **INTU WEB 2.0**. Esta plataforma representa la evolución digital del Instituto Nacional de Tierras Urbanas, fusionando robustez de backend (Django) con una interfaz moderna y reactiva.
-
----
-
-## 🏗️ 1. Introducción
-El proyecto **INTU WEB 2.0** es una plataforma moderna desarrollada para optimizar la gestión del Instituto Nacional de Tierras Urbanas. Utiliza una arquitectura de frontend basada en **React y TypeScript**, diseñada para integrarse perfectamente en el ecosistema existente (Python/Django) mediante componentes modulares y una interfaz inteligente potenciada por IA.
+Guía rápida para instalar y ejecutar el sistema completo en local.
 
 ---
 
-## 🛠️ 2. Arquitectura Tecnológica (Stack)
-El desarrollo se fundamenta en las siguientes herramientas:
+## 1. Qué contiene este repositorio
 
-* **Lenguaje:** `TypeScript (TSX)` - Seguridad mediante tipado estático.
-* **Librería Principal:** `React 19` - Interfaz declarativa y modular.
-* **Estilos:** `Tailwind CSS` - Diseño responsivo y moderno.
-* **Iconografía:** `Lucide-React` - Vectores ligeros y personalizables.
-* **Inteligencia Artificial:** `SDK Google Generative AI (@google/genai)` - Motor de respuestas inteligentes.
+- `src/`: frontend en **React + TypeScript** con Vite.
+- `bakend/`: backend en **Express + TypeScript + Prisma + SQLite**.
+- `public/`: activos estáticos usados por el frontend.
+- `requirements/development.txt`: lista de dependencias del sistema.
 
 ---
 
-## ⚙️ 3. Configuración del Entorno
-Para el correcto funcionamiento local, asegúrate de tener instalado **Node.js**.
+## 2. Requisitos previos
 
-### Comandos Esenciales de Terminal
-| Acción | Comando |
-| :--- | :--- |
-| **Instalar dependencias** | `npm install` |
-| **Modo Desarrollo** | `npm run dev` |
-| **Compilar para Producción** | `npm run build` |
-
-### Librerías Requeridas
-| Paquete | Versión | Función |
-| :--- | :--- | :--- |
-| `react` | `^19.0.0` | Núcleo de la interfaz |
-| `lucide-react` | `^0.563.0` | Iconos del sistema |
-| `@google/genai` | `^1.38.0` | Motor de IA (Gemini) |
-| `vite` | `^6.0.0` | Compilación rápida |
-| `react-leaflet` | `^` | Nuevas Librerias Necesarias |
-| `leaflet` | `^` | Nuevas Librerias Necesarias |
+- Node.js instalado (versión 18+ recomendada).
+- npm disponible en el sistema.
 
 ---
 
-## 🧩 4. Análisis de Componentes Principales
+## 3. Instalación inicial
 
-### 🏠 4.1. Estructura Global (`index.html`)
-Es el punto de anclaje. Define los colores institucionales mediante variables CSS:
-* **Azul Primario:** `#003366`
-* **Dorado Acento:** `#b8860b`
-* **Tipografía:** Montserrat (títulos) y Roboto (cuerpo).
+### 3.1 Frontend
 
-### ℹ️ 4.2. Componente: `About` (Nuestra Razón de Ser)
-* **Ubicación:** `components/About.tsx`
-* **Funcionalidad:** Misión y visión con diseño asimétrico.
-* **Técnica:** Diseño flexible (`flex-col lg:flex-row`) para adaptabilidad total.
-* **Destacado:** Badge flotante: *"10+ años de logros"*.
+```bash
+cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB"
+npm install
+```
 
-### 📞 4.3. Componente: `Contact` (Módulo de Interacción)
-* **Ubicación:** `components/Contact.tsx`
-* **Lógica:** Componente controlado (Hook `useState`).
-* **Flujo:** Al enviar, cambia el estado `submitted` a `true`, activando la animación `animate-fade-up` de éxito.
+### 3.2 Backend
 
-
-
-## 🛡️ 5. Guía de Mantenimiento y Seguridad
-
-* **🔐 API Keys:** La llave de `Google GenAI` **debe** almacenarse en un archivo `.env` y nunca subirse a repositorios públicos.
-* **🔄 Actualizaciones:** Ejecutar `npm update` periódicamente para mantener las dependencias de seguridad al día.
-* **🖼️ Imágenes:** Actualmente el proyecto usa `picsum.photos` para rellenos visuales. Se deben sustituir por los activos institucionales en la carpeta `/public`.
+```bash
+cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB/bakend"
+npm install
+```
 
 ---
 
-## 🧩 6. Backend local (nuevo)
+## 4. Configurar backend
 
-Se añadió un backend en `bakend/` (Express + TypeScript + Prisma + SQLite).
-
-Pasos rápidos:
+1. Copiar el archivo de ejemplo:
 
 ```bash
 cd bakend
 cp .env.example .env
-npm install
+```
+
+2. Generar el cliente Prisma:
+
+```bash
 npx prisma generate
+```
+
+3. Ejecutar migración para crear la base de datos SQLite:
+
+```bash
 npx prisma migrate dev --name init
+```
+
+La base de datos generada quedará en `bakend/prisma/db/intuweb_db.sqlite`.
+
+---
+
+## 5. Crear usuario admin
+
+```bash
+npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU Admin"
+```
+
+Además de `name`, puedes usar estos datos opcionales para el usuario admin:
+
+- `--lastName` para el apellido.
+- `--username` para asignar un nombre de usuario de inicio de sesión.
+- `--phone` para el teléfono de contacto.
+- `--position` para el cargo o rol dentro del sistema.
+
+Ejemplo completo:
+
+```bash
+npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU" --lastName "Admin" --username "intuadmin" --phone "0414-1234567" --position "Administrador"
+```
+
+---
+
+## 6. Ejecutar en modo desarrollo
+
+Debes tener **dos terminales abiertas** simultáneamente: una para el frontend (raíz del proyecto) y otra para el backend (carpeta `bakend`). A continuación los comandos recomendados.
+
+Terminal 1 — Frontend (desde la raíz del repositorio):
+
+```bash
+# Sitúate en la raíz del proyecto
+cd "INTU WEB"
+# Inicia el servidor de desarrollo del frontend
 npm run dev
 ```
 
-La base de datos SQLite se ubicará en `bakend/prisma/db/intuweb_db.sqlite`.
+Terminal 2 — Backend (desde la carpeta `bakend`):
 
+```bash
+# Abre un segundo terminal y entra en la carpeta del backend
+cd "INTU WEB/bakend"
+# (solo la primera vez) instala dependencias y genera Prisma
+npm install
+npx prisma generate
+# Ejecuta migraciones si aún no se ha creado la DB local
+npx prisma migrate dev --name init
+# Inicia el servidor de desarrollo del backend
+npm run dev
+```
+
+Ambos servidores deben quedar ejecutándose al mismo tiempo. El frontend escucha por defecto en `http://localhost:5173` y el backend en `http://localhost:4000`.
+
+## 7. URLs principales
+
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:4000`
+ - Admin (panel de administración): `http://localhost:5173/admin` (login en `/admin/login`)
 
 ---
-*Documentación generada para INTU Web 2.0 - 2026*
+
+## 8. Notas importantes
+
+- No subas el archivo `.env` al repositorio.
+- Usa un valor seguro en `JWT_SECRET`.
+- En producción, desactiva o protege el endpoint `/admin/auth/register`.
+- Si el backend está en otra máquina, actualiza `ALLOWED_ORIGINS` en `bakend/.env`.
+
+---
+
+## 9. Dependencias principales
+
+### Frontend
+
+- `react`
+- `react-dom`
+- `react-router-dom`
+- `react-leaflet`
+- `leaflet`
+- `lucide-react`
+- `@vis.gl/react-google-maps`
+
+### Backend
+
+- `express`
+- `prisma`
+- `@prisma/client`
+- `bcrypt`
+- `cookie-parser`
+- `cors`
+- `dotenv`
+- `express-rate-limit`
+- `helmet`
+- `jsonwebtoken`
+- `multer`
+
+### Desarrollo
+
+- `typescript`
+- `vite`
+- `eslint`
+- `@typescript-eslint/parser`
+- `@typescript-eslint/eslint-plugin`
+- `@vitejs/plugin-react`
+- `ts-node-dev`
+
+---
+
+## 10. Estructura de carpetas clave
+
+- `src/components/`: componentes React.
+- `src/pages/`: páginas de la app.
+- `bakend/src/routes/`: rutas del API.
+- `bakend/prisma/`: esquema y migraciones de base de datos.
+
+---
+
+## 11. Cómo probar el sistema
+
+1. Arranca el backend.
+2. Arranca el frontend.
+3. Abre `http://localhost:5173`.
+4. Para administrar el contenido, añade `/admin` al final de la URL del frontend e ingresa a `http://localhost:5173/admin`. Desde allí ve a `/admin/login` para iniciar sesión.
+
+---

@@ -1,5 +1,22 @@
 node_modules/
 dist/
 .env
+.env.local
+.env.*.local
 .DS_Store
 .vscode/
+
+# Backend SQLite DB (Prisma) - do not commit local DB files
+bakend/prisma/db/*.sqlite
+
+# Uploaded files
+uploads/
+bakend/uploads/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+Thumbs.db

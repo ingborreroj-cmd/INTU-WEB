@@ -9,6 +9,13 @@ import { UPLOAD_DIR } from './utils/fileHelpers';
 
 dotenv.config();
 
+// Warn if critical env vars are missing or left as defaults
+const _jwtSecret = process.env.JWT_SECRET || 'change_this_secret';
+if (_jwtSecret === 'change_this_secret') {
+  // eslint-disable-next-line no-console
+  console.warn('WARNING: JWT_SECRET is using the default placeholder. Change JWT_SECRET in bakend/.env before production.');
+}
+
 import authRoutes from './routes/auth';
 import modalRoutes from './routes/modal';
 import heroRoutes from './routes/hero';

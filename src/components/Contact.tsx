@@ -99,6 +99,10 @@ const Contact: React.FC = () => {
     setSelectedLocation(null);
   };
 
+  const openEncuesta = () => {
+    window.dispatchEvent(new CustomEvent('openEncuesta'));
+  };
+
   // Bloqueo de scroll del body cuando el modal de detalles esté abierto
   useEffect(() => {
     if (!isModalOpen) return;
@@ -117,6 +121,9 @@ const Contact: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-montserrat font-extrabold leading-tight text-slate-900 max-w-3xl">
             Estamos listos para ayudarte desde nuestras sedes regionales.
           </h2>
+          <p className="mt-6 max-w-2xl text-sm text-slate-600">
+            ¿Quieres contarnos tu experiencia de usuario? <button type="button" onClick={openEncuesta} className="font-semibold text-[#003366] underline hover:text-[#b8860b]">Realiza nuestra encuesta</button> y ayúdanos a mejorar la web.
+          </p>
         </section>
 
         {/* SECCIÓN 2: TARJETAS DE CONTACTO RÁPIDO */}

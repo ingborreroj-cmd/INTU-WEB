@@ -8,6 +8,7 @@ import News from '../components/News';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import INTUBot from '../components/Intubot';
+import Encuestas from '../components/Encuestas';
 import ModalBienvenida from '../components/ModalBienvenida';
 
 const Home: React.FC = () => {
@@ -56,6 +57,7 @@ const Home: React.FC = () => {
         </main>
 
         <Footer />
+        <Encuestas />
         <INTUBot />
       </div>
     </div>

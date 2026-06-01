@@ -386,6 +386,8 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f8fbff] px-4 py-8 sm:px-6 lg:px-10 text-[#003366]">
+      
+      {/* Página completa del dashboard admin */}
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -414,6 +416,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
+        {/* Navegación rápida entre secciones internas del dashboard */}
         <div className="flex flex-wrap gap-3 rounded-[30px] border border-slate-200 bg-white p-5 shadow-sm">
           {['modal', 'hero', 'news', 'official', 'admin'].map((section) => (
             <a
@@ -430,6 +433,7 @@ const AdminDashboard: React.FC = () => {
           ))}
         </div>
 
+        {/* Sección de configuración del modal de bienvenida */}
         <section id="modal" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -502,6 +506,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </section>
 
+        {/* Sección de edición del carrusel Hero principal */}
         <section id="hero" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -604,6 +609,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </section>
 
+        {/* Sección para gestionar noticias públicas o destacadas */}
         <section id="news" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -721,6 +727,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </section>
 
+        {/* Sección para editar comunicados y noticias oficiales */}
         <section id="official" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -847,6 +854,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </section>
 
+        {/* Sección para registrar nuevos usuarios administradores */}
         <section id="admin" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  ShieldCheck, FileText, Users, Scale, Headset, ChevronRight, 
+  ShieldCheck, FileText, Users, Scale, ChevronRight, 
   Ruler, HardHat, ClipboardCheck, Mountain, CheckCircle2, DollarSign, X, Info
 } from 'lucide-react';
 
@@ -49,18 +49,10 @@ const Services: React.FC = () => {
   }, [isModalOpen]);
 
   const technicalServices = [
-    { icon: Ruler, title: 'Levantamiento Planimétrico', description: 'Medición detallada y representación gráfica exacta de la configuración de su terreno.', cost: '€40 por plano/informe' },
-    { icon: HardHat, title: 'Estudio Geotécnico', description: 'Análisis de suelo completo: perforación, laboratorio e informe técnico de resistencia.', cost: 'Según requerimiento' },
-    { icon: ClipboardCheck, title: 'Inspección Técnica', description: 'Acompañamiento en procesos de liberación, protocolización de ventas y planes monzones.', cost: '€50 individual' },
-    { icon: Mountain, title: 'Levantamiento Altimétrico', description: 'Medición y representación de características físicas, geográficas y geológicas del terreno.', cost: 'Tarifa según superficie M²' }
-  ];
-
-  const institutionalServices = [
-    { icon: ShieldCheck, title: 'Regularización', description: 'Formalización legal de terrenos ocupados.' },
-    { icon: FileText, title: 'TTU', description: 'Transferencia de Tierras a comunidades.' },
-    { icon: Users, title: 'CTU', description: 'Asesoría técnica a Comités de Tierra.' },
-    { icon: Scale, title: 'Protocolización', description: 'Registro oficial de títulos de propiedad.' },
-    { icon: Headset, title: 'Atención Directa', description: 'Canales de soporte y seguimiento ciudadano.' }
+    { icon: Ruler, title: 'Levantamiento Planimétrico', description: 'Medición detallada y representación gráfica exacta de la configuración de su terreno.', },
+    { icon: HardHat, title: 'Estudio Geotécnico', description: 'Análisis de suelo completo: perforación, laboratorio e informe técnico de resistencia.',  },
+    { icon: ClipboardCheck, title: 'Inspección Técnica', description: 'Acompañamiento en procesos de liberación, protocolización de ventas y planes monzones.',  },
+    { icon: Mountain, title: 'Levantamiento Altimétrico', description: 'Medición y representación de características físicas, geográficas y geológicas del terreno.',  }
   ];
 
   return (
@@ -143,7 +135,7 @@ const Services: React.FC = () => {
       )}
 
       {/* SECCIÓN BENEFICIOS */}
-      <div className="bg-[#003366] rounded-[20px] p-8 md:p-12 mb-20 text-white relative overflow-hidden">
+      <div className="bg-[#003366] rounded-[20px] p-8 md:p-12 mb-1 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="flex gap-4">
@@ -161,21 +153,6 @@ const Services: React.FC = () => {
         </div>
       </div>
 
-      {/* SECCIÓN SERVICIOS INSTITUCIONALES */}
-      <div className="text-center mb-12">
-        <h3 className="text-[#003366] font-montserrat font-extrabold text-2xl mb-2">Servicios Institucionales</h3>
-        <div className="w-16 h-1 bg-[#b8860b] mx-auto"></div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {institutionalServices.map((service, index) => (
-          <div key={index} className="bg-gray-50 p-6 rounded-[15px] border border-transparent hover:border-gray-200 transition-all">
-            <service.icon className="text-[#003366] mb-4" size={24} />
-            <h5 className="font-bold text-[#003366] mb-2 text-sm uppercase tracking-tight">{service.title}</h5>
-            <p className="text-gray-500 text-xs leading-relaxed">{service.description}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

@@ -39,7 +39,7 @@ const Home: React.FC = () => {
             <Services />
           </section>
 
-          <section id="tramites" className="py-20 border-y border-gray-100 bg-transparent">
+          <section id="tramites" className="py-1 border-y border-gray-100 bg-transparent">
             <Tramites />
           </section>
 

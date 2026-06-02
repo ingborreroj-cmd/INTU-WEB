@@ -29,32 +29,19 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header 
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/90 backdrop-blur-md py-2 shadow-md' 
-          : 'bg-transparent py-4'
-      }`}
-    >
+    <header className={`fixed w-full z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-[#003366] py-2 shadow-md' : 'bg-transparent py-4'
+    }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           
-          {/* LADO IZQUIERDO: LOGOS */}
-          <div className="flex items-center gap-4 lg:gap-8">
-            <div className="flex items-center">
-              <img 
-                src="/assets/img/ministerio_logo.png" 
-                alt="Logo Gobierno" 
-                className="h-10 md:h-12 w-auto object-contain" 
-              />
-            </div>
-            <div className="flex items-center border-l border-gray-300/30 pl-4 lg:pl-8">
-              <img 
-                src="/assets/img/intu_logo2.png" 
-                alt="Logo INTU" 
-                className="h-10 md:h-12 w-auto object-contain"
-              />
-            </div>
+          {/* LADO IZQUIERDO: LOGO INTU */}
+          <div className="flex items-center">
+            <img 
+              src="/assets/img/intu_logo_blank.png" 
+              alt="Logo INTU" 
+              className="h-10 md:h-12 w-auto object-contain" 
+            />
           </div>
 
           {/* CENTRO: NAVEGACIÓN (Desktop) */}
@@ -62,9 +49,7 @@ const Header: React.FC = () => {
             {/* 1. Renderizamos solo el Inicio */}
             <a
               href={navItems[0].href}
-              className={`nav-underline font-medium text-sm font-montserrat transition-colors ${
-                isScrolled ? 'text-gray-700 hover:text-[#003366]' : 'text-white/90 hover:text-white'
-              }`}
+              className="nav-underline font-medium text-sm font-montserrat text-white hover:text-gray-200"
             >
               {navItems[0].label}
             </a>
@@ -77,9 +62,7 @@ const Header: React.FC = () => {
             >
               <a
                 href="#servicios"
-                className={`nav-underline inline-flex items-center gap-1 font-medium text-sm font-montserrat transition-colors ${
-                  isScrolled ? 'text-gray-700 hover:text-[#003366]' : 'text-white/90 hover:text-white'
-                }`}
+                className="nav-underline inline-flex items-center gap-1 font-medium text-sm font-montserrat text-white hover:text-gray-200"
               >
                 Servicios
                 <ChevronDown className="h-4 w-4" />
@@ -105,9 +88,7 @@ const Header: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className={`nav-underline font-medium text-sm font-montserrat transition-colors ${
-                  isScrolled ? 'text-gray-700 hover:text-[#003366]' : 'text-white/90 hover:text-white'
-                }`}
+                className="nav-underline font-medium text-sm font-montserrat text-white hover:text-gray-200"
               >
                 {item.label}
               </a>
@@ -116,23 +97,15 @@ const Header: React.FC = () => {
 
           {/* LADO DERECHO: LOGO 3 Y MENÚ MÓVIL */}
           <div className="flex items-center gap-4">
-            <div className="hidden md:block">
-              <img 
-                src="/assets/img/cintillo-b-2025.png" 
-                alt="Logo GMVV" 
-                className="h-10 md:h-12 w-auto object-contain"
-              />
-            </div>
-
             <button 
-              className="xl:hidden p-2 rounded-lg bg-[#003366]/10"
+              className="xl:hidden p-2 rounded-lg bg-white/10"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? (
-                <X className={isScrolled ? 'text-[#003366]' : 'text-white'} />
+                <X className="text-white" />
               ) : (
-                <Menu className={isScrolled ? 'text-[#003366]' : 'text-white'} />
+                <Menu className="text-white" />
               )}
             </button>
           </div>

@@ -9,7 +9,6 @@ Guía rápida para instalar y ejecutar el sistema completo en local.
 - `src/`: frontend en **React + TypeScript** con Vite.
 - `bakend/`: backend en **Express + TypeScript + Prisma + SQLite**.
 - `public/`: activos estáticos usados por el frontend.
-- `requirements/development.txt`: lista de dependencias del sistema.
 
 ---
 
@@ -35,6 +34,31 @@ npm install
 cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB/bakend"
 npm install
 ```
+
+### 3.3 Dependencias del proyecto
+
+Paso a paso:
+
+1. Abre una terminal en la raíz del proyecto:
+
+```bash
+cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB"
+```
+
+2. Instala las dependencias de producción que necesita el frontend y backend:
+
+```bash
+npm install @prisma/client @vis.gl/react-google-maps bcrypt cookie-parser cors dotenv express express-rate-limit helmet jsonwebtoken leaflet lucide-react multer react react-dom react-leaflet react-router-dom
+```
+
+3. Instala las dependencias de desarrollo necesarias para TypeScript, Vite, ESLint y Prisma:
+
+```bash
+npm install -D @types/bcrypt @types/cookie-parser @types/cors @types/express @types/jsonwebtoken @types/leaflet @types/react @types/react-dom @types/multer @typescript-eslint/eslint-plugin @typescript-eslint/parser @vitejs/plugin-react eslint prisma ts-node-dev typescript vite
+```
+
+4. Confirma que las dependencias se agregaron a `package.json` y `package-lock.json`.
+
 
 ---
 

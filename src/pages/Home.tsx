@@ -43,11 +43,11 @@ const Home: React.FC = () => {
             <Tramites />
           </section>
 
-          <section id="nosotros" className="py-20 bg-transparent">
+          <section id="nosotros" className="py-8 bg-transparent">
             <About />
           </section>
 
-          <section id="proyectos" className="py-20 bg-transparent">
+          <section id="proyectos" className="py-8 bg-transparent">
             <News />
           </section>
 

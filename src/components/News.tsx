@@ -97,12 +97,11 @@ const News: React.FC = () => {
       <section className="mb-20">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-10">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-[2px] bg-[#b8860b]"></div>
-              <span className="text-[#b8860b] font-bold text-sm uppercase tracking-[0.3em]">Noticias Oficiales</span>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-12 h-[3px] bg-[#b8860b]"></div>
             </div>
             <h2 className="text-[#003366] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
-              Comunicados <span className="text-gray-300">INTU</span>
+              Noticias <span className="text-gray-300">INTU</span>
             </h2>
           </div>
         </div>
@@ -127,11 +126,10 @@ const News: React.FC = () => {
     {/* Títulos (Lado Izquierdo) */}
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-[2px] bg-[#003366]"></div>
-        <span className="text-[#003366] font-bold text-sm uppercase tracking-[0.3em]">Noticias Globales</span>
+        <div className="w-12 h-[3px] bg-[#003366]"></div>
       </div>
       <h2 className="text-[#003366] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
-       Actualizaciones
+       Noticias Naconales 
       </h2>
     </div>
 
@@ -169,10 +167,10 @@ const News: React.FC = () => {
               <h3 className="text-[#003366] font-montserrat font-black text-3xl uppercase tracking-tighter leading-none">
                 Comunidad <span className="text-[#b8860b]">INTU</span>
               </h3>
-              <p className="text-gray-400 text-sm mt-1 font-medium">Nuestra presencia en redes sociales</p>
+              <p className="text-gray-400 text-sm mt-1 font-medium">Nuestra presencia en Instagram</p>
             </div>
           </div>
-          <span className="hidden md:block text-[#003366]/40 font-black text-sm uppercase tracking-widest">@intuvzla</span>
+          <span className="hidden md:block text-[#003366]/40 font-black text-sm uppercase tracking-widest">@intu_ve</span>
         </div>
 
         <div className="flex gap-8 overflow-x-auto pb-12 scrollbar-hide">

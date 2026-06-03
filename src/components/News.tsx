@@ -107,11 +107,21 @@ const News: React.FC = () => {
         </div>
 
         {officialNews.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {officialNews.map((item) => (
-              <NewsCard key={item.id} item={item} />
-            ))}
-          </div>
+          officialNews.length > 4 ? (
+            <div className="flex gap-8 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
+              {officialNews.map((item) => (
+                <div key={item.id} className="min-w-[320px] flex-shrink-0 snap-start">
+                  <NewsCard item={item} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {officialNews.map((item) => (
+                <NewsCard key={item.id} item={item} />
+              ))}
+            </div>
+          )
         ) : (
           <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center text-slate-600">
             No hay noticias oficiales publicadas aún.
@@ -129,32 +139,28 @@ const News: React.FC = () => {
         <div className="w-12 h-[3px] bg-[#003366]"></div>
       </div>
       <h2 className="text-[#003366] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
-       Noticias Naconales 
+       Noticias Nacionales 
       </h2>
     </div>
 
-    {/* Acciones (Lado Derecho: Enlace + Botón de Configuración originales en armonía) */}
-    <div className="flex items-center gap-4 self-start md:self-end">
-        <a
-          href="https://minhvi.gob.ve/category/noticias/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-3 text-[#003366] font-black text-sm uppercase tracking-widest hover:text-[#b8860b] transition-colors"
-        >
-          Ver todo el portal
-          <div className="p-2 bg-[#003366] text-white rounded-lg group-hover:bg-[#b8860b] transition-all flex items-center justify-center">
-            <ExternalLink size={16} />
-          </div>
-        </a>
-      </div>
   </div>
 
   {/* GRID DE PRENSA EXTERNA */}
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-32">
-    {globalNews.map((item) => (
-      <NewsCard key={item.id} item={item} />
-    ))}
-  </div>
+  {globalNews.length > 4 ? (
+    <div className="flex gap-8 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide mb-32">
+      {globalNews.map((item) => (
+        <div key={item.id} className="min-w-[320px] flex-shrink-0 snap-start">
+          <NewsCard item={item} />
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-32">
+      {globalNews.map((item) => (
+        <NewsCard key={item.id} item={item} />
+      ))}
+    </div>
+  )}
 </section>
 
       <div className="mt-20 px-4">

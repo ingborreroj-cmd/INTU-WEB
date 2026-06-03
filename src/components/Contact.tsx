@@ -216,7 +216,7 @@ const Contact: React.FC = () => {
                       <Popup>
                         <div className="p-1">
                           <strong className="text-[#003366] block border-b mb-1 break-words">{loc.estado}</strong>
-                          <span className="text-xs text-slate-600 break-words block">{loc.gerente}</span>
+                          <span className="text-xs text-slate-600 break-words block">{loc.correo}</span>
                         </div>
                       </Popup>
                     </Marker>
@@ -245,7 +245,10 @@ const Contact: React.FC = () => {
               </div>
               <div className="flex gap-4">
                 <div className="bg-slate-50 p-2 rounded-lg text-[#003366] shrink-0 h-fit"><Mail size={20}/></div>
-                <div className="min-w-0 flex-1"><h4 className="font-bold text-slate-900 text-xs uppercase tracking-tighter mb-1">Gerencia y Contacto</h4><p className="text-slate-600 text-sm break-words">{selectedLocation.gerente}</p><p className="text-[#b8860b] text-sm font-semibold break-all mt-1">{selectedLocation.correo}</p></div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="font-bold text-slate-900 text-xs uppercase tracking-tighter mb-1">Correo</h4>
+                  <p className="text-slate-600 text-sm break-words">{selectedLocation.correo}</p>
+                </div>
               </div>
               <div className="flex gap-4">
                 <div className="bg-slate-50 p-2 rounded-lg text-[#003366] shrink-0 h-fit"><Phone size={20}/></div>

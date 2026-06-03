@@ -26,22 +26,12 @@ const Footer: React.FC = () => {
           
           {/* Logo and About */}
           <div className="flex flex-col gap-6">
-            <div className="inline-flex items-center gap-4 lg:gap-6 bg-white p-4 rounded-xl shadow-sm w-fit">
-              <div className="flex items-center">
-                <img 
-                  src="/assets/img/intu_logo2.png" 
-                  alt="Logo INTU" 
-                  className="h-10 md:h-12 w-auto object-contain" 
-                />
-              </div>
-
-              <div className="flex items-center border-l border-gray-200 pl-4 lg:pl-6">
-                <img 
-                  src="/assets/img/ministerio_logo.png" 
-                  alt="Logo Ministerio" 
-                  className="h-10 md:h-12 w-auto object-contain" 
-                />
-              </div>
+            <div className="w-fit">
+              <img
+                src="/assets/img/ministerio_logo_blank.png"
+                alt="Logo Ministerio"
+                className="h-12 md:h-14 w-auto object-contain"
+              />
             </div>
 
             <p className="text-white/70 text-sm leading-relaxed max-w-xl">
@@ -83,9 +73,9 @@ const Footer: React.FC = () => {
           {/* Government Branding */}
           <div className="flex flex-col gap-6">
             <h4 className="font-montserrat font-bold text-lg mb-4">Venezuela</h4>
-            <div className="bg-white/5 p-6 rounded-xl border border-white/10 flex flex-col items-center">
-              <div className="flex gap-4 mb-4  brightness-200 opacity-80">
-                <img src="assets/img/bandera_ve.png" alt="Bandera de Venezuela" className="h-8 object-contain" />
+            <div className="p-6 rounded-xl flex flex-col items-center">
+              <div className="flex gap-4 mb-4 brightness-200 opacity-80">
+                <img src="assets/img/intu_logo2.png" alt="Bandera de Venezuela" className="h-8 object-contain" />
                 <img src="assets/img/escudo_ve.png" alt="Escudo de Venezuela" className="h-8 object-contain" />
               </div>
               <p className="text-[10px] text-white/40 text-center uppercase tracking-widest leading-relaxed">

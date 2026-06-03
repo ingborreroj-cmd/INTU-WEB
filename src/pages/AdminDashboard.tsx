@@ -12,19 +12,12 @@ import {
   CheckCircle,
   Settings,
 } from 'lucide-react';
-import { modalService, ModalData } from '../services/modalService';
 import { heroService } from '../services/heroService';
 import { newsService } from '../services/newsService';
 import { adminService } from '../services/adminService';
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 
-const DEFAULT_MODAL: ModalData = {
-  title: '',
-  body: '',
-  backgroundPath: '',
-  active: true,
-};
 
 interface AdminFormData {
   name: string;
@@ -51,9 +44,7 @@ const AdminDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [savingSection, setSavingSection] = useState<string | null>(null);
 
-  const [modalData, setModalData] = useState<ModalData>(DEFAULT_MODAL);
-  const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
-  const [backgroundPreview, setBackgroundPreview] = useState<string>('');
+  // modal removed: modal state and preview removed
 
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>(DEFAULT_SLIDES);
   const [newsItems, setNewsItems] = useState<NewsItem[]>(DEFAULT_NEWS);
@@ -64,15 +55,12 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [modal, slides, news, official] = await Promise.all([
-          modalService.getModal(),
+        const [slides, news, official] = await Promise.all([
           heroService.getSlides(),
           newsService.getNews(),
           newsService.getOfficialNews(),
         ]);
 
-        setModalData(modal ?? DEFAULT_MODAL);
-        setBackgroundPreview(modal?.backgroundPath || '/assets/img/fondo_modal.jpg');
         setHeroSlides(slides.length > 0 ? slides : DEFAULT_SLIDES);
         setNewsItems(news.length > 0 ? news : DEFAULT_NEWS);
         setOfficialNews(official);
@@ -85,20 +73,7 @@ const AdminDashboard: React.FC = () => {
     loadData();
   }, []);
 
-  const handleModalChange = (field: keyof ModalData, value: string | boolean) => {
-    setModalData((current) => ({ ...current, [field]: value }));
-  };
-
-  const handleModalFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      alert('La imagen no debe superar 5MB. Use un archivo optimizado.');
-      return;
-    }
-    setBackgroundFile(file);
-    setBackgroundPreview(URL.createObjectURL(file));
-  };
+  // modal handlers removed
 
   const handleHeroChange = (index: number, field: keyof HeroSlide, value: string) => {
     setHeroSlides((current) => {
@@ -256,34 +231,7 @@ const AdminDashboard: React.FC = () => {
     setOfficialNews((current) => current.filter((_, idx) => idx !== index));
   };
 
-  const saveModal = async (notify = true): Promise<boolean> => {
-    setSavingSection('modal');
-    try {
-      const formData = new FormData();
-      formData.append('title', modalData.title || '');
-      formData.append('body', modalData.body || '');
-      formData.append('active', String(modalData.active));
-      if (backgroundFile) formData.append('background', backgroundFile);
-
-      const ok = await modalService.saveModal(formData);
-      if (notify) {
-        if (ok) alert('Modal guardado correctamente.');
-        else alert('Error al guardar el modal.');
-      }
-      if (ok) {
-        const refreshed = await modalService.getModal();
-        setModalData(refreshed ?? DEFAULT_MODAL);
-        setBackgroundPreview(refreshed?.backgroundPath || '/assets/img/fondo_modal.jpg');
-      }
-      return ok;
-    } catch (error) {
-      console.error('Error guardando modal:', error);
-      if (notify) alert('Error guardando el modal.');
-      return false;
-    } finally {
-      setSavingSection(null);
-    }
-  };
+  // saveModal removed
 
   const saveHero = async (notify = true): Promise<boolean> => {
     setSavingSection('hero');
@@ -354,7 +302,6 @@ const AdminDashboard: React.FC = () => {
   const saveAll = async () => {
     setSavingSection('all');
     const results = await Promise.allSettled([
-      saveModal(false),
       saveHero(false),
       saveNews(false),
       saveOfficialNews(false),
@@ -394,7 +341,7 @@ const AdminDashboard: React.FC = () => {
             <p className="text-sm uppercase tracking-[0.35em] text-[#b8860b] font-bold">Panel global</p>
             <h1 className="mt-3 text-4xl font-extrabold tracking-tight">Administración unificada</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-              Desde aquí puedes modificar el modal de inicio, los slides del Hero y todas las noticias en una sola ventana.
+              Desde aquí puedes modificar los slides del Hero y todas las noticias en una sola ventana.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -418,13 +365,12 @@ const AdminDashboard: React.FC = () => {
 
         {/* Navegación rápida entre secciones internas del dashboard */}
         <div className="flex flex-wrap gap-3 rounded-[30px] border border-slate-200 bg-white p-5 shadow-sm">
-          {['modal', 'hero', 'news', 'official', 'admin'].map((section) => (
+          {['hero', 'news', 'official', 'admin'].map((section) => (
             <a
               key={section}
               href={`#${section}`}
               className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-[#003366] hover:text-white"
             >
-              {section === 'modal' && 'Modal de Inicio'}
               {section === 'hero' && 'Hero'}
               {section === 'news' && 'Noticias'}
               {section === 'official' && 'Noticias Oficiales'}
@@ -432,79 +378,6 @@ const AdminDashboard: React.FC = () => {
             </a>
           ))}
         </div>
-
-        {/* Sección de configuración del modal de bienvenida */}
-        <section id="modal" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#b8860b]/10 px-4 py-2 text-sm font-semibold text-[#b8860b]">
-                <Bell size={16} /> Modal de Bienvenida
-              </div>
-              <h2 className="mt-4 text-2xl font-bold text-[#003366]">Contenido del modal de inicio</h2>
-              <p className="mt-2 text-sm text-slate-500">Actualiza el título, el cuerpo, la visibilidad y la imagen de fondo del primer modal.</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => saveModal()}
-              disabled={savingSection === 'modal'}
-              className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Save size={16} /> {savingSection === 'modal' ? 'Guardando...' : 'Guardar modal'}
-            </button>
-          </div>
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Título principal</label>
-                <input
-                  type="text"
-                  value={modalData.title ?? ''}
-                  onChange={(e) => handleModalChange('title', e.target.value)}
-                  className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Descripción</label>
-                <textarea
-                  rows={5}
-                  value={modalData.body ?? ''}
-                  onChange={(e) => handleModalChange('body', e.target.value)}
-                  className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Visibilidad</label>
-                <select
-                  value={String(modalData.active ?? true)}
-                  onChange={(e) => handleModalChange('active', e.target.value === 'true')}
-                  className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none"
-                >
-                  <option value="true">Visible</option>
-                  <option value="false">Oculto</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Imagen de fondo</label>
-                <label className="flex h-16 cursor-pointer items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#b8860b] hover:bg-slate-50">
-                  <span className="inline-flex items-center gap-2">
-                    <Upload size={16} /> Seleccionar imagen
-                  </span>
-                  <input type="file" accept="image/*" className="hidden" onChange={handleModalFileChange} />
-                </label>
-              </div>
-            </div>
-            <div className="space-y-4 rounded-[28px] border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm font-semibold text-slate-700">Vista previa del modal</p>
-              <div className="h-64 overflow-hidden rounded-[28px] bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url('${backgroundPreview}')` }} />
-              <div className="rounded-3xl bg-white p-4 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.25em] text-slate-400 mb-2">Título actual</p>
-                <p className="font-semibold text-slate-800">{modalData.title || 'Sin título'}</p>
-                <p className="mt-3 text-sm text-slate-600 whitespace-pre-line">{modalData.body || 'Sin descripción'}</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Sección de edición del carrusel Hero principal */}
         <section id="hero" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">

@@ -19,16 +19,6 @@ model Admin {
   role      String   @default("admin")
   createdAt DateTime @default(now())
 }
-
-model Modal {
-  id             Int      @id @default(autoincrement())
-  title          String?
-  body           String?
-  backgroundPath String?
-  active         Boolean  @default(true)
-  updatedAt      DateTime @updatedAt
-}
-
 model HeroItem {
   id        Int      @id @default(autoincrement())
   title     String

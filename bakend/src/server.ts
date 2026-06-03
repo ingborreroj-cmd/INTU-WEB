@@ -17,7 +17,6 @@ if (_jwtSecret === 'change_this_secret') {
 }
 
 import authRoutes from './routes/auth';
-import modalRoutes from './routes/modal';
 import heroRoutes from './routes/hero';
 import newsRoutes from './routes/news';
 
@@ -56,7 +55,6 @@ app.use('/uploads', express.static(UPLOAD_DIR));
 
 // Rutas de la API
 app.use('/admin/auth', authRoutes);
-app.use('/admin/modal', modalRoutes);
 app.use('/admin/hero', heroRoutes);
 app.use('/admin/news', newsRoutes);
 

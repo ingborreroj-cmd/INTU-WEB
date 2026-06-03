@@ -13,12 +13,10 @@ async function main() {
 
   await prisma.$connect();
   const adminCount = await prisma.admin.count();
-  const modalCount = await prisma.modal.count();
   const heroCount = await prisma.heroItem.count();
   const newsCount = await prisma.newsItem.count();
   console.log(`Connected to SQLite database.`);
   console.log(`Admins: ${adminCount}`);
-  console.log(`Modal records: ${modalCount}`);
   console.log(`Hero items: ${heroCount}`);
   console.log(`News items: ${newsCount}`);
   await prisma.$disconnect();

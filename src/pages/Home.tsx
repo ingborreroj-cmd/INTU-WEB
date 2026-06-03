@@ -9,7 +9,6 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import INTUBot from '../components/Intubot';
 import Encuestas from '../components/Encuestas';
-import ModalBienvenida from '../components/ModalBienvenida';
 
 const Home: React.FC = () => {
   return (
@@ -27,7 +26,6 @@ const Home: React.FC = () => {
       />
 
       <div className="relative z-10 flex flex-col min-h-screen bg-transparent">
-        <ModalBienvenida />
         <Header />
 
         <main className="flex-grow bg-transparent">

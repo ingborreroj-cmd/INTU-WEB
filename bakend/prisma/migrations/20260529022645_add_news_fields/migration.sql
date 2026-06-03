@@ -9,15 +9,6 @@ CREATE TABLE "Admin" (
 );
 
 -- CreateTable
-CREATE TABLE "Modal" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "title" TEXT,
-    "body" TEXT,
-    "backgroundPath" TEXT,
-    "active" BOOLEAN NOT NULL DEFAULT true,
-    "updatedAt" DATETIME NOT NULL
-);
-
 -- CreateTable
 CREATE TABLE "HeroItem" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

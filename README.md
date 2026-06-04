@@ -35,7 +35,7 @@ cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB/bakend"
 npm install
 ```
 
-### 3.3 Dependencias del proyecto
+### 3.3 Dependencias del proyecto (PASO MANUAL)
 
 Paso a paso:
 

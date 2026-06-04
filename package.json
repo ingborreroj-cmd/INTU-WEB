@@ -11,7 +11,9 @@
     "sync-assets:remove": "node scripts/sync-assets.cjs --remove"
   },
   "dependencies": {
+    "@google/genai": "^2.7.0",
     "@vis.gl/react-google-maps": "^1.8.3",
+    "dotenv": "^17.4.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.563.0",
     "react": "^19.0.0",

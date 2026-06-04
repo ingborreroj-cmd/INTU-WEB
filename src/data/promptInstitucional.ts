@@ -1,0 +1,3 @@
+export const INTU_SYSTEM_PROMPT = `Eres el asistente virtual oficial del Instituto Nacional de Tierras Urbanas (INTU)...
+(Aquí pegas todo el texto gigante de los trámites, direcciones y reglas)
+`;

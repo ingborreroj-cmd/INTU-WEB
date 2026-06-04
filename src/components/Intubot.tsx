@@ -1,89 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Bot, Loader2, HelpCircle } from 'lucide-react';
+import { MessageSquare, Send, X, Bot, Loader2 } from 'lucide-react';
+import { API } from '../services/apiUtils';
+
+// Definición estricta de la estructura que espera la API de Gemini
+interface ChatMessage {
+  role: 'user' | 'model';
+  parts: [{ text: string }];
+}
 
 const INTUBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{role: 'user' | 'bot', text: string}[]>([
-    {role: 'bot', text: '¡Hola! Soy el Asistente Virtual del INTU. Puedo ayudarte con información sobre trámites, requisitos y guiarte paso a paso. ¿Qué necesitas saber?'}
-  ]);
   const [input, setInput] = useState('');
-  const [conversationState, setConversationState] = useState<{
-    activeFlow: string | null;
-    step: number;
-    data: Record<string, any>;
-  }>({ activeFlow: null, step: 0, data: {} });
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Historial local para renderizar en la interfaz (interfaz limpia para el usuario)
+  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; text: string }[]>([
+    { role: 'bot', text: '¡Hola! Soy el Asistente Virtual del INTU. Puedo ayudarte con información sobre trámites, requisitos de tierras urbanas y comités. ¿Qué necesitas saber?' }
+  ]);
+
+  // Historial estructurado que se le enviará a Gemini en el formato correcto
+  const [apiHistory, setApiHistory] = useState<ChatMessage[]>([
+    { role: 'model', parts: [{ text: '¡Hola! Soy el Asistente Virtual del INTU. Puedo ayudarte con información sobre trámites, requisitos de tierras urbanas y comités. ¿Qué necesitas saber?' }] }
+  ]);
+
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Flujos de conversación para trámites
-  const CONVERSATION_FLOWS = {
-    'titulo_tierra': {
-      steps: [
-        { question: '¿Estás censado por un Comité de Tierra Urbana (CTU)?', key: 'censado_ctu', options: ['Sí', 'No'] },
-        { question: '¿Tienes copia de tu cédula de identidad?', key: 'cedula', options: ['Sí', 'No'] },
-        { question: '¿Posees documento de ocupación previa de la tierra?', key: 'ocupacion_previa', options: ['Sí', 'No'] },
-        { question: '¿Dónde está ubicada tu propiedad? (Estado/Ciudad)', key: 'ubicacion', type: 'text' },
-        { question: '¿Cuántas familias conforman tu comunidad?', key: 'familias', type: 'number' }
-      ],
-      finalMessage: 'Gracias por la información. Basado en tus respuestas, te recomendamos los siguientes pasos para obtener tu Título de Adjudicación de Tierras. Acude a la sede del INTU más cercana con los documentos requeridos.'
-    },
-    'ctu_formacion': {
-      steps: [
-        { question: '¿Cuántas familias hay en tu comunidad?', key: 'familias_comunidad', type: 'number' },
-        { question: '¿Han realizado una asamblea constitutiva?', key: 'asamblea', options: ['Sí', 'No'] },
-        { question: '¿Tienen un croquis del sector?', key: 'croquis', options: ['Sí', 'No'] },
-        { question: '¿Cuál es el nombre de tu comunidad?', key: 'nombre_comunidad', type: 'text' }
-      ],
-      finalMessage: 'Para conformar un CTU, necesitas al menos 15 familias y realizar una asamblea constitutiva avalada por el INTU. Te ayudaremos en el proceso.'
-    }
-  };
-
-  // Base de datos de respuestas simples extraídas de los trámites
-  const FAQ_DATA = [
-    {
-      keywords: ['título', 'tierra', 'propiedad', 'regularización'],
-      response: "Para tramitar tu título de propiedad necesitas copia de cédula, carpeta oficio, documento de ocupación y constancia de residencia. ¿Quieres saber el siguiente paso?",
-      action: 'start_flow',
-      flow: 'titulo_tierra'
-    },
-    {
-      keywords: ['local comercial', 'local', 'comercial', 'regularizar'],
-      response: "Para regularizar un local comercial debes llevar la documentación requerida a la gerencia estatal y completar el proceso de asesoría. ¿Quieres más detalles sobre los documentos?"
-    },
-    {
-      keywords: ['ctu', 'comité', 'comite', 'formar', 'conformar'],
-      response: "Para formar un CTU necesitas una asamblea constitutiva y un grupo organizado de vecinos. El INTU te guía con los pasos y los requisitos básicos.",
-      action: 'start_flow',
-      flow: 'ctu_formacion'
-    },
-    {
-      keywords: ['requisitos', 'documentos', 'papeles', 'necesito'],
-      response: "Los requisitos suelen incluir cédula, constancia de residencia, croquis del sector y aval del CTU o comité local. ¿Para qué trámite es tu consulta?"
-    },
-    {
-      keywords: ['tramites', 'procedimientos', 'que puedo hacer', 'servicios'],
-      response: "El INTU ofrece trámites como título de tierras, regularización de locales comerciales, formación de CTU y asesoría técnica. Puedes preguntar por cualquiera de ellos."
-    },
-    {
-      keywords: ['sede', 'donde queda', 'ubicación', 'direccion', 'oficina'],
-      response: "Nuestra sede principal está en Caracas y también operamos a través de gerencias estadales. Indica tu estado y te oriento mejor."
-    },
-    {
-      keywords: ['costo', 'pago', 'precio', 'cuanto cuesta'],
-      response: "Los trámites del INTU no generan costos directos de gestión. Si necesitas, te explico qué documentos llevar."
-    },
-    {
-      keywords: ['tiempo', 'cuanto tarda', 'duracion'],
-      response: "Los tiempos dependen del trámite y de los documentos completos. En general, la respuesta oficial se libera una vez que entregas toda la documentación."
-    },
-    {
-      keywords: ['telefono', 'llamar', 'contacto'],
-      response: "Puedes consultarnos usando el chat o visitar la sede del INTU. También está disponible el canal de atención telefónica oficial."
-    }
-  ];
-
+  // Auto-scroll al último mensaje
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isLoading]);
 
   // Bloqueo de scroll del body cuando la ventana de chat esté abierta
   useEffect(() => {
@@ -93,76 +38,59 @@ const INTUBot: React.FC = () => {
     return () => { document.body.style.overflow = prev; };
   }, [isOpen]);
 
-  const processResponse = (userText: string) => {
-    const text = userText.toLowerCase();
-
-    // Si estamos en un flujo activo, procesar la respuesta del usuario
-    if (conversationState.activeFlow) {
-      const flow = CONVERSATION_FLOWS[conversationState.activeFlow as keyof typeof CONVERSATION_FLOWS];
-      const currentStep = flow.steps[conversationState.step];
-
-      // Guardar la respuesta del usuario
-      setConversationState(prev => ({
-        ...prev,
-        data: { ...prev.data, [currentStep.key]: userText },
-        step: prev.step + 1
-      }));
-
-      // Si hay más pasos, hacer la siguiente pregunta
-      if (conversationState.step + 1 < flow.steps.length) {
-        setTimeout(() => {
-          const nextStep = flow.steps[conversationState.step + 1];
-          setMessages(prev => [...prev, { role: 'bot', text: nextStep.question }]);
-        }, 600);
-      } else {
-        // Flujo completado
-        setTimeout(() => {
-          setMessages(prev => [...prev, { role: 'bot', text: flow.finalMessage }]);
-          setConversationState({ activeFlow: null, step: 0, data: {} });
-        }, 600);
-      }
-      return;
-    }
-
-    // Buscar coincidencia en FAQ
-    const match = FAQ_DATA.find(item => 
-      item.keywords.some(key => text.includes(key))
-    );
-
-    setTimeout(() => {
-      const botText = match 
-        ? match.response 
-        : "Lo siento, no tengo información específica sobre eso. Te sugiero acudir a la sede más cercana o llamar al 0800-MINHVI. ¿En qué más puedo ayudarte?";
-      
-      setMessages(prev => [...prev, { role: 'bot', text: botText }]);
-
-      // Si hay una acción, ejecutarla
-      if (match?.action === 'start_flow' && match.flow) {
-        setTimeout(() => {
-          const flow = CONVERSATION_FLOWS[match.flow as keyof typeof CONVERSATION_FLOWS];
-          if (flow) {
-            setConversationState({ activeFlow: match.flow, step: 0, data: {} });
-            setMessages(prev => [...prev, { role: 'bot', text: flow.steps[0].question }]);
-          }
-        }, 1200);
-      }
-    }, 600);
-  };
-
-  const handleSend = (textOverride?: string) => {
+  const handleSend = async (textOverride?: string) => {
     const msgToSend = textOverride || input.trim();
-    if (!msgToSend) return;
+    if (!msgToSend || isLoading) return;
 
+    // 1. Actualizar interfaz con el mensaje del usuario
     setMessages(prev => [...prev, { role: 'user', text: msgToSend }]);
     if (!textOverride) setInput('');
     
-    processResponse(msgToSend);
+    // 2. Encender estado de carga (reemplaza el texto "Pensando..." por un spinner elegante)
+    setIsLoading(true);
+
+    // 3. Preparar el nuevo mensaje en el formato exacto de Gemini
+    const newUserMessage: ChatMessage = {
+      role: 'user',
+      parts: [{ text: msgToSend }]
+    };
+
+    // Combinamos el historial existente con el nuevo mensaje del usuario
+    const updatedHistory = [...apiHistory, newUserMessage];
+
+    try {
+      // 4. Petición a tu servidor backend
+      const res = await fetch(`${API}/intu-bot`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ history: updatedHistory }) // Enviamos el historial completo estructurado
+      });
+
+      if (!res.ok) throw new Error('Error en la API del bot');
+
+      const json = await res.json();
+      const reply = json?.reply || 'Lo siento, en este momento no puedo procesar tu solicitud.';
+
+      // 5. Si todo sale bien, añadimos la respuesta a la interfaz y al historial de la API
+      setMessages(prev => [...prev, { role: 'bot', text: reply }]);
+      setApiHistory([...updatedHistory, { role: 'model', parts: [{ text: reply }] }]);
+
+    } catch (err) {
+      console.error(err);
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        text: 'Disculpa, tengo problemas para conectar con el servidor en este momento. Por favor, inténtalo más tarde.'
+      }]);
+    } finally {
+      setIsLoading(false); // Apagar el estado de carga
+    }
   };
 
   const QuickOption = ({ text }: { text: string }) => (
     <button 
       onClick={() => handleSend(text)}
-      className="text-[11px] bg-white border border-[#003366]/20 text-[#003366] px-3 py-1.5 rounded-full hover:bg-[#003366] hover:text-white transition-colors font-bold"
+      disabled={isLoading}
+      className="text-[11px] bg-white border border-[#003366]/20 text-[#003366] px-3 py-1.5 rounded-full hover:bg-[#003366] hover:text-white transition-colors font-bold disabled:opacity-50"
     >
       {text}
     </button>
@@ -193,7 +121,7 @@ const INTUBot: React.FC = () => {
                 <h4 className="font-black text-sm uppercase tracking-tighter">INTUBot</h4>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                  <span className="text-[10px] text-white/70 uppercase font-bold tracking-widest">FAQ Interactivo</span>
+                  <span className="text-[10px] text-white/70 uppercase font-bold tracking-widest">Asistente de IA</span>
                 </div>
               </div>
             </div>
@@ -215,31 +143,24 @@ const INTUBot: React.FC = () => {
                 </div>
               </div>
             ))}
+            
+            {/* Spinner de carga cuando la IA está pensando */}
+            {isLoading && (
+              <div className="flex justify-start items-center gap-2 text-gray-400 text-xs font-semibold pl-2">
+                <Loader2 size={16} className="animate-spin text-[#b8860b]" />
+                INTUBot está procesando...
+              </div>
+            )}
             <div ref={chatEndRef} />
           </div>
 
-          {/* Sugerencias Rápidas */}
+          {/* Sugerencias Rápidas Fijas */}
           <div className="px-4 py-3 bg-gray-50 flex flex-wrap gap-2 border-t border-gray-100">
-            {conversationState.activeFlow ? (
-              (() => {
-                const flow = CONVERSATION_FLOWS[conversationState.activeFlow as keyof typeof CONVERSATION_FLOWS];
-                const currentStep = flow.steps[conversationState.step];
-                if (currentStep?.options) {
-                  return currentStep.options.map(option => (
-                    <QuickOption key={option} text={option} />
-                  ));
-                }
-                return null;
-              })()
-            ) : (
-              <>
-                <QuickOption text="Título de tierra" />
-                <QuickOption text="Regularizar local" />
-                <QuickOption text="Formar CTU" />
-                <QuickOption text="Requisitos" />
-                <QuickOption text="Sedes" />
-              </>
-            )}
+            <QuickOption text="Título de tierra" />
+            <QuickOption text="Regularizar local comercial" />
+            <QuickOption text="Formar un CTU" />
+            <QuickOption text="Requisitos generales" />
+            <QuickOption text="Ubicación de Sedes" />
           </div>
 
           {/* Input de Texto */}
@@ -247,15 +168,17 @@ const INTUBot: React.FC = () => {
             <div className="relative flex items-center gap-2">
               <input 
                 type="text" 
-                placeholder="Escribe tu duda aquí..."
-                className="flex-grow pl-4 pr-10 py-3 bg-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#003366]/20 transition-all font-medium"
+                placeholder={isLoading ? "Espera un momento..." : "Escribe tu duda aquí..."}
+                disabled={isLoading}
+                className="flex-grow pl-4 pr-10 py-3 bg-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#003366]/20 transition-all font-medium disabled:opacity-50"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
               />
               <button 
                 onClick={() => handleSend()}
-                className="p-3 bg-[#003366] text-white rounded-xl hover:bg-[#b8860b] transition-all"
+                disabled={isLoading}
+                className="p-3 bg-[#003366] text-white rounded-xl hover:bg-[#b8860b] transition-all disabled:opacity-50"
               >
                 <Send size={18} />
               </button>

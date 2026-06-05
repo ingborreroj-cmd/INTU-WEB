@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
+import path from 'path';
 import bcrypt from 'bcrypt';
 import prisma from '../src/prismaClient';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
 
 function getArg(name: string): string | undefined {
   const index = process.argv.findIndex(arg => arg === name);

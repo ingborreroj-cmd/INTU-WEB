@@ -3,7 +3,8 @@ import prisma from '../src/prismaClient';
 import fs from 'fs';
 import path from 'path';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
 
 async function main() {
   const dbPath = path.resolve(__dirname, '..', 'prisma', 'db', 'intuweb_db.sqlite');

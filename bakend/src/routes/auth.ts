@@ -3,9 +3,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../prismaClient';
 import dotenv from 'dotenv';
+import path from 'path';
 import { ensureAdmin } from '../middlewares/auth';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 
 const router = Router();

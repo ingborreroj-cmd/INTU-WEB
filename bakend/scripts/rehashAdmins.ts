@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
+import path from 'path';
 import bcrypt from 'bcrypt';
 import prisma from '../src/prismaClient';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
 
 const HASH_REGEX = /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/;
 

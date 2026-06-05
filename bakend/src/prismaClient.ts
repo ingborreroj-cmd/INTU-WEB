@@ -2,7 +2,8 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
 
 const defaultDbPath = path.resolve(__dirname, '../prisma/db/intuweb_db.sqlite');
 // Normalize the path to use forward slashes for Prisma on Windows.

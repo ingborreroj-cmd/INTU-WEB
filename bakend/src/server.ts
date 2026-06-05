@@ -1,13 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 
 import { UPLOAD_DIR } from './utils/fileHelpers';
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
 
 const _jwtSecret = process.env.JWT_SECRET || 'change_this_secret';
 if (_jwtSecret === 'change_this_secret') {

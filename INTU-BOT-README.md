@@ -1,68 +1,92 @@
-INTU Bot - Integración LLM (Gemini)
+INTU Bot - integración con Gemini
 
-Resumen
+Este documento explica cómo está montado el proxy de backend para el `INTU Bot`, qué archivos son los relevantes y qué variables de entorno usa. El foco actual está en el adaptador de Gemini.
 
-Este documento describe cómo está implementado el backend proxy para el `INTU Bot` y cómo cambiar el proveedor LLM (actualmente preparado para `gemini`). Contiene instrucciones para usar, configurar y extender el sistema.
+Archivos clave
 
-Archivos añadidos
+- `bakend/src/llmProviders/gemini.ts` — Adaptador que construye la petición para Gemini y extrae la respuesta.
+- `bakend/src/llmProviders/index.ts` — Selector de proveedor según `LLM_PROVIDER`.
+- `bakend/src/routes/intuBot.ts` — Ruta POST que expone el bot como API.
+- `src/components/Intubot.tsx` — Componente del chat que envía el historial al backend.
 
-- `bakend/src/llmProviders/gemini.ts`  — Adaptador básico para llamar a la API de Gemini.
-- `bakend/src/llmProviders/index.ts`  — Selector de adaptador según `LLM_PROVIDER`.
-- `bakend/src/routes/intuBot.ts`     — Ruta POST `/api/intu-bot` y `/admin/intu-bot` que actúa como proxy.
-- `src/components/Intubot.tsx`       — Actualizado para enviar mensajes a `/api/intu-bot`.
+Rutas disponibles
 
-Variables de entorno necesarias
+La ruta del bot está montada en el servidor en:
 
-- `LLM_PROVIDER` — Nombre del proveedor. Ejemplo: `gemini` (por defecto).
-- `GEMINI_API_KEY` — API key para Gemini.
-- `GEMINI_API_URL` — (Opcional) Endpoint de Gemini. Por defecto se usa `https://api.gemini.example/v1/generate`.
-- `LLM_MAX_TOKENS` — (Opcional) Límite de tokens por respuesta. Default `512`.
-- `LLM_TEMPERATURE` — (Opcional) Temperatura/aleatoriedad. Default `0.2`.
+- `/intu-bot`
+- `/api/intu-bot`
+- `/admin/intu-bot`
 
-Cómo funciona
+El frontend usa `/api/intu-bot`.
 
-1. El frontend envía un POST a `/api/intu-bot` con el cuerpo:
+Variables de entorno
+
+- `LLM_PROVIDER` — Proveedor de LLM. Actualmente solo `gemini`.
+- `GEMINI_API_KEY` — Clave para acceder a la API de Gemini.
+- `LLM_TEMPERATURE` — Temperatura del modelo. Valor por defecto `0.7`.
+- `LLM_TOP_P` — Valor de top-p para la generación. Valor por defecto `0.95`.
+- `LLM_MAX_TOKENS` — Máximo de tokens de salida. Valor por defecto `450`.
+
+Formato del payload
+
+El backend espera un cuerpo con el historial en `history`:
 
 ```json
 {
-  "messages": [{ "role": "user|assistant|system", "content": "..." }],
-  "conversationId": "optional-id"
+  "history": [
+    { "role": "user", "parts": [{ "text": "..." }] },
+    { "role": "model", "parts": [{ "text": "..." }] }
+  ]
 }
 ```
 
-2. El backend selecciona el adaptador según `LLM_PROVIDER` y llama `sendMessage(messages, { conversationId })`.
-3. El adaptador hace la llamada a la API del proveedor, normaliza la respuesta y devuelve `{ text, raw }`.
-4. El backend retorna `{ reply: text, raw }` al frontend.
+En el frontend se construye ese historial usando `{ role: 'user' | 'model', parts: [{ text }] }`.
 
-Notas de implementación
+Flujo de la petición
 
-- El adaptador `gemini.ts` es un esqueleto: la forma exacta de la petición y la respuesta depende de la API real de Gemini. Actualiza `GEMINI_API_URL` y el parseo de `json` para adaptarlo a la estructura real (por ejemplo `json.output` o `json.choices`).
-- El archivo `bakend/src/llmProviders/index.ts` selecciona `gemini` por defecto. Para añadir proveedores, crea `bakend/src/llmProviders/<provider>.ts` que exporte `sendMessage(messages, opts)` y añade el case en `getProviderAdapter()`.
+1. El cliente envía el historial completo a `/api/intu-bot`.
+2. El backend lee `body.history` y valida que sea un arreglo no vacío.
+3. `getProviderAdapter()` selecciona el adaptador para `gemini`.
+4. El adaptador llama a Gemini, procesa la respuesta y devuelve `{ text, raw }`.
+5. El backend responde con `{ reply: text, raw }`.
 
-Seguridad y producción
+Detalles del adaptador de Gemini
 
-- Protege la ruta con autenticación si no quieres que sea pública. Actualmente está disponible en `/api/intu-bot` y `/admin/intu-bot`.
-- Añade rate limiting y logs de uso para monitorizar consumo.
-- No comites tus claves en el repositorio; usa un archivo `.env` local o variables de entorno en despliegue.
+- Usa la URL fija: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`.
+- Construye el prompt con un mensaje de sistema para que el asistente responda como representante del INTU.
+- Envía los mensajes en el formato que espera Gemini.
+- Extrae el texto principal de `json.candidates[0].content`, `json.candidates[0].output.text` o `json.outputText`.
 
-Pruebas rápidas
+Manejo de errores
 
-1. Configura variables de entorno localmente:
+- Si falta `GEMINI_API_KEY`, el adaptador falla con un mensaje claro.
+- Si Gemini devuelve un error HTTP, el backend registra el fallo y responde con `500`.
+- Si la solicitud de frontend no incluye `history` o está vacío, el backend responde `400`.
+
+Recomendaciones para producción
+
+- Mantén `GEMINI_API_KEY` fuera del repositorio y en un `.env` local o en las variables de entorno del despliegue.
+- Protege las rutas del bot si no deben ser públicas.
+- Ajusta `rateLimit` y agrega registros de uso para monitorear acceso y consumo.
+- Revisa `JWT_SECRET` en el archivo raíz `.env` para no dejar el valor por defecto.
+
+Prueba rápida
+
+1. Define las variables de entorno:
 
 ```powershell
 $env:GEMINI_API_KEY = "sk-..."
 $env:LLM_PROVIDER = "gemini"
 ```
 
-2. Inicia backend desde `bakend` y frontend en la raíz del proyecto.
-3. Abre la web y prueba preguntas en el `INTUBot`.
+2. Arranca el backend desde `bakend`.
+3. Arranca el frontend desde la raíz del proyecto.
+4. Abre el chat del INTU Bot y prueba una consulta.
 
-Soporte futuro
+Extensión futura
 
-- Streaming: implementar SSE o respuestas chunked para mostrar la respuesta en tiempo real.
-- Persistencia: añadir `BotConversation` en Prisma para almacenar contexto de conversaciones si se desea mantener estado entre sesiones.
-- Adaptadores: añadir `openai.ts`, `deepseek.ts` siguiendo el patrón de `gemini.ts`.
+- Añadir adaptadores para otros proveedores como `openai`.
+- Implementar persistencia de conversaciones si se quiere guardar contexto entre sesiones.
+- Mejorar el UI del chat con respuestas en tiempo real o streaming.
 
-Contacto
 
-Si necesitas que implemente el adaptador real para Gemini o que añada persistencia/streaming, dime y lo hago.

@@ -150,7 +150,7 @@ Ambos servidores deben quedar ejecutándose al mismo tiempo. El frontend escucha
 - No subas el archivo `.env` al repositorio.
 - Usa un valor seguro en `JWT_SECRET`.
 - En producción, desactiva o protege el endpoint `/admin/auth/register`.
-- Si el backend está en otra máquina, actualiza `ALLOWED_ORIGINS` en `bakend/.env`.
+- Si el backend está en otra máquina, actualiza `ALLOWED_ORIGINS` en el archivo raíz `.env`.
 
 ---
 

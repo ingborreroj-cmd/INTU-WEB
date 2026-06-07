@@ -38,21 +38,6 @@ cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB/bakend"
 npm install
 ```
 
-### 3.3 Dependencias del proyecto (PASO MANUAL)
-
-Paso a paso:
-
-1. Abre una terminal en la raíz del proyecto:
-
-```bash
-cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB"
-```
-
-2. Instala las dependencias de producción que necesita el frontend y backend:
-
-```bash
-npm install @prisma/client @vis.gl/react-google-maps bcrypt cookie-parser cors dotenv express express-rate-limit helmet jsonwebtoken leaflet lucide-react multer react react-dom react-leaflet react-router-dom
-```
 
 3. Instala las dependencias de desarrollo necesarias para TypeScript, Vite, ESLint y Prisma:
 

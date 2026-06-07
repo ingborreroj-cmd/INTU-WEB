@@ -86,6 +86,7 @@ cd ..
 ```
 
 3. Generar el cliente Prisma y aplicar la migración usando el env global de la raíz:
+verifica estar en la ruta correcta sin bakend
 
 ```bash
 npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
@@ -96,8 +97,7 @@ Esto usa la versión de Prisma instalada en `bakend` y carga el `.env` global de
 
 La base de datos generada quedará en `bakend/prisma/db/intuweb_db.db`.
 
-> Nota: en el env global de la raíz, usa `DATABASE_URL=file:./db/intuweb_db.db`.
-> Asegúrate de habilitar la creación de admins desde el panel estableciendo `ENABLE_ADMIN_REGISTER=true` en el `.env`.
+
 
 ---
 

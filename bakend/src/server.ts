@@ -13,7 +13,7 @@ dotenv.config({ path: envPath });
 
 const _jwtSecret = process.env.JWT_SECRET || 'change_this_secret';
 if (_jwtSecret === 'change_this_secret') {
-  console.warn('WARNING: JWT_SECRET is using the default placeholder. Change JWT_SECRET in bakend/.env before production.');
+  console.warn('WARNING: JWT_SECRET is using the default placeholder. Change JWT_SECRET in the project root .env before production.');
 }
 
 import authRoutes from './routes/auth';
@@ -73,7 +73,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 
 server.on('error', (error: any) => {
   if (error?.code === 'EADDRINUSE') {
-    console.error(`ERROR: Port ${PORT} is already in use. Stop the process using that port or change PORT in bakend/.env.`);
+    console.error(`ERROR: Port ${PORT} is already in use. Stop the process using that port or change PORT in the project root .env.`);
     process.exit(1);
   }
 

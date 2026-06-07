@@ -7,7 +7,12 @@ dist/
 .vscode/
 
 # Backend SQLite DB (Prisma) - do not commit local DB files
-bakend/prisma/db/*.sqlite
+bakend/prisma/db/*.db
+
+# Ignore environment files
+.env
+.env.local
+# .env.*.local is already ignored above
 
 # Uploaded files
 uploads/

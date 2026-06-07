@@ -7,7 +7,7 @@ const envPath = path.resolve(__dirname, '../../.env');
 dotenv.config({ path: envPath });
 
 async function main() {
-  const dbPath = path.resolve(__dirname, '..', 'prisma', 'db', 'intuweb_db.sqlite');
+  const dbPath = path.resolve(__dirname, '..', 'prisma', 'db', 'intuweb_db.db');
   console.log('Checking backend environment...');
   console.log(`DB path: ${dbPath}`);
   console.log(`DB file exists: ${fs.existsSync(dbPath) ? 'yes' : 'no'}`);

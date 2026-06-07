@@ -1,13 +1,13 @@
 # Backend INTU
 
-1. Copiar `.env.example` a `.env`
+1. Copiar `.env.example` a `.env` en la raíz del proyecto.
 2. Instalar dependencias:
    - `cd bakend`
    - `npm install`
-3. Generar Prisma:
-   - `npx prisma generate`
+3. Generar Prisma usando el env global:
+   - `cd .. && npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma`
 4. Crear la base de datos local:
-   - `npx prisma migrate dev --name init`
+   - `cd .. && npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init`
 5. Iniciar en desarrollo:
    - `npm run dev`
 6. Crear admin:

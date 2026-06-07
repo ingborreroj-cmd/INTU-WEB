@@ -21,6 +21,9 @@ Guía rápida para instalar y ejecutar el sistema completo en local.
 
 ## 3. Instalación inicial
 
+> Nota: este repositorio usa un único archivo de entorno global:
+> - `./.env` para las variables del frontend / Vite y para las variables del backend y Prisma.
+
 ### 3.1 Frontend
 
 ```bash
@@ -64,32 +67,45 @@ npm install -D @types/bcrypt @types/cookie-parser @types/cors @types/express @ty
 
 ## 4. Configurar backend
 
-1. Copiar el archivo de ejemplo:
+1. Copiar el archivo de ejemplo global de entorno:
+
+```bash
+cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB"
+# macOS / Linux / Git Bash
+cp .env.example .env
+# Windows PowerShell
+Copy-Item .env.example .env
+# cmd
+copy .env.example .env
+```
+
+2. Instalar las dependencias del backend:
 
 ```bash
 cd bakend
-cp .env.example .env
+npm install
+cd ..
 ```
 
-2. Generar el cliente Prisma:
+3. Generar el cliente Prisma y aplicar la migración usando el env global de la raíz:
 
 ```bash
-npx prisma generate
+npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
+npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init
 ```
 
-3. Ejecutar migración para crear la base de datos SQLite:
+Esto usa la versión de Prisma instalada en `bakend` y carga el `.env` global de la raíz.
 
-```bash
-npx prisma migrate dev --name init
-```
+La base de datos generada quedará en `bakend/prisma/db/intuweb_db.db`.
 
-La base de datos generada quedará en `bakend/prisma/db/intuweb_db.sqlite`.
+> Nota: en el env global de la raíz, usa `DATABASE_URL=file:./db/intuweb_db.db`.
 
 ---
 
 ## 5. Crear usuario admin
 
 ```bash
+cd bakend
 npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU Admin"
 ```
 

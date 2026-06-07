@@ -20,6 +20,8 @@ npm run dev
 El esquema Prisma en `bakend/prisma/schema.prisma` usa `url = env("DATABASE_URL")`.
 Asegúrate de ejecutar los comandos desde `bakend` y usar el env global de la raíz (`../.env`).
 
+Nota: para que el panel de administración pueda crear nuevos admins, configura `ENABLE_ADMIN_REGISTER=true` en el `.env` global.
+
 Create the first admin user:
 
 ```bash

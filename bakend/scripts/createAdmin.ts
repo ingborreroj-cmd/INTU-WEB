@@ -15,18 +15,31 @@ function getArg(name: string): string | undefined {
 }
 
 const name = getArg('--name') || getArg('-n') || 'INTU Administrator';
+const lastName = getArg('--lastName');
+const username = getArg('--username');
+const phone = getArg('--phone');
+const position = getArg('--position');
 const rawEmail = getArg('--email') || getArg('-e');
 const rawPassword = getArg('--password') || getArg('-p');
 
 // Mensaje de uso si faltan datos
 if (!rawEmail || !rawPassword) {
-  console.error('Usage: npm run create-admin -- --email admin@example.com --password secret123 [--name "Admin Name"]');
+  console.error('Usage: npm run create-admin -- --email admin@example.com --password secret123 [--name "Admin Name"] [--lastName "Apellidos"] [--username "user123"] [--phone "0414-1234567"] [--position "Administrador"]');
   process.exit(1);
 }
 
 // Forzamos a TypeScript a entender que a partir de aquí son strings reales gracias a la validación previa
 const email: string = rawEmail;
 const password: string = rawPassword;
+const data: { name: string; lastName?: string; username?: string; phone?: string; position?: string; email: string; password: string } = {
+  name,
+  email,
+  password: '',
+};
+if (lastName) data.lastName = lastName;
+if (username) data.username = username;
+if (phone) data.phone = phone;
+if (position) data.position = position;
 
 async function main() {
   try {
@@ -40,10 +53,10 @@ async function main() {
 
     const hash = await bcrypt.hash(password, 10);
     const admin = await prisma.admin.create({ 
-      data: { name, email, password: hash } 
+      data: { ...data, password: hash } 
     });
     
-    console.log(`Created admin: id=${admin.id}, email=${admin.email}`);
+    console.log(`Created admin: id=${admin.id}, email=${admin.email}, username=${admin.username ?? 'none'}`);
   } catch (error) {
     console.error('create-admin failed:', error);
     process.exit(1);

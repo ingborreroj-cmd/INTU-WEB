@@ -51,6 +51,7 @@ const AdminDashboard: React.FC = () => {
   const [officialNews, setOfficialNews] = useState<NewsItem[]>([]);
   const [newAdminData, setNewAdminData] = useState<AdminFormData>(DEFAULT_ADMIN_FORM);
   const [adminRegisterStatus, setAdminRegisterStatus] = useState<string | null>(null);
+  const [showAdminCreatedModal, setShowAdminCreatedModal] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -203,6 +204,7 @@ const AdminDashboard: React.FC = () => {
       await adminService.registerAdmin(newAdminData);
       setAdminRegisterStatus('Administrador creado correctamente.');
       setNewAdminData(DEFAULT_ADMIN_FORM);
+      setShowAdminCreatedModal(true);
     } catch (error: any) {
       setAdminRegisterStatus(error?.message || 'Error al crear el administrador.');
     }
@@ -819,6 +821,27 @@ const AdminDashboard: React.FC = () => {
           )}
         </section>
       </div>
+
+      {showAdminCreatedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+          <div className="w-full max-w-sm rounded-[32px] bg-white p-6 text-center shadow-2xl">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <CheckCircle className="h-8 w-8" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-900">Administrador creado</h3>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              El administrador se ha registrado correctamente.
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowAdminCreatedModal(false)}
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67]"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

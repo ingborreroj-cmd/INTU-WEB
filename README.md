@@ -62,6 +62,23 @@ npm install -D @types/bcrypt @types/cookie-parser @types/cors @types/express @ty
 
 4. Confirma que las dependencias se agregaron a `package.json` y `package-lock.json`.
 
+---
+
+## 3.4 ¿Dónde ejecutar cada comando?
+
+- Comandos del frontend (`npm install`, `npm run dev`, `npm run build`) se ejecutan desde la raíz del proyecto: `INTU WEB`.
+- Comandos del backend que inician el servidor se ejecutan desde `INTU WEB/bakend`.
+- Comandos de Prisma deben ejecutarse desde la raíz del proyecto usando el backend local con `npx --prefix bakend ...`, para que se cargue el único `.env` global.
+- Si tu terminal ya está en `INTU WEB/bakend`, usa primero `cd ..` o ejecuta Prisma con rutas relativas internas (`./prisma/schema.prisma`).
+- No ejecutes `npx --prefix bakend prisma ... --schema bakend/prisma/schema.prisma` desde `INTU WEB/bakend`, porque el comando añadirá otra carpeta `bakend/` a la ruta y fallará con "file or directory not found".
+
+Ejemplo desde la raíz:
+
+```bash
+cd "INTU WEB"
+npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
+npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init
+``` 
 
 ---
 
@@ -99,10 +116,11 @@ Esto usa la versión de Prisma instalada en `bakend` y carga el `.env` global de
 La base de datos generada quedará en `bakend/prisma/db/intuweb_db.db`.
 
 > Nota: en el env global de la raíz, usa `DATABASE_URL=file:./db/intuweb_db.db`.
+> Asegúrate de habilitar la creación de admins desde el panel estableciendo `ENABLE_ADMIN_REGISTER=true` en el `.env`.
 
 ---
 
-## 5. Crear usuario admin
+## 5. Crear usuario admin, SE EJECUTA DESDE LA RUTA DEL BAKEND INTU WEB/BAKEND
 
 ```bash
 cd bakend
@@ -115,6 +133,8 @@ Además de `name`, puedes usar estos datos opcionales para el usuario admin:
 - `--username` para asignar un nombre de usuario de inicio de sesión.
 - `--phone` para el teléfono de contacto.
 - `--position` para el cargo o rol dentro del sistema.
+
+> Para iniciar sesión usa el `email` o el `username`, junto con la `password` que pasaste al crear el admin.
 
 Ejemplo completo:
 
@@ -137,19 +157,31 @@ cd "INTU WEB"
 npm run dev
 ```
 
-Terminal 2 — Backend (desde la carpeta `bakend`):
+> Importante: este bloque asume que el terminal está en la raíz `INTU WEB`.
+> Si tu terminal ya está en `INTU WEB/bakend`, primero sube a la raíz con `cd ..` o usa rutas locales como:
+>
+> ```bash
+> # desde INTU WEB/bakend
+> npx prisma generate --schema ./prisma/schema.prisma
+> npx prisma migrate dev --schema ./prisma/schema.prisma --name init
+> ```
+>
+> Si no lo haces, el comando `npx --prefix bakend prisma ... --schema bakend/prisma/schema.prisma` intentará leer `bakend/bakend/prisma/schema.prisma` y fallará.
+>
+> El backend siempre usa el único `.env` en la raíz del proyecto. No crees ni uses `bakend/.env`.
 
 ```bash
-# Abre un segundo terminal y entra en la carpeta del backend
-cd "INTU WEB/bakend"
-# (solo la primera vez) instala dependencias y genera Prisma
-npm install
-npx prisma generate
-# Ejecuta migraciones si aún no se ha creado la DB local
-npx prisma migrate dev --name init
-# Inicia el servidor de desarrollo del backend
+# 
+cd "INTU WEB"
+# Genera Prisma usando la versión instalada en bakend y el env global de la raíz
+npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
+npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init
+# Luego entra al backend para iniciar el servidor
+cd bakend
 npm run dev
 ```
+
+
 
 Ambos servidores deben quedar ejecutándose al mismo tiempo. El frontend escucha por defecto en `http://localhost:5173` y el backend en `http://localhost:4000`.
 

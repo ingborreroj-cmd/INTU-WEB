@@ -14,7 +14,7 @@ const router = Router();
 const ENABLE_ADMIN_REGISTER = process.env.ENABLE_ADMIN_REGISTER !== 'false';
 
 router.post('/register', ensureAdmin, async (req, res) => {
-  if (!ENABLE_ADMIN_REGISTER) return res.status(404).json({ message: 'Registration disabled' });
+  if (!ENABLE_ADMIN_REGISTER) return res.status(403).json({ message: 'Registration disabled. Set ENABLE_ADMIN_REGISTER=true in the root .env to enable admin creation.' });
   const { name, lastName, email, username, phone, position, password } = req.body;
   if (!name || !lastName || !email || !username || !phone || !position || !password) {
     return res.status(400).json({ message: 'Missing fields' });

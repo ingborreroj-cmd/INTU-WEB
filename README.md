@@ -39,17 +39,13 @@ npm install
 ```
 
 
-3. Instala las dependencias de desarrollo necesarias para TypeScript, Vite, ESLint y Prisma:
 
-```bash
-npm install -D @types/bcrypt @types/cookie-parser @types/cors @types/express @types/jsonwebtoken @types/leaflet @types/react @types/react-dom @types/multer @typescript-eslint/eslint-plugin @typescript-eslint/parser @vitejs/plugin-react eslint prisma ts-node-dev typescript vite
-```
 
 4. Confirma que las dependencias se agregaron a `package.json` y `package-lock.json`.
 
 ---
 
-## 3.4 ¿Dónde ejecutar cada comando?
+## 3.3 ¿Dónde ejecutar cada comando?
 
 - Comandos del frontend (`npm install`, `npm run dev`, `npm run build`) se ejecutan desde la raíz del proyecto: `INTU WEB`.
 - Comandos del backend que inician el servidor se ejecutan desde `INTU WEB/bakend`.

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, Bot, Loader2 } from 'lucide-react';
 import { API } from '../services/apiUtils';
 
-// Definición estricta de la estructura que espera la API de Gemini
 interface ChatMessage {
   role: 'user' | 'model';
   parts: [{ text: string }];
@@ -13,24 +12,20 @@ const INTUBot: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // Historial local para renderizar en la interfaz (interfaz limpia para el usuario)
   const [messages, setMessages] = useState<{ role: 'user' | 'bot'; text: string }[]>([
     { role: 'bot', text: '¡Hola! Soy el Asistente Virtual del INTU. Puedo ayudarte con información sobre trámites, requisitos de tierras urbanas y comités. ¿Qué necesitas saber?' }
   ]);
 
-  // Historial estructurado que se le enviará a Gemini en el formato correcto
   const [apiHistory, setApiHistory] = useState<ChatMessage[]>([
     { role: 'model', parts: [{ text: '¡Hola! Soy el Asistente Virtual del INTU. Puedo ayudarte con información sobre trámites, requisitos de tierras urbanas y comités. ¿Qué necesitas saber?' }] }
   ]);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll al último mensaje
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Bloqueo de scroll del body cuando la ventana de chat esté abierta
   useEffect(() => {
     if (!isOpen) return;
     const prev = document.body.style.overflow;
@@ -42,28 +37,23 @@ const INTUBot: React.FC = () => {
     const msgToSend = textOverride || input.trim();
     if (!msgToSend || isLoading) return;
 
-    // 1. Actualizar interfaz con el mensaje del usuario
     setMessages(prev => [...prev, { role: 'user', text: msgToSend }]);
     if (!textOverride) setInput('');
     
-    // 2. Encender estado de carga (reemplaza el texto "Pensando..." por un spinner elegante)
     setIsLoading(true);
 
-    // 3. Preparar el nuevo mensaje en el formato exacto de Gemini
     const newUserMessage: ChatMessage = {
       role: 'user',
       parts: [{ text: msgToSend }]
     };
 
-    // Combinamos el historial existente con el nuevo mensaje del usuario
     const updatedHistory = [...apiHistory, newUserMessage];
 
     try {
-      // 4. Petición a tu servidor backend
       const res = await fetch(`${API}/intu-bot`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ history: updatedHistory }) // Enviamos el historial completo estructurado
+        body: JSON.stringify({ history: updatedHistory })
       });
 
       if (!res.ok) throw new Error('Error en la API del bot');
@@ -71,7 +61,6 @@ const INTUBot: React.FC = () => {
       const json = await res.json();
       const reply = json?.reply || 'Lo siento, en este momento no puedo procesar tu solicitud.';
 
-      // 5. Si todo sale bien, añadimos la respuesta a la interfaz y al historial de la API
       setMessages(prev => [...prev, { role: 'bot', text: reply }]);
       setApiHistory([...updatedHistory, { role: 'model', parts: [{ text: reply }] }]);
 
@@ -82,7 +71,7 @@ const INTUBot: React.FC = () => {
         text: 'Disculpa, tengo problemas para conectar con el servidor en este momento. Por favor, inténtalo más tarde.'
       }]);
     } finally {
-      setIsLoading(false); // Apagar el estado de carga
+      setIsLoading(false);
     }
   };
 
@@ -98,7 +87,6 @@ const INTUBot: React.FC = () => {
 
   return (
     <div className="fixed bottom-20 right-6 z-[60]">
-      {/* Botón Flotante */}
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)}
@@ -108,10 +96,8 @@ const INTUBot: React.FC = () => {
         </button>
       )}
 
-      {/* Ventana de Chat */}
       {isOpen && (
         <div className="bg-white w-[350px] sm:w-[400px] h-[550px] rounded-[25px] shadow-2xl flex flex-col overflow-hidden border border-gray-100 animate-fade-up">
-          {/* Header */}
           <div className="bg-[#003366] p-5 text-white flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="bg-[#b8860b] p-2 rounded-xl rotate-3 shadow-lg">
@@ -130,7 +116,6 @@ const INTUBot: React.FC = () => {
             </button>
           </div>
 
-          {/* Área de Mensajes */}
           <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-50/50">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -144,7 +129,6 @@ const INTUBot: React.FC = () => {
               </div>
             ))}
             
-            {/* Spinner de carga cuando la IA está pensando */}
             {isLoading && (
               <div className="flex justify-start items-center gap-2 text-gray-400 text-xs font-semibold pl-2">
                 <Loader2 size={16} className="animate-spin text-[#b8860b]" />
@@ -154,7 +138,6 @@ const INTUBot: React.FC = () => {
             <div ref={chatEndRef} />
           </div>
 
-          {/* Sugerencias Rápidas Fijas */}
           <div className="px-4 py-3 bg-gray-50 flex flex-wrap gap-2 border-t border-gray-100">
             <QuickOption text="Título de tierra" />
             <QuickOption text="Regularizar local comercial" />
@@ -163,7 +146,6 @@ const INTUBot: React.FC = () => {
             <QuickOption text="Ubicación de Sedes" />
           </div>
 
-          {/* Input de Texto */}
           <div className="p-4 bg-white border-t border-gray-100">
             <div className="relative flex items-center gap-2">
               <input 
@@ -173,7 +155,7 @@ const INTUBot: React.FC = () => {
                 className="flex-grow pl-4 pr-10 py-3 bg-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#003366]/20 transition-all font-medium disabled:opacity-50"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               />
               <button 
                 onClick={() => handleSend()}

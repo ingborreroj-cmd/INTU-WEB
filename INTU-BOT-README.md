@@ -42,6 +42,8 @@ El backend espera un cuerpo con el historial en `history`:
 
 En el frontend se construye ese historial usando `{ role: 'user' | 'model', parts: [{ text }] }`.
 
+Internamente el backend convierte ese historial en un prompt de texto y llama a Gemini con `instances` y `parameters`, que es el formato compatible con la API actual.
+
 Flujo de la petición
 
 1. El cliente envía el historial completo a `/api/intu-bot`.
@@ -52,7 +54,7 @@ Flujo de la petición
 
 Detalles del adaptador de Gemini
 
-- Usa la URL fija: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`.
+- Usa la URL fija: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateText?key=${GEMINI_API_KEY}`.
 - Construye el prompt con un mensaje de sistema para que el asistente responda como representante del INTU.
 - Envía los mensajes en el formato que espera Gemini.
 - Extrae el texto principal de `json.candidates[0].content`, `json.candidates[0].output.text` o `json.outputText`.

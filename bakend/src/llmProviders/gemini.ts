@@ -15,29 +15,35 @@ export async function sendMessage(messages: Message[], opts?: { conversationId?:
     throw new Error('GEMINI_API_KEY is not set in environment');
   }
 
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateText?key=${apiKey}`;
 
   const systemPrompt = "Eres el asistente virtual oficial del Instituto Nacional de Tierras Urbanas (INTU). Responde en español de forma clara, precisa y profesional. Si la consulta requiere explicación, ofrece un párrafo completo con la información esencial, ejemplos prácticos y pasos concretos. Evita respuestas demasiado cortas; responde con la extensión necesaria para resolver la duda sin irte por las ramas. Si no puedes ayudar, di brevemente que solo puedes dar información del INTU.";
 
-  const promptMessages = [
-    {
-      role: 'system',
-      content: [{ type: 'text', text: systemPrompt }]
-    },
-    ...messages.map(message => ({
-      role: message.role === 'user' ? 'user' : 'assistant',
-      content: message.parts.map(part => ({ type: 'text', text: part.text }))
-    }))
-  ];
+  const promptText = [
+    `Sistema: ${systemPrompt}`,
+    ...messages.map(message => {
+      const roleLabel = message.role === 'user' ? 'Usuario' : 'INTUBot';
+      return `${roleLabel}: ${message.parts.map(part => part.text).join(' ')}`;
+    }),
+    'INTUBot:'
+  ].join('\n\n');
 
   const payload = {
-    prompt: {
-      messages: promptMessages
-    },
-    temperature: Number(process.env.LLM_TEMPERATURE || 0.7),
-    topP: Number(process.env.LLM_TOP_P || 0.95),
-    maxOutputTokens: Number(process.env.LLM_MAX_TOKENS || 450),
-    candidateCount: 1
+    instances: [
+      {
+        content: [
+          {
+            type: 'text',
+            text: promptText
+          }
+        ]
+      }
+    ],
+    parameters: {
+      temperature: Number(process.env.LLM_TEMPERATURE || 0.7),
+      topP: Number(process.env.LLM_TOP_P || 0.95),
+      maxOutputTokens: Number(process.env.LLM_MAX_TOKENS || 450)
+    }
   };
 
   const res = await fetch(apiUrl, {
@@ -59,6 +65,9 @@ export async function sendMessage(messages: Message[], opts?: { conversationId?:
     json?.candidates?.[0]?.content?.map((item: any) => item.text || item.parts?.[0]?.text || '')?.join('') ||
     json?.candidates?.[0]?.output?.text ||
     json?.outputText ||
+    json?.predictions?.[0]?.content?.map((item: any) => item.text || item.parts?.[0]?.text || '')?.join('') ||
+    json?.outputs?.[0]?.content?.map((item: any) => item.text || item.parts?.[0]?.text || '')?.join('') ||
+    json?.outputs?.[0]?.message?.content?.map((item: any) => item.text || item.parts?.[0]?.text || '')?.join('') ||
     'Lo siento, no pude procesar una respuesta.';
 
   return { text, raw: json };

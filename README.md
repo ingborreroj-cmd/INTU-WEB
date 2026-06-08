@@ -97,6 +97,8 @@ Esto usa la versión de Prisma instalada en `bakend` y carga el `.env` global de
 
 La base de datos generada quedará en `bakend/prisma/db/intuweb_db.db`.
 
+> Para que INTUBot funcione, agrega tu clave Gemini en `GEMINI_API_KEY` dentro de `.env` y deja `LLM_PROVIDER=gemini`.
+
 
 
 ---

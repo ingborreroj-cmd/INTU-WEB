@@ -13,24 +13,24 @@ interface ServiceCardProps {
 }
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, cost, onOpenModal }) => (
-  <div className="group bg-white p-6 rounded-[15px] shadow-sm border border-gray-100 flex flex-col h-full transition-all duration-300 hover:-translate-y-2 hover:border-[#b8860b]/30">
-    <div className="bg-[#003366]/5 p-3 rounded-xl w-fit mb-4 transition-colors group-hover:bg-[#003366] group-hover:text-white text-[#003366]">
+  <div className="group bg-white p-6 rounded-[15px] shadow-sm border border-gray-100 flex flex-col h-full transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC907]/30">
+    <div className="bg-[#273376]/5 p-3 rounded-xl w-fit mb-4 transition-colors group-hover:bg-[#273376] group-hover:text-white text-[#273376]">
       <Icon size={28} />
     </div>
-    <h3 className="font-montserrat font-bold text-lg text-[#003366] mb-3 group-hover:text-[#b8860b] transition-colors">
+    <h3 className="font-montserrat font-bold text-lg text-[#273376] mb-3 group-hover:text-[#FFC907] transition-colors">
       {title}
     </h3>
     <p className="text-gray-600 text-sm font-light mb-4 flex-grow leading-relaxed">
       {description}
     </p>
     {cost && (
-      <div className="mb-4 flex items-center gap-2 text-[#b8860b] font-bold text-sm bg-[#b8860b]/5 px-3 py-1 rounded-full w-fit">
+      <div className="mb-4 flex items-center gap-2 text-[#FFC907] font-bold text-sm bg-[#FFC907]/5 px-3 py-1 rounded-full w-fit">
         <DollarSign size={14} /> {cost}
       </div>
     )}
     <button 
       onClick={onOpenModal}
-      className="inline-flex items-center gap-2 text-[#003366] font-bold text-xs hover:gap-3 transition-all mt-auto border-t pt-4 border-gray-50 w-full text-left"
+      className="inline-flex items-center gap-2 text-[#273376] font-bold text-xs hover:gap-3 transition-all mt-auto border-t pt-4 border-gray-200 w-full text-left"
     >
       Saber más <ChevronRight size={14} />
     </button>
@@ -60,8 +60,8 @@ const Services: React.FC = () => {
       
       {/* SECCIÓN SERVICIOS TÉCNICOS */}
       <div className="text-center mb-12 max-w-3xl mx-auto">
-        <span className="text-[#b8860b] font-bold tracking-widest uppercase text-xs mb-3 block">Catálogo Especializado</span>
-        <h2 className="text-[#003366] font-montserrat font-extrabold text-4xl mb-4">Servicios Técnicos INTU</h2>
+        <span className="text-[#FFC907] font-bold tracking-widest uppercase text-xs mb-3 block">Catálogo Especializado</span>
+        <h2 className="text-[#273376] font-montserrat font-extrabold text-4xl mb-4">Servicios Técnicos INTU</h2>
         <p className="text-gray-600">
           Soluciones con tecnología panorámica y alta precisión para garantizar la base técnica de sus proyectos.
         </p>
@@ -79,10 +79,10 @@ const Services: React.FC = () => {
           <div className="bg-white rounded-[20px] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
             <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center z-10">
               <div className="flex items-center gap-3">
-                <div className="bg-[#b8860b]/10 p-2 rounded-lg text-[#b8860b]">
+                <div className="bg-[#FFC907]/10 p-2 rounded-lg text-[#FFC907]">
                   <Info size={24} />
                 </div>
-                <h3 className="text-[#003366] font-montserrat font-bold text-xl">¿Cómo solicitar estos servicios?</h3>
+                <h3 className="text-[#273376] font-montserrat font-bold text-xl">¿Cómo solicitar estos servicios?</h3>
               </div>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-red-500 transition-colors">
                 <X size={28} />
@@ -92,40 +92,40 @@ const Services: React.FC = () => {
             <div className="p-8">
               <div className="space-y-8">
                 <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-10 h-10 bg-[#003366] text-white rounded-full flex items-center justify-center font-bold shadow-lg">1</div>
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#273376] text-white rounded-full flex items-center justify-center font-bold shadow-lg">1</div>
                   <div>
-                    <h4 className="font-bold text-[#003366] mb-2">Asesoría Inicial</h4>
+                    <h4 className="font-bold text-[#273376] mb-2">Asesoría Inicial</h4>
                     <p className="text-gray-600 text-sm leading-relaxed">Acude a la Gerencia Estadal para buscar asesoría y solicitar el listado de requisitos. Deberás consignar los requisitos una vez completados en la oficina estadal del INTU.</p>
                   </div>
                 </div>
 
                 <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-10 h-10 bg-[#003366] text-white rounded-full flex items-center justify-center font-bold shadow-lg">2</div>
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#273376] text-white rounded-full flex items-center justify-center font-bold shadow-lg">2</div>
                   <div>
-                    <h4 className="font-bold text-[#003366] mb-2">Orientación y Planilla</h4>
+                    <h4 className="font-bold text-[#273376] mb-2">Orientación y Planilla</h4>
                     <p className="text-gray-600 text-sm leading-relaxed">El Gerente Estadal o el funcionario autorizado brindará orientación sobre el llenado de la planilla de solicitud. Deberás seleccionar el servicio técnico e indicar la dirección exacta del inmueble y datos de contacto.</p>
                   </div>
                 </div>
 
                 <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-10 h-10 bg-[#003366] text-white rounded-full flex items-center justify-center font-bold shadow-lg">3</div>
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#273376] text-white rounded-full flex items-center justify-center font-bold shadow-lg">3</div>
                   <div>
-                    <h4 className="font-bold text-[#003366] mb-2">Autorización y Pago</h4>
+                    <h4 className="font-bold text-[#273376] mb-2">Autorización y Pago</h4>
                     <p className="text-gray-600 text-sm leading-relaxed">El funcionario emitirá el oficio de autorización con el monto a cancelar y el número de cuenta jurídica del INTU para formalizar el pago.</p>
                   </div>
                 </div>
 
                 <div className="flex gap-6">
-                  <div className="flex-shrink-0 w-10 h-10 bg-[#003366] text-white rounded-full flex items-center justify-center font-bold shadow-lg">4</div>
+                  <div className="flex-shrink-0 w-10 h-10 bg-[#273376] text-white rounded-full flex items-center justify-center font-bold shadow-lg">4</div>
                   <div>
-                    <h4 className="font-bold text-[#003366] mb-2">Inicio de Trámite</h4>
+                    <h4 className="font-bold text-[#273376] mb-2">Inicio de Trámite</h4>
                     <p className="text-gray-600 text-sm leading-relaxed">Una vez realizado el pago, deberás consignar el comprobante de pago para iniciar oficialmente el trámite del servicio solicitado.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-10 p-4 bg-gray-50 rounded-xl border-l-4 border-[#b8860b]">
-                <p className="text-[#003366] text-xs font-medium italic">
+              <div className="mt-10 p-4 bg-gray-50 rounded-xl border-l-4 border-[#FFC907]">
+                <p className="text-[#273376] text-xs font-medium italic">
                   * Nota: Para levantamientos de topografía, la tarifa dependerá de los M² de superficie.
                 </p>
               </div>
@@ -135,20 +135,20 @@ const Services: React.FC = () => {
       )}
 
       {/* SECCIÓN BENEFICIOS */}
-      <div className="bg-[#003366] rounded-[20px] p-8 md:p-12 mb-1 text-white relative overflow-hidden">
+      <div className="bg-[#273376] rounded-[20px] p-8 md:p-12 mb-1 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="flex gap-4">
-            <CheckCircle2 className="text-[#b8860b] flex-shrink-0" size={32} />
-            <div><h4 className="font-bold text-lg mb-2">Trámites Agilizados</h4><p className="text-blue-100 text-sm">Simplificación de procesos de validación administrativa.</p></div>
+            <CheckCircle2 className="text-[#FFC907] flex-shrink-0" size={32} />
+            <div><h4 className="font-bold text-lg mb-2">Trámites Agilizados</h4><p className="text-[#cfdcff] text-sm">Simplificación de procesos de validación administrativa.</p></div>
           </div>
           <div className="flex gap-4">
-            <CheckCircle2 className="text-[#b8860b] flex-shrink-0" size={32} />
-            <div><h4 className="font-bold text-lg mb-2">Calidad Garantizada</h4><p className="text-blue-100 text-sm">Personal bajo los estándares técnicos más exigentes.</p></div>
+            <CheckCircle2 className="text-[#FFC907] flex-shrink-0" size={32} />
+            <div><h4 className="font-bold text-lg mb-2">Calidad Garantizada</h4><p className="text-[#cfdcff] text-sm">Personal bajo los estándares técnicos más exigentes.</p></div>
           </div>
           <div className="flex gap-4">
-            <CheckCircle2 className="text-[#b8860b] flex-shrink-0" size={32} />
-            <div><h4 className="font-bold text-lg mb-2">Precios Competitivos</h4><p className="text-blue-100 text-sm">Costos sociales para personas naturales y jurídicas.</p></div>
+            <CheckCircle2 className="text-[#FFC907] flex-shrink-0" size={32} />
+            <div><h4 className="font-bold text-lg mb-2">Precios Competitivos</h4><p className="text-[#cfdcff] text-sm">Costos sociales para personas naturales y jurídicas.</p></div>
           </div>
         </div>
       </div>

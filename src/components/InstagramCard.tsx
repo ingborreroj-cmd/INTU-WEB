@@ -10,7 +10,7 @@ const InstagramCard: React.FC<{ post: InstaPost }> = ({ post }) => {
       rel="noopener noreferrer"
       // w-72 (un poco más ancho para que no se vea "amorochado") 
       // h-[450px] fijo para que todas sean idénticas
-      className="flex-none w-72 h-[450px] relative rounded-2xl overflow-hidden shadow-2xl bg-[#001a33] group transition-all duration-500 hover:-translate-y-2 border border-white/10"
+      className="flex-none w-72 h-[450px] relative rounded-2xl overflow-hidden shadow-2xl bg-[#121a38] group transition-all duration-500 hover:-translate-y-2 border border-white/10"
     >
       {/* CONTENEDOR DE IMAGEN (Ocupa el 60% de la altura) */}
       <div className="h-[60%] w-full relative overflow-hidden bg-slate-800">
@@ -33,9 +33,9 @@ const InstagramCard: React.FC<{ post: InstaPost }> = ({ post }) => {
       </div>
 
       {/* CONTENEDOR DE TEXTO (El 40% restante) */}
-      <div className="h-[40%] w-full p-5 flex flex-col justify-between bg-gradient-to-b from-[#002855] to-[#001a33]">
+      <div className="h-[40%] w-full p-5 flex flex-col justify-between bg-gradient-to-b from-[#002855] to-[#121a38]">
         <div>
-          <span className="text-[#f6d07d] text-[10px] font-bold uppercase tracking-widest block mb-2">
+          <span className="text-[#FFF27C] text-[10px] font-bold uppercase tracking-widest block mb-2">
             Instagram INTU
           </span>
           <p className="text-white text-sm leading-snug line-clamp-3 font-medium">
@@ -44,7 +44,7 @@ const InstagramCard: React.FC<{ post: InstaPost }> = ({ post }) => {
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-white/10">
-          <span className="text-white/60 text-[10px] font-bold uppercase flex items-center gap-2 group-hover:text-[#f6d07d] transition-colors">
+          <span className="text-white/60 text-[10px] font-bold uppercase flex items-center gap-2 group-hover:text-[#FFF27C] transition-colors">
             Ver publicación <ExternalLink size={12} />
           </span>
           <span className="text-white/10 text-[9px] font-mono">#INTU</span>

@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Youtube, Shield } from 'lucide-react';
 const Footer: React.FC = () => {
   return (
     <footer 
-      className="relative bg-[#003366] text-white pt-16 pb-10 overflow-hidden"
+      className="relative bg-[#273376] text-white pt-16 pb-10 overflow-hidden"
     >
       {/* Capa de textura cartográfica */}
       <div 
@@ -42,13 +42,13 @@ const Footer: React.FC = () => {
 
             {/* Fila de Redes Sociales Temporales */}
             <div className="flex items-center gap-3.5 pt-2">
-              <a href="#" className="p-2 bg-white/5 hover:bg-[#b8860b] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
+              <a href="#" className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
                 <Facebook size={16} />
               </a>
-              <a href="#" className="p-2 bg-white/5 hover:bg-[#b8860b] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
+              <a href="#" className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
                 <Twitter size={16} />
               </a>
-              <a href="#" className="p-2 bg-white/5 hover:bg-[#b8860b] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
+              <a href="#" className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
                 <Youtube size={16} />
               </a>
             </div>
@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
           {/* Columna 2: Legal e Institucional */}
           <div className="flex flex-col">
             <h4 className="font-montserrat font-bold text-xs tracking-widest uppercase text-white/90 mb-6 flex items-center gap-2 border-b border-white/5 pb-2">
-              <Shield size={14} className="text-[#b8860b]" />
+              <Shield size={14} className="text-[#FFC907]" />
               Legal e Institucional
             </h4>
             <ul className="space-y-3 text-[13px] md:text-sm text-white/60 font-medium">
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
                 href="https://www.instagram.com/intu_ve/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-[#b8860b] hover:border-transparent transition-all group shadow-sm"
+                className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-[#FFC907] hover:border-transparent transition-all group shadow-sm"
               >
                 <Instagram size={15} className="text-white/80 group-hover:text-white" />
                 <span className="text-white/80 font-montserrat text-xs font-bold tracking-wider group-hover:text-white">
@@ -98,6 +98,11 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
+        </div>
+
+        <div className="mb-8 flex items-center gap-3">
+          <span className="h-1.5 w-10 rounded-full bg-[#A70336]" />
+          <p className="text-[11px] text-white/60 uppercase tracking-[0.25em] font-semibold">Sitio oficial de comunicaciones INTU</p>
         </div>
 
         {/* Barra de Créditos / Footer de Cierre */}

@@ -117,31 +117,31 @@ const Contact: React.FC = () => {
         
         {/* SECCIÓN 1: INTRODUCCIÓN */}
         <section className="mb-16 text-center md:text-left">
-          <span className="inline-block text-[#b8860b] uppercase tracking-widest text-sm mb-4 font-bold">Atención al Ciudadano</span>
+          <span className="inline-block text-[#FFC907] uppercase tracking-widest text-sm mb-4 font-bold">Atención al Ciudadano</span>
           <h2 className="text-4xl md:text-5xl font-montserrat font-extrabold leading-tight text-slate-900 max-w-3xl">
             Estamos listos para ayudarte desde nuestras sedes regionales.
           </h2>
           <p className="mt-6 max-w-2xl text-sm text-slate-600">
-            ¿Quieres contarnos tu experiencia de usuario? <button type="button" onClick={openEncuesta} className="font-semibold text-[#003366] underline hover:text-[#b8860b]">Realiza nuestra encuesta</button> y ayúdanos a mejorar la web.
+            ¿Quieres contarnos tu experiencia de usuario? <button type="button" onClick={openEncuesta} className="font-semibold text-[#273376] underline hover:text-[#FFC907]">Realiza nuestra encuesta</button> y ayúdanos a mejorar la web.
           </p>
         </section>
 
         {/* SECCIÓN 2: TARJETAS DE CONTACTO RÁPIDO */}
         <section className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
-            <div className="bg-[#003366] w-fit p-3 rounded-xl text-white mb-4"><MapPin size={24} /></div>
+            <div className="bg-[#273376] w-fit p-3 rounded-xl text-white mb-4"><MapPin size={24} /></div>
             <h4 className="font-bold text-slate-900">Sede Central</h4>
             <p className="text-slate-600 text-sm mt-2">Av. Orinoco de las Mercedes, Torre INTU, Municipio Baruta, Caracas 1080.</p>
           </div>
           
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
-            <div className="bg-[#b8860b] w-fit p-3 rounded-xl text-white mb-4"><Phone size={24} /></div>
+            <div className="bg-[#A70336] w-fit p-3 rounded-xl text-white mb-4"><Phone size={24} /></div>
             <h4 className="font-bold text-slate-900">Atención Telefónica</h4>
             <p className="text-slate-600 text-sm mt-2">(0000) 555 5555</p>
           </div>
 
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
-            <div className="bg-[#003366] w-fit p-3 rounded-xl text-white mb-4"><Mail size={24} /></div>
+            <div className="bg-[#273376] w-fit p-3 rounded-xl text-white mb-4"><Mail size={24} /></div>
             <h4 className="font-bold text-slate-900">Correo Electrónico</h4>
             <p className="text-slate-600 text-sm mt-2">intuve@example.com</p>
           </div>
@@ -150,26 +150,26 @@ const Contact: React.FC = () => {
         {/* SECCIÓN 3: LISTADO Y FORMULARIO */}
         <section className="mb-16 grid lg:grid-cols-2 gap-8 items-start">
           <div>
-            <h3 className="text-2xl font-montserrat font-bold text-[#003366] mb-6">Oficinas a Nivel Nacional</h3>
+            <h3 className="text-2xl font-montserrat font-bold text-[#273376] mb-6">Oficinas a Nivel Nacional</h3>
             <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
               {locations.map((location, index) => (
                 <div 
                   key={index} 
-                  className="border border-slate-200 rounded-2xl p-6 bg-white/80 backdrop-blur-sm shadow-sm flex justify-between items-center transition-all hover:border-[#b8860b] group cursor-pointer"
+                  className="border border-slate-200 rounded-2xl p-6 bg-white/80 backdrop-blur-sm shadow-sm flex justify-between items-center transition-all hover:border-[#FFC907] group cursor-pointer"
                   onClick={() => handleLocationClick(location)}
                 >
                   <div className="pr-4 min-w-0 flex-1">
-                    <h4 className="font-bold text-slate-900 group-hover:text-[#003366] transition-colors break-words leading-tight">{location.estado}</h4>
+                    <h4 className="font-bold text-slate-900 group-hover:text-[#273376] transition-colors break-words leading-tight">{location.estado}</h4>
                     <p className="text-sm text-slate-500 break-all mt-1">{location.correo}</p>
                   </div>
                   <div className="flex gap-4 shrink-0">
                     <button 
                       onClick={(e) => handleShowOnMap(e, location)}
-                      className="text-[#003366] font-bold text-sm flex items-center gap-1 hover:text-[#b8860b] transition-colors"
+                      className="text-[#273376] font-bold text-sm flex items-center gap-1 hover:text-[#FFC907] transition-colors"
                     >
                       <Navigation size={16} /> Ver en mapa
                     </button>
-                    <button className="text-[#b8860b] font-bold text-sm flex items-center gap-1 group-hover:text-[#003366]">
+                    <button className="text-[#FFC907] font-bold text-sm flex items-center gap-1 group-hover:text-[#273376]">
                       <Eye size={16} /> Detalles
                     </button>
                   </div>
@@ -179,20 +179,20 @@ const Contact: React.FC = () => {
           </div>
 
           <div className="bg-white/90 backdrop-blur-md rounded-[25px] p-8 border border-slate-200 shadow-sm">
-            <h3 className="text-2xl font-montserrat font-bold text-[#003366] mb-6">Envíanos un mensaje</h3>
+            <h3 className="text-2xl font-montserrat font-bold text-[#273376] mb-6">Envíanos un mensaje</h3>
             {submitted ? (
               <div className="text-center py-10">
                 <div className="bg-green-100 text-green-600 p-4 rounded-full w-fit mx-auto mb-4"><CheckCircle2 size={48} /></div>
-                <h4 className="text-xl font-bold text-[#003366]">¡Redireccionando!</h4>
+                <h4 className="text-xl font-bold text-[#273376]">¡Redireccionando!</h4>
                 <p className="text-slate-500 mt-2">Abriendo tu gestor de correo predeterminado...</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input required type="text" placeholder="Nombre completo" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#b8860b]" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                <input required type="email" placeholder="Correo electrónico" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#b8860b]" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
-                <input required type="text" placeholder="Asunto" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#b8860b]" value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})} />
-                <textarea required rows={3} placeholder="¿En qué podemos ayudarte?" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#b8860b]" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
-                <button type="submit" className="w-full bg-[#003366] text-white py-3 rounded-xl font-bold hover:bg-[#b8860b] transition-all transform hover:scale-[1.01]">Enviar Mensaje</button>
+                <input required type="text" placeholder="Nombre completo" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                <input required type="email" placeholder="Correo electrónico" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                <input required type="text" placeholder="Asunto" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})} />
+                <textarea required rows={3} placeholder="¿En qué podemos ayudarte?" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
+                <button type="submit" className="w-full bg-[#273376] text-white py-3 rounded-xl font-bold hover:bg-[#FFC907] transition-all transform hover:scale-[1.01]">Enviar Mensaje</button>
               </form>
             )}
           </div>
@@ -200,7 +200,7 @@ const Contact: React.FC = () => {
 
         {/* SECCIÓN 4: EL MAPA CON ESTILO EXACTO DE GOOGLE MAPS */}
         <section className="w-full">
-            <h3 className="text-2xl font-montserrat font-bold text-[#003366] mb-6">Ubicación Geográfica de Sedes</h3>
+            <h3 className="text-2xl font-montserrat font-bold text-[#273376] mb-6">Ubicación Geográfica de Sedes</h3>
             <div className="rounded-[30px] overflow-hidden border-4 border-white shadow-2xl h-[550px] relative z-0">
                 <MapContainer center={currentCoords} zoom={currentZoom} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                   <TileLayer
@@ -215,7 +215,7 @@ const Contact: React.FC = () => {
                     >
                       <Popup>
                         <div className="p-1">
-                          <strong className="text-[#003366] block border-b mb-1 break-words">{loc.estado}</strong>
+                          <strong className="text-[#273376] block border-b mb-1 break-words">{loc.estado}</strong>
                           <span className="text-xs text-slate-600 break-words block">{loc.correo}</span>
                         </div>
                       </Popup>
@@ -231,32 +231,32 @@ const Contact: React.FC = () => {
       {isModalOpen && selectedLocation && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
           <div className="bg-white rounded-[30px] p-8 max-w-md w-full shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="absolute top-0 left-0 w-full h-2 bg-[#b8860b]"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-[#FFC907]"></div>
             
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-[#003366] break-words pr-4 leading-tight">{selectedLocation.estado}</h3>
+              <h3 className="text-2xl font-bold text-[#273376] break-words pr-4 leading-tight">{selectedLocation.estado}</h3>
               <button onClick={closeModal} className="text-slate-400 hover:text-red-500 transition-colors p-1 shrink-0"><X size={24} /></button>
             </div>
             
             <div className="space-y-5">
               <div className="flex gap-4">
-                <div className="bg-slate-50 p-2 rounded-lg text-[#b8860b] shrink-0 h-fit"><MapPin size={20}/></div>
+                <div className="bg-slate-50 p-2 rounded-lg text-[#FFC907] shrink-0 h-fit"><MapPin size={20}/></div>
                 <div><h4 className="font-bold text-slate-900 text-xs uppercase tracking-tighter mb-1">Dirección</h4><p className="text-slate-600 text-sm leading-relaxed break-words">{selectedLocation.direccion}</p></div>
               </div>
               <div className="flex gap-4">
-                <div className="bg-slate-50 p-2 rounded-lg text-[#003366] shrink-0 h-fit"><Mail size={20}/></div>
+                <div className="bg-slate-50 p-2 rounded-lg text-[#273376] shrink-0 h-fit"><Mail size={20}/></div>
                 <div className="min-w-0 flex-1">
                   <h4 className="font-bold text-slate-900 text-xs uppercase tracking-tighter mb-1">Correo</h4>
                   <p className="text-slate-600 text-sm break-words">{selectedLocation.correo}</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="bg-slate-50 p-2 rounded-lg text-[#003366] shrink-0 h-fit"><Phone size={20}/></div>
+                <div className="bg-slate-50 p-2 rounded-lg text-[#273376] shrink-0 h-fit"><Phone size={20}/></div>
                 <div><h4 className="font-bold text-slate-900 text-xs uppercase tracking-tighter mb-1">Teléfono Directo</h4><p className="text-slate-600 text-sm break-words">{selectedLocation.telefono}</p></div>
               </div>
             </div>
 
-            <button onClick={closeModal} className="mt-8 w-full bg-[#003366] py-3 rounded-xl font-bold text-white hover:bg-[#b8860b] transition-all shadow-lg">Cerrar Detalles</button>
+            <button onClick={closeModal} className="mt-8 w-full bg-[#273376] py-3 rounded-xl font-bold text-white hover:bg-[#FFC907] transition-all shadow-lg">Cerrar Detalles</button>
           </div>
         </div>
       )}

@@ -327,20 +327,20 @@ const AdminDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f8fbff] text-[#003366]">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#003366] border-t-[#b8860b]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#f8fbff] text-[#273376]">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#273376] border-t-[#FFC907]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fbff] px-4 py-8 sm:px-6 lg:px-10 text-[#003366]">
+    <div className="min-h-screen bg-[#f8fbff] px-4 py-8 sm:px-6 lg:px-10 text-[#273376]">
       
       {/* Página completa del dashboard admin */}
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-[#b8860b] font-bold">Panel global</p>
+            <p className="text-sm uppercase tracking-[0.35em] text-[#FFC907] font-bold">Panel global</p>
             <h1 className="mt-3 text-4xl font-extrabold tracking-tight">Administración unificada</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
               Desde aquí puedes modificar los slides del Hero y todas las noticias en una sola ventana.
@@ -350,7 +350,7 @@ const AdminDashboard: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="inline-flex items-center gap-2 rounded-full border border-[#003366] bg-white px-5 py-3 text-sm font-semibold text-[#003366] transition hover:bg-[#003366] hover:text-white"
+              className="inline-flex items-center gap-2 rounded-full border border-[#273376] bg-white px-5 py-3 text-sm font-semibold text-[#273376] transition hover:bg-[#273376] hover:text-white"
             >
               <ArrowLeftCircle size={18} /> Volver al sitio
             </button>
@@ -358,7 +358,7 @@ const AdminDashboard: React.FC = () => {
               type="button"
               onClick={saveAll}
               disabled={savingSection === 'all'}
-              className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67] disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Save size={16} /> {savingSection === 'all' ? 'Guardando todo...' : 'Guardar todo'}
             </button>
@@ -371,7 +371,7 @@ const AdminDashboard: React.FC = () => {
             <a
               key={section}
               href={`#${section}`}
-              className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-[#003366] hover:text-white"
+              className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-[#273376] hover:text-white"
             >
               {section === 'hero' && 'Hero'}
               {section === 'news' && 'Noticias'}
@@ -385,10 +385,10 @@ const AdminDashboard: React.FC = () => {
         <section id="hero" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#003366]/10 px-4 py-2 text-sm font-semibold text-[#003366]">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
                 <ImagePlus size={16} /> Hero
               </div>
-              <h2 className="mt-4 text-2xl font-bold text-[#003366]">Slides del Hero</h2>
+              <h2 className="mt-4 text-2xl font-bold text-[#273376]">Slides del Hero</h2>
               <p className="mt-2 text-sm text-slate-500">Edita cada diapositiva del carrusel principal.</p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -403,7 +403,7 @@ const AdminDashboard: React.FC = () => {
                 type="button"
                 onClick={() => saveHero()}
                 disabled={savingSection === 'hero'}
-                className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Save size={16} /> {savingSection === 'hero' ? 'Guardando...' : 'Guardar Hero'}
               </button>
@@ -415,7 +415,7 @@ const AdminDashboard: React.FC = () => {
               <div key={slide.id} className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-[#003366]">Diapositiva #{idx + 1}</h3>
+                    <h3 className="text-lg font-bold text-[#273376]">Diapositiva #{idx + 1}</h3>
                     <p className="mt-1 text-sm text-slate-500">Edite el texto y la imagen de esta tarjeta.</p>
                   </div>
                   <button
@@ -435,7 +435,7 @@ const AdminDashboard: React.FC = () => {
                         type="text"
                         value={slide.label}
                         onChange={(e) => handleHeroChange(idx, 'label', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
@@ -444,12 +444,12 @@ const AdminDashboard: React.FC = () => {
                         rows={3}
                         value={slide.caption}
                         onChange={(e) => handleHeroChange(idx, 'caption', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-2">Imagen</label>
-                      <label className="flex h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#b8860b] hover:bg-slate-50">
+                      <label className="flex h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#FFC907] hover:bg-slate-50">
                         <span className="flex items-center gap-2">
                           <Upload size={14} /> {slide.imageUrl ? 'Cambiar imagen' : 'Cargar imagen'}
                         </span>
@@ -477,7 +477,7 @@ const AdminDashboard: React.FC = () => {
             <button
               type="button"
               onClick={addHeroSlide}
-              className="w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white py-4 text-sm font-semibold text-slate-600 transition hover:border-[#b8860b] hover:text-[#b8860b]"
+              className="w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white py-4 text-sm font-semibold text-slate-600 transition hover:border-[#FFC907] hover:text-[#FFC907]"
             >
               <Plus size={16} /> Agregar nueva diapositiva
             </button>
@@ -488,17 +488,17 @@ const AdminDashboard: React.FC = () => {
         <section id="news" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#003366]/10 px-4 py-2 text-sm font-semibold text-[#003366]">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
                 <Settings size={16} /> Noticias Globales
               </div>
-              <h2 className="mt-4 text-2xl font-bold text-[#003366]">Noticias públicas/ Actualizaciones</h2>
+              <h2 className="mt-4 text-2xl font-bold text-[#273376]">Noticias públicas/ Actualizaciones</h2>
               <p className="mt-2 text-sm text-slate-500">Actualiza titulares, enlaces e imágenes de la sección de prensa.</p>
             </div>
             <button
               type="button"
               onClick={() => saveNews()}
               disabled={savingSection === 'news'}
-              className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67] disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Save size={16} /> {savingSection === 'news' ? 'Guardando...' : 'Guardar noticias'}
             </button>
@@ -509,7 +509,7 @@ const AdminDashboard: React.FC = () => {
               <div key={item.id} className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-[#003366]">Noticia #{idx + 1}</h3>
+                    <h3 className="text-lg font-bold text-[#273376]">Noticia #{idx + 1}</h3>
                     <p className="mt-1 text-sm text-slate-500">Edita los datos que se muestran en la sección de noticias.</p>
                   </div>
                   <button
@@ -530,7 +530,7 @@ const AdminDashboard: React.FC = () => {
                           type="text"
                           value={item.date}
                           onChange={(e) => handleNewsChange(idx, 'date', e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                         />
                       </div>
                       <div>
@@ -539,7 +539,7 @@ const AdminDashboard: React.FC = () => {
                           type="text"
                           value={item.source}
                           onChange={(e) => handleNewsChange(idx, 'source', e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                         />
                       </div>
                     </div>
@@ -549,7 +549,7 @@ const AdminDashboard: React.FC = () => {
                         rows={3}
                         value={item.title}
                         onChange={(e) => handleNewsChange(idx, 'title', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
@@ -558,12 +558,12 @@ const AdminDashboard: React.FC = () => {
                         type="text"
                         value={item.url}
                         onChange={(e) => handleNewsChange(idx, 'url', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-2">Imagen</label>
-                      <label className="flex h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#b8860b] hover:bg-slate-50">
+                      <label className="flex h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#FFC907] hover:bg-slate-50">
                         <span className="flex items-center gap-2">
                           <Upload size={14} /> {item.image ? 'Cambiar imagen' : 'Cargar imagen'}
                         </span>
@@ -595,7 +595,7 @@ const AdminDashboard: React.FC = () => {
             <button
               type="button"
               onClick={addNewsItem}
-              className="w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white py-4 text-sm font-semibold text-slate-600 transition hover:border-[#b8860b] hover:text-[#b8860b]"
+              className="w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white py-4 text-sm font-semibold text-slate-600 transition hover:border-[#FFC907] hover:text-[#FFC907]"
             >
               <Plus size={16} /> Agregar noticia destacada
             </button>
@@ -606,17 +606,17 @@ const AdminDashboard: React.FC = () => {
         <section id="official" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#b8860b]/10 px-4 py-2 text-sm font-semibold text-[#b8860b]">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#FFC907]/10 px-4 py-2 text-sm font-semibold text-[#FFC907]">
                 <CheckCircle size={16} /> Noticias Oficiales
               </div>
-              <h2 className="mt-4 text-2xl font-bold text-[#003366]">Comunicados institucionales</h2>
+              <h2 className="mt-4 text-2xl font-bold text-[#273376]">Comunicados institucionales</h2>
               <p className="mt-2 text-sm text-slate-500">Gestiona las noticias oficiales desde el mismo panel.</p>
             </div>
             <button
               type="button"
               onClick={() => saveOfficialNews()}
               disabled={savingSection === 'official'}
-              className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67] disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Save size={16} /> {savingSection === 'official' ? 'Guardando...' : 'Guardar oficiales'}
             </button>
@@ -627,7 +627,7 @@ const AdminDashboard: React.FC = () => {
               <div key={item.id} className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-[#003366]">Noticia oficial #{idx + 1}</h3>
+                    <h3 className="text-lg font-bold text-[#273376]">Noticia oficial #{idx + 1}</h3>
                     <p className="mt-1 text-sm text-slate-500">Completa los campos oficiales que aparecerán en portada.</p>
                   </div>
                   <button
@@ -648,7 +648,7 @@ const AdminDashboard: React.FC = () => {
                           type="text"
                           value={item.date || ''}
                           onChange={(e) => handleOfficialNewsChange(idx, 'date', e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                         />
                       </div>
                       <div>
@@ -657,7 +657,7 @@ const AdminDashboard: React.FC = () => {
                           type="text"
                           value={item.source || ''}
                           onChange={(e) => handleOfficialNewsChange(idx, 'source', e.target.value)}
-                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                         />
                       </div>
                     </div>
@@ -667,7 +667,7 @@ const AdminDashboard: React.FC = () => {
                         type="text"
                         value={item.title || ''}
                         onChange={(e) => handleOfficialNewsChange(idx, 'title', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
@@ -676,7 +676,7 @@ const AdminDashboard: React.FC = () => {
                         rows={4}
                         value={item.content || ''}
                         onChange={(e) => handleOfficialNewsChange(idx, 'content', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
@@ -685,12 +685,12 @@ const AdminDashboard: React.FC = () => {
                         type="text"
                         value={item.url || ''}
                         onChange={(e) => handleOfficialNewsChange(idx, 'url', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-2">Imagen</label>
-                      <label className="flex h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#b8860b] hover:bg-slate-50">
+                      <label className="flex h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 transition hover:border-[#FFC907] hover:bg-slate-50">
                         <span className="flex items-center gap-2">
                           <Upload size={14} /> {item.image ? 'Cambiar imagen' : 'Cargar imagen'}
                         </span>
@@ -722,7 +722,7 @@ const AdminDashboard: React.FC = () => {
             <button
               type="button"
               onClick={addOfficialNewsItem}
-              className="w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white py-4 text-sm font-semibold text-slate-600 transition hover:border-[#b8860b] hover:text-[#b8860b]"
+              className="w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white py-4 text-sm font-semibold text-slate-600 transition hover:border-[#FFC907] hover:text-[#FFC907]"
             >
               <Plus size={16} /> Agregar noticia oficial
             </button>
@@ -733,10 +733,10 @@ const AdminDashboard: React.FC = () => {
         <section id="admin" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#003366]/10 px-4 py-2 text-sm font-semibold text-[#003366]">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
                 <Settings size={16} /> Administradores
               </div>
-              <h2 className="mt-4 text-2xl font-bold text-[#003366]">Registrar nuevo administrador</h2>
+              <h2 className="mt-4 text-2xl font-bold text-[#273376]">Registrar nuevo administrador</h2>
               <p className="mt-2 text-sm text-slate-500">
                 Crea un nuevo administrador con nombre, apellido, correo, teléfono, cargo, usuario y contraseña.
               </p>
@@ -744,7 +744,7 @@ const AdminDashboard: React.FC = () => {
             <button
               type="button"
               onClick={registerAdmin}
-              className="inline-flex items-center gap-2 rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a]"
             >
               <Save size={16} /> Registrar admin
             </button>
@@ -757,7 +757,7 @@ const AdminDashboard: React.FC = () => {
                 type="text"
                 value={newAdminData.name}
                 onChange={(e) => handleNewAdminChange('name', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
             <div>
@@ -766,7 +766,7 @@ const AdminDashboard: React.FC = () => {
                 type="text"
                 value={newAdminData.lastName}
                 onChange={(e) => handleNewAdminChange('lastName', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
             <div>
@@ -775,7 +775,7 @@ const AdminDashboard: React.FC = () => {
                 type="email"
                 value={newAdminData.email}
                 onChange={(e) => handleNewAdminChange('email', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
             <div>
@@ -784,7 +784,7 @@ const AdminDashboard: React.FC = () => {
                 type="tel"
                 value={newAdminData.phone}
                 onChange={(e) => handleNewAdminChange('phone', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
             <div>
@@ -793,7 +793,7 @@ const AdminDashboard: React.FC = () => {
                 type="text"
                 value={newAdminData.position}
                 onChange={(e) => handleNewAdminChange('position', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
             <div>
@@ -802,7 +802,7 @@ const AdminDashboard: React.FC = () => {
                 type="text"
                 value={newAdminData.username}
                 onChange={(e) => handleNewAdminChange('username', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
             <div className="lg:col-span-2">
@@ -811,7 +811,7 @@ const AdminDashboard: React.FC = () => {
                 type="password"
                 value={newAdminData.password}
                 onChange={(e) => handleNewAdminChange('password', e.target.value)}
-                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#b8860b]"
+                className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
               />
             </div>
           </div>
@@ -835,7 +835,7 @@ const AdminDashboard: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowAdminCreatedModal(false)}
-              className="mt-6 inline-flex items-center justify-center rounded-full bg-[#003366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0f3a67]"
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-[#273376] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a]"
             >
               Cerrar
             </button>

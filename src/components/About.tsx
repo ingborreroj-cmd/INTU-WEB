@@ -7,8 +7,8 @@ const About: React.FC = () => {
       <div className="flex flex-col lg:flex-row gap-16 items-center mb-20 relative">
         {/* Text Content */}
         <div className="lg:w-1/2">
-          <span className="text-[#b8860b] font-bold tracking-widest uppercase text-sm mb-4 block">Nuestra Razón de Ser</span>
-          <h2 className="text-[#003366] font-montserrat font-extrabold text-4xl mb-6">Hacia la Democratización de la Tierra Urbana</h2>
+          <span className="text-[#FFC907] font-bold tracking-widest uppercase text-sm mb-4 block">Nuestra Razón de Ser</span>
+          <h2 className="text-[#273376] font-montserrat font-extrabold text-4xl mb-6">Hacia la Democratización de la Tierra Urbana</h2>
           <p className="text-gray-600 text-lg mb-6 leading-relaxed">
             El Instituto Nacional de Tierras Urbanas (INTU) nace bajo la premisa de revertir los procesos de exclusión histórica en el acceso al suelo. Como ente adscrito al Ministerio del Poder Popular para Hábitat y Vivienda, somos el brazo ejecutor de las políticas de regularización en el marco de la Gran Misión Vivienda Venezuela.
           </p>
@@ -17,10 +17,10 @@ const About: React.FC = () => {
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10">
-            <div className="bg-white p-6 rounded-[15px] shadow-sm border-l-4 border-[#b8860b]">
+            <div className="bg-white p-6 rounded-[15px] shadow-sm border-l-4 border-[#FFC907]">
               <div className="flex items-center gap-3 mb-4">
-                <Target className="text-[#b8860b]" size={24} />
-                <h4 className="font-montserrat font-bold text-lg text-[#003366]">Misión</h4>
+                <Target className="text-[#FFC907]" size={24} />
+                <h4 className="font-montserrat font-bold text-lg text-[#273376]">Misión</h4>
               </div>
               <p className="text-gray-600 text-sm">
                 Lore Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.ç
@@ -30,10 +30,10 @@ const About: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-[15px] shadow-sm border-l-4 border-[#003366]">
+            <div className="bg-white p-6 rounded-[15px] shadow-sm border-l-4 border-[#FFC907]">
               <div className="flex items-center gap-3 mb-4">
-                <Eye className="text-[#003366]" size={24} />
-                <h4 className="font-montserrat font-bold text-lg text-[#003366]">Valores</h4>
+                <Eye className="text-[#FFC907]" size={24} />
+                <h4 className="font-montserrat font-bold text-lg text-[#273376]">Valores</h4>
               </div>
               <p className="text-gray-600 text-sm">
                 Lore Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.ç
@@ -60,7 +60,7 @@ const About: React.FC = () => {
             />
           </div>
           {/* Badge */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#003366] text-white p-8 rounded-full border-8 border-white/20 flex flex-col items-center justify-center shadow-2xl">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#273376] text-white p-8 rounded-full border-8 border-white/20 flex flex-col items-center justify-center shadow-2xl">
             <span className="text-3xl font-extrabold font-montserrat">10+</span>
             <span className="text-[10px] uppercase font-bold text-center leading-tight">Años de Logros</span>
           </div>
@@ -77,34 +77,37 @@ const About: React.FC = () => {
       {/* Strategic Plans Section */}
       <div className="mt-20">
         <div className="text-center mb-12">
-          <h3 className="text-[#003366] font-montserrat font-extrabold text-3xl mb-4">Planes Estratégicos</h3>
-          <div className="w-24 h-1 bg-[#b8860b] mx-auto"></div>
+          <h3 className="text-[#273376] font-montserrat font-extrabold text-3xl mb-4">Planes Estratégicos</h3>
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-24 h-1 bg-[#FFC907] rounded-full"></div>
+            <div className="w-12 h-1 bg-[#A70336] rounded-full"></div>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Reordenamiento Urbano</h5>
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#273376] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#273376] mb-3">Reordenamiento Urbano</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Definición de normas urbanísticas y uso de espacios, validados por la Asamblea de Ciudadanos.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Regularizacion Nacional</h5>
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#FFC907] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#273376] mb-3">Regularizacion Nacional</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Coadyuvamos con OTM y CTU en la regularización de la tenencia de tierra urbana en todo el país.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#003366] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Cartografia Popular</h5>
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#273376] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#273376] mb-3">Cartografia Popular</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Abordaje participativo mediante la Agenda Concreta de Acción (ACA) y microzonificación de riesgos.
             </p>
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#b8860b] hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#003366] mb-3">Transformacion Integral</h5>
+          <div className="bg-gray-50 p-6 rounded-[15px] border-t-4 border-[#FFC907] hover:shadow-md transition-shadow">
+            <h5 className="font-bold text-[#273376] mb-3">Transformacion Integral</h5>
             <p className="text-gray-600 text-sm leading-relaxed">
               Basado en la Carta del Barrio, articulamos políticas de rehabilitación de viviendas y espacios públicos.
             </p>

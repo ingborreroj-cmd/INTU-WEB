@@ -14,17 +14,17 @@ const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
   const excerpt = item.content ? item.content.slice(0, 120) : undefined;
 
   return (
-    <div className="group relative overflow-hidden rounded-[20px] min-h-[420px] shadow-xl bg-[#001a33]">
+    <div className="group relative overflow-hidden rounded-[20px] min-h-[420px] shadow-xl bg-[#121a38]">
       <img
         src={item.image || 'https://picsum.photos/seed/intu/600/400'}
         alt={item.title}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#003366] via-[#003366]/20 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#273376] via-[#273376]/20 to-transparent"></div>
 
       <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-all duration-500">
         <div className="flex items-center gap-2 text-white/70 text-[10px] font-bold uppercase tracking-widest mb-3">
-          <Calendar size={12} className="text-[#f6d07d]" />
+          <Calendar size={12} className="text-[#FFF27C]" />
           {item.date}
         </div>
         <h3 className="text-white font-montserrat font-bold text-lg mb-2 leading-tight whitespace-normal break-words">
@@ -35,7 +35,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
             {excerpt.trim()} {item.content && item.content.length > 120 ? '...' : ''}
           </p>
         )}
-        <p className="text-[#f6d07d] text-[11px] font-black mb-5 uppercase tracking-widest">
+        <p className="text-[#FFF27C] text-[11px] font-black mb-5 uppercase tracking-widest">
           {item.source}
         </p>
 
@@ -45,7 +45,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#b8860b] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all hover:bg-white hover:text-[#003366] shadow-lg"
+              className="inline-flex items-center gap-2 bg-[#FFC907] text-[#273376] px-5 py-2.5 rounded-full text-xs font-bold transition-all hover:bg-white hover:text-[#273376] shadow-lg"
             >
               Leer noticia <ExternalLink size={14} />
             </a>
@@ -84,8 +84,8 @@ const News: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-32 flex flex-col items-center justify-center text-[#003366] gap-3">
-        <div className="animate-spin rounded-full h-8 w-8 border-4 border-[#003366] border-t-[#b8860b]"></div>
+      <div className="py-32 flex flex-col items-center justify-center text-[#273376] gap-3">
+        <div className="animate-spin rounded-full h-8 w-8 border-4 border-[#273376] border-t-[#FFC907]"></div>
         <span className="text-xs font-bold tracking-wider opacity-70">Sincronizando Galería de Prensa...</span>
       </div>
     );
@@ -98,9 +98,9 @@ const News: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-10">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-[3px] bg-[#b8860b]"></div>
+              <div className="w-12 h-[3px] bg-[#FFC907]"></div>
             </div>
-            <h2 className="text-[#003366] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
+            <h2 className="text-[#273376] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
               Noticias <span className="text-gray-300">INTU</span>
             </h2>
           </div>
@@ -136,9 +136,9 @@ const News: React.FC = () => {
     {/* Títulos (Lado Izquierdo) */}
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-[3px] bg-[#003366]"></div>
+        <div className="w-12 h-[3px] bg-[#273376]"></div>
       </div>
-      <h2 className="text-[#003366] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
+      <h2 className="text-[#273376] font-montserrat font-black text-4xl md:text-5xl uppercase tracking-tighter">
        Noticias Nacionales 
       </h2>
     </div>
@@ -166,17 +166,17 @@ const News: React.FC = () => {
       <div className="mt-20 px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 bg-gradient-to-br from-[#b8860b] to-[#8b6508] rounded-2xl flex items-center justify-center text-white shadow-xl rotate-3 flex-shrink-0">
+            <div className="w-14 h-14 bg-gradient-to-br from-[#FFC907] to-[#b88702] rounded-2xl flex items-center justify-center text-white shadow-xl rotate-3 flex-shrink-0">
               <Instagram size={30} />
             </div>
             <div>
-              <h3 className="text-[#003366] font-montserrat font-black text-3xl uppercase tracking-tighter leading-none">
-                Comunidad <span className="text-[#b8860b]">INTU</span>
+              <h3 className="text-[#273376] font-montserrat font-black text-3xl uppercase tracking-tighter leading-none">
+                Comunidad <span className="text-[#FFC907]">INTU</span>
               </h3>
               <p className="text-gray-400 text-sm mt-1 font-medium">Nuestra presencia en Instagram</p>
             </div>
           </div>
-          <span className="hidden md:block text-[#003366]/40 font-black text-sm uppercase tracking-widest">@intu_ve</span>
+          <span className="hidden md:block text-[#273376]/40 font-black text-sm uppercase tracking-widest">@intu_ve</span>
         </div>
 
         <div className="flex gap-8 overflow-x-auto pb-12 scrollbar-hide">

@@ -28,11 +28,11 @@ const Tramites = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-16">
         {/* Título Principal */}
-        <h2 className="text-[#003366] font-montserrat font-extrabold text-3xl md:text-4xl mb-4">
+        <h2 className="text-[#273376] font-montserrat font-extrabold text-3xl md:text-4xl mb-4">
           Conoce nuestros trámites
         </h2>
         {/* Línea divisoria dorada */}
-        <div className="w-24 h-1 bg-[#b8860b] mx-auto"></div>
+        <div className="w-24 h-1 bg-[#FFC907] mx-auto"></div>
         <p className="mt-4 text-slate-600 max-w-2xl mx-auto font-light">
           Explora los servicios disponibles para la regularización y titularidad de tierras urbanas a nivel nacional.
         </p>

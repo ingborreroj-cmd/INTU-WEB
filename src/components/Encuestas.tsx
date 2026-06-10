@@ -86,7 +86,7 @@ const Encuestas: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 rounded-full bg-[#b8860b] px-4 py-3 text-white shadow-2xl transition hover:scale-105"
+          className="flex items-center gap-2 rounded-full bg-[#FFC907] px-4 py-3 text-white shadow-2xl transition hover:scale-105"
         >
           <ClipboardList size={20} />
           Encuesta
@@ -95,9 +95,9 @@ const Encuestas: React.FC = () => {
 
       {isOpen && (
         <div className="w-[320px] sm:w-[380px] rounded-[28px] border border-slate-200 bg-white shadow-2xl overflow-hidden animate-fade-up">
-          <div className="flex items-center justify-between bg-[#003366] px-5 py-4 text-white">
+          <div className="flex items-center justify-between bg-[#273376] px-5 py-4 text-white">
             <div className="flex items-center gap-3">
-              <div className="bg-[#b8860b] p-2 rounded-xl shadow-lg">
+              <div className="bg-[#FFC907] p-2 rounded-xl shadow-lg">
                 <BarChart3 size={18} />
               </div>
               <div>
@@ -118,8 +118,8 @@ const Encuestas: React.FC = () => {
 
             {submitted ? (
               <div className="space-y-4">
-                <div className="rounded-3xl border border-[#003366]/10 bg-[#f8fafc] p-4 text-slate-700">
-                  <p className="font-semibold text-[#003366]">¡Gracias por participar!</p>
+                <div className="rounded-3xl border border-[#273376]/10 bg-[#f8fafc] p-4 text-slate-700">
+                  <p className="font-semibold text-[#273376]">¡Gracias por participar!</p>
                   <p className="mt-2 text-sm text-slate-600">Tus respuestas se guardaron localmente como base para mejoras futuras.</p>
                 </div>
                 <div className="space-y-3">
@@ -132,7 +132,7 @@ const Encuestas: React.FC = () => {
                 </div>
                 <button
                   onClick={handleRestart}
-                  className="w-full rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white hover:bg-[#0f3a67] transition"
+                  className="w-full rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1d2f5a] transition"
                 >
                   Completar nuevamente
                 </button>
@@ -148,7 +148,7 @@ const Encuestas: React.FC = () => {
                           key={option}
                           type="button"
                           onClick={() => handleSelectOption(option)}
-                          className={`w-full text-left rounded-2xl border px-4 py-3 text-sm transition ${responses[activeQuestion.id] === option ? 'border-[#003366] bg-[#003366] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}
+                          className={`w-full text-left rounded-2xl border px-4 py-3 text-sm transition ${responses[activeQuestion.id] === option ? 'border-[#273376] bg-[#273376] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}
                         >
                           {option}
                         </button>
@@ -161,7 +161,7 @@ const Encuestas: React.FC = () => {
                       value={responses[activeQuestion.id] || ''}
                       onChange={(e) => handleInputChange(e.target.value)}
                       placeholder={activeQuestion.placeholder}
-                      className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none focus:border-[#003366] transition"
+                      className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none focus:border-[#273376] transition"
                     />
                   )}
                 </div>
@@ -180,7 +180,7 @@ const Encuestas: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="rounded-full bg-[#003366] px-4 py-3 text-sm font-semibold text-white hover:bg-[#0f3a67] transition"
+                    className="rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1d2f5a] transition"
                   >
                     {currentStep + 1 < SURVEY_QUESTIONS.length ? 'Siguiente' : 'Enviar'}
                   </button>

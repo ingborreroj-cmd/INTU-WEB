@@ -30,7 +30,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-[#003366] py-2 shadow-md' : 'bg-transparent py-4'
+      isScrolled ? 'bg-[#273376] py-2 shadow-md' : 'bg-transparent py-4'
     }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
@@ -74,7 +74,7 @@ const Header: React.FC = () => {
                     <a
                       key={service.label}
                       href={service.href}
-                      className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#003366]"
+                      className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#A70336]"
                     >
                       {service.label}
                     </a>
@@ -118,19 +118,19 @@ const Header: React.FC = () => {
           {/* En móvil también los ordenamos: Inicio -> Servicios -> Resto */}
           <a
             href={navItems[0].href}
-            className="text-[#003366] font-semibold text-lg py-2 border-b border-gray-100"
+            className="text-[#273376] font-semibold text-lg py-2 border-b border-gray-100"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navItems[0].label}
           </a>
           
           <div className="py-2 border-b border-gray-100">
-            <p className="text-[#003366] font-semibold text-lg mb-2">Servicios</p>
+            <p className="text-[#273376] font-semibold text-lg mb-2">Servicios</p>
             {servicesMenuItems.map((service) => (
               <a
                 key={service.label}
                 href={service.href}
-                className="block text-[#003366] font-medium text-base py-1 hover:text-[#001f44]"
+                className="block text-[#273376] font-medium text-base py-1 hover:text-[#111d48]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {service.label}
@@ -142,7 +142,7 @@ const Header: React.FC = () => {
             <a
               key={item.label}
               href={item.href}
-              className="text-[#003366] font-semibold text-lg py-2 border-b border-gray-100"
+              className="text-[#273376] font-semibold text-lg py-2 border-b border-gray-100"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.label}

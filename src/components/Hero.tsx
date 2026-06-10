@@ -30,8 +30,8 @@ const Hero: React.FC = () => {
 
   if (loading || slides.length === 0) {
     return (
-      <div className="h-[85vh] bg-[#003366] flex flex-col items-center justify-center text-white font-montserrat gap-3">
-        <div className="animate-spin rounded-full h-7 w-7 border-4 border-white border-t-[#b8860b]"></div>
+      <div className="h-[85vh] bg-[#273376] flex flex-col items-center justify-center text-white font-montserrat gap-3">
+        <div className="animate-spin rounded-full h-7 w-7 border-4 border-white border-t-[#FFC907]"></div>
         <span className="text-xs tracking-wider text-white/70 font-semibold">Cargando Módulo de Inicio...</span>
       </div>
     );
@@ -44,13 +44,13 @@ const Hero: React.FC = () => {
         className="absolute inset-0 z-0 scale-105 transition-all duration-700 ease-out filter brightness-110 contrast-105"
         style={{ backgroundImage: `url("${currentSlide.imageUrl}")`, backgroundPosition: 'center', backgroundSize: 'cover' }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#003366]/70 via-[#003366]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#273376]/70 via-[#273376]/40 to-transparent" />
       </div>
       <div className="absolute inset-0 bg-slate-950/15" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl animate-fade-up">
-          <div className="inline-flex items-center gap-2 bg-[#b8860b]/20 text-[#f6d07d] border border-[#b8860b]/30 px-4 py-1.5 rounded-full mb-5 text-sm font-semibold backdrop-blur-sm shadow-md">
+          <div className="inline-flex items-center gap-2 bg-[#FFC907]/20 text-[#FFF27C] border border-[#FFC907]/30 px-4 py-1.5 rounded-full mb-5 text-sm font-semibold backdrop-blur-sm shadow-md">
             <CheckCircle size={15} /> Democratizando la propiedad del suelo
           </div>
           <h1 className="clamp-title font-montserrat font-extrabold text-white leading-tight mb-5 drop-shadow-2xl" style={{ textShadow: '2px 2px 10px rgba(0,0,0,0.45)' }}>
@@ -60,10 +60,10 @@ const Hero: React.FC = () => {
             {currentSlide.caption}
           </p>
           <div className="flex flex-col sm:flex-row gap-3.5">
-            <a href="#servicios" className="bg-gradient-to-r from-[#b8860b] to-[#9a700a] text-white px-7 py-3.5 rounded-[15px] font-bold text-base flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-xl hover:scale-105 transform">
+            <a href="#servicios" className="bg-gradient-to-r from-[#FFC907] to-[#d3a300] text-white px-7 py-3.5 rounded-[15px] font-bold text-base flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-xl hover:scale-105 transform">
               Nuestros Servicios <ArrowRight size={18} />
             </a>
-            <a href="#nosotros" className="bg-white/10 text-white border border-white/20 backdrop-blur-md px-7 py-3.5 rounded-[15px] font-bold text-base text-center transition-all hover:bg-white/20">
+            <a href="#nosotros" className="bg-white/10 text-white border border-white/20 backdrop-blur-md px-7 py-3.5 rounded-[15px] font-bold text-base text-center transition-all hover:bg-white/20 hover:text-[#273376]">
               Conoce el INTU
             </a>
           </div>
@@ -76,7 +76,7 @@ const Hero: React.FC = () => {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`h-2.5 w-2.5 rounded-full transition-all ${index === currentIndex ? 'bg-[#b8860b] w-6' : 'bg-white/40 hover:bg-white'}`}
+              className={`h-2.5 w-2.5 rounded-full transition-all ${index === currentIndex ? 'bg-[#FFC907] w-6' : 'bg-white/40 hover:bg-white'}`}
             />
           ))}
         </div>
@@ -84,12 +84,12 @@ const Hero: React.FC = () => {
 
       <div className="hidden lg:flex absolute bottom-12 right-12 gap-8 bg-white/10 backdrop-blur-xl p-6 rounded-[20px] border border-white/15 shadow-2xl">
         <div className="text-center">
-          <p className="text-[#b8860b] text-2xl font-extrabold font-montserrat">+2.5M</p>
+          <p className="text-[#FFC907] text-2xl font-extrabold font-montserrat">+2.5M</p>
           <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold mt-0.5">Títulos Entregados</p>
         </div>
         <div className="w-px bg-white/15"></div>
         <div className="text-center">
-          <p className="text-[#b8860b] text-2xl font-extrabold font-montserrat">1,200</p>
+          <p className="text-[#FFC907] text-2xl font-extrabold font-montserrat">1,200</p>
           <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold mt-0.5">Comités Activos</p>
         </div>
       </div>

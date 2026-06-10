@@ -79,7 +79,7 @@ const INTUBot: React.FC = () => {
     <button 
       onClick={() => handleSend(text)}
       disabled={isLoading}
-      className="text-[11px] bg-white border border-[#003366]/20 text-[#003366] px-3 py-1.5 rounded-full hover:bg-[#003366] hover:text-white transition-colors font-bold disabled:opacity-50"
+      className="text-[11px] bg-white border border-[#273376]/20 text-[#273376] px-3 py-1.5 rounded-full hover:bg-[#273376] hover:text-white transition-colors font-bold disabled:opacity-50"
     >
       {text}
     </button>
@@ -90,7 +90,7 @@ const INTUBot: React.FC = () => {
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)}
-          className="bg-[#003366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform animate-bounce hover:animate-none border-2 border-white"
+          className="bg-[#273376] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform animate-bounce hover:animate-none border-2 border-white"
         >
           <MessageSquare size={28} />
         </button>
@@ -98,9 +98,9 @@ const INTUBot: React.FC = () => {
 
       {isOpen && (
         <div className="bg-white w-[350px] sm:w-[400px] h-[550px] rounded-[25px] shadow-2xl flex flex-col overflow-hidden border border-gray-100 animate-fade-up">
-          <div className="bg-[#003366] p-5 text-white flex justify-between items-center">
+          <div className="bg-[#273376] p-5 text-white flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="bg-[#b8860b] p-2 rounded-xl rotate-3 shadow-lg">
+              <div className="bg-[#FFC907] p-2 rounded-xl rotate-3 shadow-lg">
                 <Bot size={22} />
               </div>
               <div>
@@ -121,7 +121,7 @@ const INTUBot: React.FC = () => {
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] p-3.5 rounded-2xl text-[13px] leading-relaxed ${
                   m.role === 'user' 
-                    ? 'bg-[#003366] text-white rounded-tr-none shadow-md' 
+                    ? 'bg-[#273376] text-white rounded-tr-none shadow-md' 
                     : 'bg-white text-gray-700 shadow-sm border border-gray-100 rounded-tl-none font-medium'
                 }`}>
                   {m.text}
@@ -131,7 +131,7 @@ const INTUBot: React.FC = () => {
             
             {isLoading && (
               <div className="flex justify-start items-center gap-2 text-gray-400 text-xs font-semibold pl-2">
-                <Loader2 size={16} className="animate-spin text-[#b8860b]" />
+                <Loader2 size={16} className="animate-spin text-[#FFC907]" />
                 INTUBot está procesando...
               </div>
             )}
@@ -152,7 +152,7 @@ const INTUBot: React.FC = () => {
                 type="text" 
                 placeholder={isLoading ? "Espera un momento..." : "Escribe tu duda aquí..."}
                 disabled={isLoading}
-                className="flex-grow pl-4 pr-10 py-3 bg-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#003366]/20 transition-all font-medium disabled:opacity-50"
+                className="flex-grow pl-4 pr-10 py-3 bg-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#273376]/20 transition-all font-medium disabled:opacity-50"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -160,7 +160,7 @@ const INTUBot: React.FC = () => {
               <button 
                 onClick={() => handleSend()}
                 disabled={isLoading}
-                className="p-3 bg-[#003366] text-white rounded-xl hover:bg-[#b8860b] transition-all disabled:opacity-50"
+                className="p-3 bg-[#273376] text-white rounded-xl hover:bg-[#FFC907] transition-all disabled:opacity-50"
               >
                 <Send size={18} />
               </button>

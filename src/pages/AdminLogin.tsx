@@ -43,7 +43,7 @@ const AdminLogin: React.FC = () => {
           <label className="block text-sm">Password</label>
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full border p-2 rounded" />
         </div>
-        <button className="w-full bg-blue-600 text-white py-2 rounded">Ingresar</button>
+        <button className="w-full bg-[#273376] text-white py-2 rounded">Ingresar</button>
       </form>
     </div>
   );

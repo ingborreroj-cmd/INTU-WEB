@@ -1,7 +1,25 @@
 import React from 'react';
-import { Target, Eye, Shield } from 'lucide-react';
+import { Target, Eye } from 'lucide-react';
+import aboutModalData from '../data/about_modal_data';
 
 const About: React.FC = () => {
+  const [activeModal, setActiveModal] = React.useState<'values' | 'vision' | null>(null);
+
+  React.useEffect(() => {
+    if (!activeModal) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousPadding = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.body.style.paddingRight = previousPadding;
+    };
+  }, [activeModal]);
+
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 relative overflow-hidden">
       
@@ -61,69 +79,77 @@ const About: React.FC = () => {
               </p>
             </div>
 
-            {/* Fila Modular Inferior: Misión y Valores en paralelo con Espacio para Imágenes */}
+            {/* Fila Modular Inferior: Misión y Visión en paralelo con Imágenes más grandes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               
-              {/* Tarjeta de Misión */}
+              {/* Tarjeta de Valores */}
               <div className="bg-white p-6 rounded-[24px] shadow-md border border-slate-100/80 flex flex-col justify-between overflow-hidden">
                 <div>
                   <div className="flex items-center gap-3 mb-3 border-b border-slate-50 pb-2">
                     <div className="p-2 bg-slate-50 rounded-xl text-[#FFC907]">
                       <Target size={20} />
                     </div>
-                    <h4 className="font-montserrat font-bold text-base text-[#273376]">Misión</h4>
+                    <h4 className="font-montserrat font-bold text-base text-[#273376]">Valores</h4>
                   </div>
                   <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-light line-clamp-4 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Democratización, innovación, compromiso social, seguridad jurídica y calidad humana como pilares del INTU.
                   </p>
                 </div>
-                
-                {/* Espacio para la Imagen de Referencia de Misión */}
-                <div className="mt-2 h-28 w-full rounded-xl overflow-hidden relative border border-slate-100 shadow-sm">
+
+                <div className="mt-2 h-44 md:h-52 w-full rounded-[28px] overflow-hidden relative border border-slate-100 shadow-sm">
                   <img 
-                    src="/assets/img/about_mision.jpg" 
-                    alt="Referencia Misión INTU" 
+                    src="/assets/img/valores.jpeg" 
+                    alt="Valores INTU" 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.src = "https://picsum.photos/seed/mision/400/200";
+                      e.currentTarget.src = "https://picsum.photos/seed/valores/600/400";
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-2.5">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-3">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-white">Garantizando derechos</span>
                   </div>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('values')}
+                  className="mt-6 w-full bg-[#273376] text-white py-3 rounded-xl font-bold hover:bg-[#FFC907] transition-all"
+                >
+                  Saber más
+                </button>
               </div>
 
-              {/* Tarjeta de Valores */}
+              {/* Tarjeta de Visión */}
               <div className="bg-white p-6 rounded-[24px] shadow-md border border-slate-100/80 flex flex-col justify-between overflow-hidden">
                 <div>
                   <div className="flex items-center gap-3 mb-3 border-b border-slate-50 pb-2">
                     <div className="p-2 bg-slate-50 rounded-xl text-[#FFC907]">
                       <Eye size={20} />
                     </div>
-                    <h4 className="font-montserrat font-bold text-base text-[#273376]">Valores</h4>
+                    <h4 className="font-montserrat font-bold text-base text-[#273376]">Visión</h4>
                   </div>
                   <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-light line-clamp-4 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  </p>
+                    Nuestra visión institucional representa el compromiso, responsabilidad y operatividad para garantizar el derecho a la tierra urbana.                  </p>
                 </div>
 
-                {/* Espacio para la Imagen de Referencia de Valores */}
-                <div className="mt-2 h-28 w-full rounded-xl overflow-hidden relative border border-slate-100 shadow-sm">
+                <div className="mt-2 h-44 md:h-52 w-full rounded-[28px] overflow-hidden relative border border-slate-100 shadow-sm">
                   <img 
-                    src="/assets/img/about_valores.jpg" 
-                    alt="Referencia Valores INTU" 
+                    src="/assets/img/vision.jpeg" 
+                    alt="Visión INTU" 
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://picsum.photos/seed/valores/400/200";
-                    }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-2.5">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-3">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-white">Construyendo el futuro</span>
                   </div>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveModal('vision')}
+                  className="mt-6 w-full bg-[#273376] text-white py-3 rounded-xl font-bold hover:bg-[#FFC907] transition-all"
+                >
+                  Saber más
+                </button>
               </div>
 
             </div>
@@ -181,6 +207,37 @@ const About: React.FC = () => {
         </div>
       </div>
       
+      {activeModal ? (
+        <div className="fixed inset-0 z-[1050] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[24px] bg-white shadow-2xl">
+            <div className="flex items-start justify-between border-b border-slate-200 p-6">
+              <div>
+                <h3 className="text-2xl font-montserrat font-bold text-[#273376]">{aboutModalData[activeModal].title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{aboutModalData[activeModal].summary}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="text-slate-500 hover:text-red-500 p-2"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="overflow-y-auto p-6 text-sm leading-relaxed text-slate-700 max-h-[calc(90vh-164px)] whitespace-pre-line">
+              {aboutModalData[activeModal].details}
+            </div>
+            <div className="border-t border-slate-200 p-6 text-right">
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="inline-flex items-center justify-center rounded-xl bg-[#273376] px-5 py-3 text-sm font-semibold text-white hover:bg-[#FFC907] transition-all"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

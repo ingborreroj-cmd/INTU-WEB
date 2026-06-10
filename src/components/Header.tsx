@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import CatastroModal from './CatastroModal';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+  const [catastroOpen, setCatastroOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,13 +73,23 @@ const Header: React.FC = () => {
               <div className={`absolute left-0 top-full mt-3 w-56 rounded-2xl border border-gray-200 bg-white shadow-xl transition-all duration-200 z-50 ${servicesMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                 <div className="flex flex-col py-3">
                   {servicesMenuItems.map((service) => (
-                    <a
-                      key={service.label}
-                      href={service.href}
-                      className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#A70336]"
-                    >
-                      {service.label}
-                    </a>
+                    service.label.toLowerCase() === 'catastro popular' ? (
+                      <button
+                        key={service.label}
+                        onClick={() => { setCatastroOpen(true); setServicesMenuOpen(false); }}
+                        className="text-left w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#A70336]"
+                      >
+                        {service.label}
+                      </button>
+                    ) : (
+                      <a
+                        key={service.label}
+                        href={service.href}
+                        className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#A70336]"
+                      >
+                        {service.label}
+                      </a>
+                    )
                   ))}
                 </div>
               </div>
@@ -127,14 +139,24 @@ const Header: React.FC = () => {
           <div className="py-2 border-b border-gray-100">
             <p className="text-[#273376] font-semibold text-lg mb-2">Servicios</p>
             {servicesMenuItems.map((service) => (
-              <a
-                key={service.label}
-                href={service.href}
-                className="block text-[#273376] font-medium text-base py-1 hover:text-[#111d48]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {service.label}
-              </a>
+              service.label.toLowerCase() === 'catastro popular' ? (
+                <button
+                  key={service.label}
+                  onClick={() => { setCatastroOpen(true); setMobileMenuOpen(false); }}
+                  className="block text-[#273376] font-medium text-base py-1 hover:text-[#111d48] text-left w-full"
+                >
+                  {service.label}
+                </button>
+              ) : (
+                <a
+                  key={service.label}
+                  href={service.href}
+                  className="block text-[#273376] font-medium text-base py-1 hover:text-[#111d48]"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {service.label}
+                </a>
+              )
             ))}
           </div>
 
@@ -150,6 +172,7 @@ const Header: React.FC = () => {
           ))}
         </div>
       </div>
+      <CatastroModal isOpen={catastroOpen} onClose={() => setCatastroOpen(false)} />
     </header>
   );
 };

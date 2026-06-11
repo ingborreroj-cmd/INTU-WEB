@@ -5,8 +5,8 @@ export interface NewsItem {
   title: string;
   source: string;
   url: string;
-  excerpt?: string;
   content?: string;
+  createdBy?: string;
 }
 
 export const DEFAULT_NEWS: NewsItem[] = [

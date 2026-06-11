@@ -220,6 +220,7 @@ const AdminDashboard: React.FC = () => {
         title: 'Nuevo comunicado oficial',
         source: 'Prensa INTU',
         url: '#',
+        createdBy: 'Equipo INTU',
         content: 'Describe el comunicado institucional aquí.',
       },
     ]);
@@ -374,8 +375,8 @@ const AdminDashboard: React.FC = () => {
               className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-[#273376] hover:text-white"
             >
               {section === 'hero' && 'Hero'}
-              {section === 'news' && 'Noticias'}
-              {section === 'official' && 'Noticias Oficiales'}
+              {section === 'news' && 'Noticias Nacionales'}
+              {section === 'official' && 'Noticias INTU'}
               {section === 'admin' && 'Administradores'}
             </a>
           ))}
@@ -489,9 +490,9 @@ const AdminDashboard: React.FC = () => {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
-                <Settings size={16} /> Noticias Globales
+                <Settings size={16} /> Noticias Nacionales
               </div>
-              <h2 className="mt-4 text-2xl font-bold text-[#273376]">Noticias públicas/ Actualizaciones</h2>
+              <h2 className="mt-4 text-2xl font-bold text-[#273376]">Noticias Nacionales</h2>
               <p className="mt-2 text-sm text-slate-500">Actualiza titulares, enlaces e imágenes de la sección de prensa.</p>
             </div>
             <button
@@ -557,6 +558,7 @@ const AdminDashboard: React.FC = () => {
                       <input
                         type="text"
                         value={item.url}
+                        placeholder="https://ejemplo.com"
                         onChange={(e) => handleNewsChange(idx, 'url', e.target.value)}
                         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
@@ -607,7 +609,7 @@ const AdminDashboard: React.FC = () => {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#FFC907]/10 px-4 py-2 text-sm font-semibold text-[#FFC907]">
-                <CheckCircle size={16} /> Noticias Oficiales
+                <CheckCircle size={16} /> Noticias INTU
               </div>
               <h2 className="mt-4 text-2xl font-bold text-[#273376]">Comunicados institucionales</h2>
               <p className="mt-2 text-sm text-slate-500">Gestiona las noticias oficiales desde el mismo panel.</p>
@@ -670,21 +672,33 @@ const AdminDashboard: React.FC = () => {
                         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Contenido</label>
-                      <textarea
-                        rows={4}
-                        value={item.content || ''}
-                        onChange={(e) => handleOfficialNewsChange(idx, 'content', e.target.value)}
-                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
-                      />
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">URL</label>
+                        <input
+                          type="text"
+                          value={item.url || ''}
+                          placeholder="https://ejemplo.com"
+                          onChange={(e) => handleOfficialNewsChange(idx, 'url', e.target.value)}
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Creado por</label>
+                        <input
+                          type="text"
+                          value={item.createdBy || ''}
+                          onChange={(e) => handleOfficialNewsChange(idx, 'createdBy', e.target.value)}
+                          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">URL</label>
-                      <input
-                        type="text"
-                        value={item.url || ''}
-                        onChange={(e) => handleOfficialNewsChange(idx, 'url', e.target.value)}
+                      <label className="block text-xs font-bold text-slate-700 mb-2">Contenido del modal</label>
+                      <textarea
+                        rows={6}
+                        value={item.content || ''}
+                        onChange={(e) => handleOfficialNewsChange(idx, 'content', e.target.value)}
                         className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
                       />
                     </div>
@@ -709,10 +723,6 @@ const AdminDashboard: React.FC = () => {
                           Sin imagen cargada
                         </div>
                       )}
-                    </div>
-                    <div className="mt-4 text-left text-sm leading-6 text-slate-700">
-                      <p className="font-semibold">Resumen</p>
-                      <p>{item.content ? item.content.slice(0, 120) + (item.content.length > 120 ? '...' : '') : 'Sin contenido.'}</p>
                     </div>
                   </div>
                 </div>

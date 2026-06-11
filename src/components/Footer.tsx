@@ -36,8 +36,7 @@ const Footer: React.FC = () => {
               </div>
 
               <p className="text-white/60 text-[13px] md:text-sm leading-relaxed max-w-sm font-light">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-              </p>
+                Ministerio del Poder Popular para Hábitat y Vivienda (MINHVI)Órgano gubernamental encargado de formular, ejecutar y regular las políticas nacionales de vivienda, urbanismo y hábitat en Venezuela, impulsando el desarrollo social a través de la Gran Misión Vivienda Venezuela (GMVV).              </p>
             </div>
 
             {/* Fila de Redes Sociales Temporales */}

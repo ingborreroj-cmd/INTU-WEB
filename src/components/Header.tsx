@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import CatastroModal from './CatastroModal';
 
@@ -30,6 +31,31 @@ const Header: React.FC = () => {
     { label: 'Catastro popular', href: '#catastro' },
   ];
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNav = (href: string) => {
+    if (!href) return;
+    // section anchors like #inicio
+    if (href.startsWith('#')) {
+      const id = href.slice(1);
+      if (location.pathname !== '/') {
+        navigate('/');
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          else window.location.hash = id;
+        }, 80);
+      } else {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        else window.location.hash = id;
+      }
+    } else {
+      navigate(href);
+    }
+  };
+
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
       isScrolled ? 'bg-[#273376] py-2 shadow-md' : 'bg-transparent py-4'
@@ -49,12 +75,13 @@ const Header: React.FC = () => {
           {/* CENTRO: NAVEGACIÓN (Desktop) */}
           <nav className="hidden xl:flex gap-8 items-center">
             {/* 1. Renderizamos solo el Inicio */}
-            <a
-              href={navItems[0].href}
+            <button
+              type="button"
+              onClick={() => handleNav(navItems[0].href)}
               className="nav-underline font-medium text-sm font-montserrat text-white hover:text-gray-200"
             >
               {navItems[0].label}
-            </a>
+            </button>
 
             {/* 2. Renderizamos el Dropdown de Servicios inmediatamente después */}
             <div
@@ -62,13 +89,14 @@ const Header: React.FC = () => {
               onMouseEnter={() => setServicesMenuOpen(true)}
               onMouseLeave={() => setServicesMenuOpen(false)}
             >
-              <a
-                href="#servicios"
+              <button
+                type="button"
+                onClick={() => setServicesMenuOpen((s) => !s)}
                 className="nav-underline inline-flex items-center gap-1 font-medium text-sm font-montserrat text-white hover:text-gray-200"
               >
                 Servicios
                 <ChevronDown className="h-4 w-4" />
-              </a>
+              </button>
 
               <div className={`absolute left-0 top-full mt-3 w-56 rounded-2xl border border-gray-200 bg-white shadow-xl transition-all duration-200 z-50 ${servicesMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                 <div className="flex flex-col py-3">
@@ -82,13 +110,14 @@ const Header: React.FC = () => {
                         {service.label}
                       </button>
                     ) : (
-                      <a
+                      <button
                         key={service.label}
-                        href={service.href}
-                        className="px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#A70336]"
+                        type="button"
+                        onClick={() => { handleNav(service.href); setServicesMenuOpen(false); }}
+                        className="text-left w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#A70336]"
                       >
                         {service.label}
-                      </a>
+                      </button>
                     )
                   ))}
                 </div>
@@ -97,13 +126,14 @@ const Header: React.FC = () => {
 
             {/* 3. Renderizamos el resto de los items (slice desde el índice 1) */}
             {navItems.slice(1).map((item) => (
-              <a
+              <button
                 key={item.label}
-                href={item.href}
+                type="button"
+                onClick={() => handleNav(item.href)}
                 className="nav-underline font-medium text-sm font-montserrat text-white hover:text-gray-200"
               >
                 {item.label}
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -126,15 +156,15 @@ const Header: React.FC = () => {
 
       {/* Menú Móvil */}
       <div className={`md:hidden absolute top-full left-0 w-full bg-white shadow-xl transition-all duration-300 transform ${mobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-5 opacity-0 pointer-events-none'}`}>
-        <div className="flex flex-col p-6 gap-4">
+          <div className="flex flex-col p-6 gap-4">
           {/* En móvil también los ordenamos: Inicio -> Servicios -> Resto */}
-          <a
-            href={navItems[0].href}
-            className="text-[#273376] font-semibold text-lg py-2 border-b border-gray-100"
-            onClick={() => setMobileMenuOpen(false)}
+          <button
+            type="button"
+            onClick={() => { handleNav(navItems[0].href); setMobileMenuOpen(false); }}
+            className="text-[#273376] font-semibold text-lg py-2 border-b border-gray-100 text-left"
           >
             {navItems[0].label}
-          </a>
+          </button>
           
           <div className="py-2 border-b border-gray-100">
             <p className="text-[#273376] font-semibold text-lg mb-2">Servicios</p>
@@ -148,27 +178,27 @@ const Header: React.FC = () => {
                   {service.label}
                 </button>
               ) : (
-                <a
+                <button
                   key={service.label}
-                  href={service.href}
-                  className="block text-[#273376] font-medium text-base py-1 hover:text-[#111d48]"
-                  onClick={() => setMobileMenuOpen(false)}
+                  type="button"
+                  onClick={() => { handleNav(service.href); setMobileMenuOpen(false); }}
+                  className="block text-[#273376] font-medium text-base py-1 hover:text-[#111d48] text-left w-full"
                 >
                   {service.label}
-                </a>
+                </button>
               )
             ))}
           </div>
 
           {navItems.slice(1).map((item) => (
-            <a
+            <button
               key={item.label}
-              href={item.href}
-              className="text-[#273376] font-semibold text-lg py-2 border-b border-gray-100"
-              onClick={() => setMobileMenuOpen(false)}
+              type="button"
+              onClick={() => { handleNav(item.href); setMobileMenuOpen(false); }}
+              className="text-[#273376] font-semibold text-lg py-2 border-b border-gray-100 text-left"
             >
               {item.label}
-            </a>
+            </button>
           ))}
         </div>
       </div>

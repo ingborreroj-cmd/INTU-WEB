@@ -32,8 +32,8 @@ model HeroItem {
 model NewsItem {
   id        Int      @id @default(autoincrement())
   title     String
-  excerpt   String?
   content   String?
+  createdBy String?
   imagePath String?
   date      String?
   source    String?

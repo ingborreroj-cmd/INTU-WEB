@@ -13,13 +13,13 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', ensureAdmin, upload.single('image'), async (req, res) => {
-  const { title, excerpt, content, published, date, source, url, active, section } = req.body as any;
+  const { title, content, createdBy, published, date, source, url, active, section } = req.body as any;
   const imagePath = req.file ? `/uploads/${req.file.filename}` : undefined;
   const created = await prisma.newsItem.create({
     data: {
       title,
-      excerpt,
       content,
+      createdBy,
       imagePath,
       date,
       source,
@@ -32,7 +32,7 @@ router.post('/', ensureAdmin, upload.single('image'), async (req, res) => {
   res.json(created);
 });
 
-// Bulk replace news items for a specific section. Expects JSON array in body: [{ title, excerpt, content, imageData (dataURL)?, date, source, url, published?, active }]
+// Bulk replace news items for a specific section. Expects JSON array in body: [{ title, content, imageData (dataURL)?, date, source, url, published?, active }]
 router.put('/bulk', ensureAdmin, async (req, res) => {
   const items = req.body as any[];
   const section = req.query.section?.toString() || 'news';
@@ -53,8 +53,8 @@ router.put('/bulk', ensureAdmin, async (req, res) => {
     const c = await prisma.newsItem.create({
       data: {
         title: it.title || '',
-        excerpt: it.excerpt || '',
         content: it.content || '',
+        createdBy: it.createdBy || undefined,
         imagePath,
         date: it.date || undefined,
         source: it.source || undefined,
@@ -72,7 +72,7 @@ router.put('/bulk', ensureAdmin, async (req, res) => {
 router.put('/:id', ensureAdmin, upload.single('image'), async (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) return res.status(400).json({ message: 'Invalid news id' });
-  const { title, excerpt, content, published, date, source, url, active, section } = req.body as any;
+  const { title, content, createdBy, published, date, source, url, active, section } = req.body as any;
   const existing = await prisma.newsItem.findUnique({ where: { id } });
   if (!existing) return res.status(404).json({ message: 'Not found' });
   let imagePath = existing.imagePath;
@@ -84,8 +84,8 @@ router.put('/:id', ensureAdmin, upload.single('image'), async (req, res) => {
     where: { id },
     data: {
       title,
-      excerpt,
       content,
+      createdBy,
       imagePath,
       date,
       source,

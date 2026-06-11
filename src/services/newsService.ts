@@ -19,9 +19,10 @@ export const newsService = {
           image: resolveBackendAssetUrl(item.imagePath) || '',
           date: item.date || item.published || '',
           title: item.title || '',
-          source: item.source || item.excerpt || '',
+          source: item.source || '',
           url: item.url || '#',
           content: item.content || '',
+          createdBy: item.createdBy || undefined,
         }));
       }
     } catch (err) {
@@ -55,12 +56,12 @@ export const newsService = {
     try {
       const payload = updatedNews.map(n => ({
         title: n.title,
-        excerpt: n.excerpt || '',
         content: n.content || '',
         imageData: n.image,
         date: n.date,
         source: n.source,
         url: n.url,
+        createdBy: (n as any).createdBy || undefined,
         published: n.date,
         active: true,
       }));
@@ -99,9 +100,10 @@ export const newsService = {
           image: resolveBackendAssetUrl(item.imagePath) || '',
           date: item.date || item.published || '',
           title: item.title || '',
-          source: item.source || item.excerpt || '',
+          source: item.source || '',
           url: item.url || '#',
           content: item.content || '',
+          createdBy: item.createdBy || undefined,
         }));
       }
     } catch (err) {
@@ -134,12 +136,12 @@ export const newsService = {
     try {
       const payload = updatedNews.map(n => ({
         title: n.title,
-        excerpt: n.excerpt || '',
         content: n.content || '',
         imageData: n.image,
         date: n.date,
         source: n.source,
         url: n.url,
+        createdBy: (n as any).createdBy || undefined,
         published: n.date,
         active: true,
       }));

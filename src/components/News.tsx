@@ -1,17 +1,22 @@
 ﻿import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ExternalLink, Calendar, Instagram } from 'lucide-react';
 import { INSTA_POSTS } from '../data/instaData';
 import { NewsItem } from '../data/newsData';
 import { newsService } from '../services/newsService';
+import { normalizeUrl } from '../utils/urlHelpers';
 import InstagramCard from './InstagramCard';
 
 interface NewsCardProps {
   item: NewsItem;
+  isOfficial?: boolean;
+  onAction?: () => void;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
-  const hasExternalLink = item.url && item.url !== '#';
-  const excerpt = item.content ? item.content.slice(0, 120) : undefined;
+const NewsCard: React.FC<NewsCardProps> = ({ item, isOfficial = false, onAction }) => {
+  const link = normalizeUrl(item.url);
+  const hasExternalLink = !!link && !isOfficial;
+  const previewText = item.content ? item.content.slice(0, 120) : undefined;
 
   return (
     <div className="group relative overflow-hidden rounded-[20px] min-h-[420px] shadow-xl bg-[#121a38]">
@@ -30,9 +35,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
         <h3 className="text-white font-montserrat font-bold text-lg mb-2 leading-tight whitespace-normal break-words">
           {item.title}
         </h3>
-        {excerpt && (
+        {previewText && (
           <p className="text-white/80 text-sm leading-6 mb-3 max-h-20 overflow-hidden">
-            {excerpt.trim()} {item.content && item.content.length > 120 ? '...' : ''}
+            {previewText.trim()} {item.content && item.content.length > 120 ? '...' : ''}
+          </p>
+        )}
+        {item.createdBy && (
+          <p className="text-white/80 text-[11px] uppercase tracking-widest mb-1">
+            Por {item.createdBy}
           </p>
         )}
         <p className="text-[#FFF27C] text-[11px] font-black mb-5 uppercase tracking-widest">
@@ -40,9 +50,17 @@ const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
         </p>
 
         <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-          {hasExternalLink ? (
+          {isOfficial ? (
+            <button
+              type="button"
+              onClick={onAction}
+              className="inline-flex items-center gap-2 bg-[#FFC907] text-[#273376] px-5 py-2.5 rounded-full text-xs font-bold transition-all hover:bg-white hover:text-[#273376] shadow-lg"
+            >
+              Leer más
+            </button>
+          ) : hasExternalLink ? (
             <a
-              href={item.url}
+              href={link}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#FFC907] text-[#273376] px-5 py-2.5 rounded-full text-xs font-bold transition-all hover:bg-white hover:text-[#273376] shadow-lg"
@@ -55,7 +73,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ item }) => {
               disabled
               className="inline-flex items-center gap-2 bg-white/15 text-white/80 px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-not-allowed"
             >
-              Nota oficial
+              Sin enlace
             </button>
           )}
         </div>
@@ -81,6 +99,8 @@ const News: React.FC = () => {
     };
     fetchArticles();
   }, []);
+
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -111,14 +131,14 @@ const News: React.FC = () => {
             <div className="flex gap-8 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
               {officialNews.map((item) => (
                 <div key={item.id} className="min-w-[320px] flex-shrink-0 snap-start">
-                  <NewsCard item={item} />
+                  <NewsCard item={item} isOfficial onAction={() => navigate(`/news/${item.id}`)} />
                 </div>
               ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {officialNews.map((item) => (
-                <NewsCard key={item.id} item={item} />
+                <NewsCard key={item.id} item={item} isOfficial onAction={() => navigate(`/news/${item.id}`)} />
               ))}
             </div>
           )
@@ -162,6 +182,8 @@ const News: React.FC = () => {
     </div>
   )}
 </section>
+
+      
 
       <div className="mt-20 px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube, Shield } from 'lucide-react';
+import { Instagram, Globe, Shield } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -36,19 +36,44 @@ const Footer: React.FC = () => {
               </div>
 
               <p className="text-white/60 text-[13px] md:text-sm leading-relaxed max-w-sm font-light">
-                Ministerio del Poder Popular para Hábitat y Vivienda (MINHVI)Órgano gubernamental encargado de formular, ejecutar y regular las políticas nacionales de vivienda, urbanismo y hábitat en Venezuela, impulsando el desarrollo social a través de la Gran Misión Vivienda Venezuela (GMVV).              </p>
+                Impulsando el hábitat comunal y el desarrollo urbano sustentable. Una iniciativa enmarcada en las políticas de vivienda del Gobierno Bolivariano de Venezuela para hacer realidad el sueño de un hogar digno para cada familia.
+              </p>
             </div>
 
-            {/* Fila de Redes Sociales Temporales */}
             <div className="flex items-center gap-3.5 pt-2">
-              <a href="#" className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
-                <Facebook size={16} />
+              <a
+                href="https://www.instagram.com/mivivienda_ve/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm"
+                aria-label="Instagram MiVivienda"
+              >
+                <Instagram size={16} />
               </a>
-              <a href="#" className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
-                <Twitter size={16} />
+              <a
+                href="https://www.tiktok.com/@mivivienda_ve"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm"
+                aria-label="TikTok MiVivienda"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  className="h-4 w-4"
+                >
+                  <path d="M170.6 32.1a88 88 0 0 1-46.8-13V142.8a38 38 0 1 1-38-38 37.2 37.2 0 0 1 5.4.4V119a57.4 57.4 0 0 0-5.4-.4 56 56 0 0 0 56 56 56.2 56.2 0 0 0 37.3-13.8V88.6h48.7A88.1 88.1 0 0 1 170.6 32.1Z" />
+                </svg>
               </a>
-              <a href="#" className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm">
-                <Youtube size={16} />
+              <a
+                href="https://www.minhiv.gob.ve"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm"
+                aria-label="Sitio web MINHVI"
+              >
+                <Globe size={16} />
               </a>
             </div>
           </div>

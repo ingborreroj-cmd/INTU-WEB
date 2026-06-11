@@ -22,6 +22,9 @@ import newsRoutes from './routes/news';
 import intuBotRoutes from './routes/intuBot';
 
 const app = express();
+
+app.set('trust proxy', 1);
+
 const PORT = Number(process.env.PORT) || 4000; 
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || [

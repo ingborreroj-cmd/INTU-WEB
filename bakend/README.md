@@ -1,6 +1,6 @@
 # IntuWeb Backend
 
-Backend scaffold for Intu Web using Express + TypeScript + Prisma (SQLite).
+Backend scaffold for Intu Web using Express + TypeScript + Prisma (PostgreSQL).
 
 Quick start:
 
@@ -18,7 +18,25 @@ npm run dev
 ```
 
 El esquema Prisma en `bakend/prisma/schema.prisma` usa `url = env("DATABASE_URL")`.
-Asegúrate de ejecutar los comandos desde `bakend` y usar el env global de la raíz (`../.env`).
+Asegúrate de que `DATABASE_URL` apunte a PostgreSQL y de ejecutar los comandos desde `bakend` usando el env global de la raíz (`../.env`).
+
+Antes de ejecutar las migraciones, comprueba que PostgreSQL esté en ejecución y que la base de datos `intuweb` exista. Si no existe, créala con:
+
+```bash
+createdb intuweb
+```
+
+o con:
+
+```bash
+psql -U postgres -c "CREATE DATABASE intuweb;"
+```
+
+Si tu usuario `postgres` no tiene contraseña, usa una URL de conexión como:
+
+```bash
+postgresql://postgres@localhost:5432/intuweb?schema=public
+```
 
 Nota: para que el panel de administración pueda crear nuevos admins, configura `ENABLE_ADMIN_REGISTER=true` en el `.env` global.
 
@@ -34,4 +52,15 @@ Verify backend setup:
 npm run verify-setup
 ```
 
-DB location: `bakend/prisma/db/intuweb_db.db`
+Production deployment:
+
+```bash
+cd "../"
+npx --prefix bakend prisma migrate deploy --schema bakend/prisma/schema.prisma
+```
+
+DB connection: read from `DATABASE_URL` in the global `.env`.
+
+Notes:
+- `JWT_SECRET` must be strong for production.
+- Do not commit `.env` with real credentials.

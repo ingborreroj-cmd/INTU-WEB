@@ -7,7 +7,7 @@ Guía rápida para instalar y ejecutar el sistema completo en local.
 ## 1. Qué contiene este repositorio
 
 - `src/`: frontend en **React + TypeScript** con Vite.
-- `bakend/`: backend en **Express + TypeScript + Prisma + SQLite**.
+- `bakend/`: backend en **Express + TypeScript + Prisma + PostgreSQL**.
 - `public/`: activos estáticos usados por el frontend.
 
 ---
@@ -95,7 +95,35 @@ npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --na
 
 Esto usa la versión de Prisma instalada en `bakend` y carga el `.env` global de la raíz.
 
-La base de datos generada quedará en `bakend/prisma/db/intuweb_db.db`.
+La base de datos se creará según la variable `DATABASE_URL` en el archivo `.env`, usando PostgreSQL.
+
+> Antes de ejecutar `prisma migrate`, asegúrate de que PostgreSQL esté en ejecución y de que `DATABASE_URL` contenga credenciales válidas.
+> Por ejemplo:
+> `postgresql://postgres:YourPassword@localhost:5432/intuweb?schema=public`
+> o, si tu usuario `postgres` no tiene contraseña:
+> `postgresql://postgres@localhost:5432/intuweb?schema=public`
+>
+> Si la base de datos aún no existe, créala primero con:
+> `createdb intuweb`
+> o
+> `psql -U postgres -c "CREATE DATABASE intuweb;"`
+>
+> En producción, reemplaza `JWT_SECRET`, `DATABASE_URL` y `GEMINI_API_KEY` con valores reales y seguros.
+
+### 4.1 Entorno de producción
+
+- Usa un `DATABASE_URL` válido para PostgreSQL, por ejemplo:
+  `postgresql://user:password@host:5432/intuweb?schema=public`
+- No expongas secrets en el repositorio.
+- Asegúrate de que `ALLOWED_ORIGINS` solo incluya dominios autorizados.
+- Para migraciones en producción:
+
+```bash
+cd "INTU WEB"
+npx --prefix bakend prisma migrate deploy --schema bakend/prisma/schema.prisma
+```
+
+> El archivo `.env` debe ser local y no debe subirse a Git.
 
 > Para que INTUBot funcione, agrega tu clave Gemini en `GEMINI_API_KEY` dentro de `.env` y deja `LLM_PROVIDER=gemini`.
 
@@ -107,7 +135,13 @@ La base de datos generada quedará en `bakend/prisma/db/intuweb_db.db`.
 
 ```bash
 cd bakend
-npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU Admin"
+npm run create-admin -- --email admin@example.com --password admin --name "INTU Admin"
+```
+
+También puedes ejecutar el comando desde la raíz del proyecto usando `npx --prefix bakend`:
+
+```bash
+npx --prefix bakend npm run create-admin -- --email admin@example.com --password admin --name "INTU Admin"
 ```
 
 Además de `name`, puedes usar estos datos opcionales para el usuario admin:

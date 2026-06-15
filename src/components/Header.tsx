@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Instagram } from 'lucide-react';
 import CatastroModal from './CatastroModal';
 
 const Header: React.FC = () => {
@@ -22,6 +22,7 @@ const Header: React.FC = () => {
     { label: 'Trámites', href: '#tramites' },
     { label: 'Nosotros', href: '#nosotros' },
     { label: 'Actualidad', href: '#proyectos' },
+    { label: 'Marco jurídico', href: '/marco-juridico' },
     { label: 'Contacto', href: '#contacto' },
   ];
 
@@ -51,6 +52,8 @@ const Header: React.FC = () => {
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         else window.location.hash = id;
       }
+    } else if (href.startsWith('http')) {
+      window.open(href, '_blank');
     } else {
       navigate(href);
     }
@@ -137,8 +140,17 @@ const Header: React.FC = () => {
             ))}
           </nav>
 
-          {/* LADO DERECHO: LOGO 3 Y MENÚ MÓVIL */}
+          {/* LADO DERECHO: ICONO DE INSTAGRAM + MENÚ MÓVIL */}
           <div className="flex items-center gap-4">
+            <a
+              href="https://www.instagram.com/intu_ve/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram INTU"
+              className="text-white transition hover:text-pink-300"
+            >
+              <Instagram size={24} />
+            </a>
             <button 
               className="xl:hidden p-2 rounded-lg bg-white/10"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

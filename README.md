@@ -16,6 +16,7 @@ Guía rápida para instalar y ejecutar el sistema completo en local.
 
 - Node.js instalado (versión 18+ recomendada).
 - npm disponible en el sistema.
+- PostgreSQL instalado y en ejecución.
 
 ---
 
@@ -206,7 +207,8 @@ Ambos servidores deben quedar ejecutándose al mismo tiempo. El frontend escucha
 
 - Frontend: `http://localhost:5173`
 - Backend API: `http://localhost:4000`
- - Admin (panel de administración): `http://localhost:5173/admin` (login en `/admin/login`)
+- Admin (panel de administración): `http://localhost:5173/admin` (login en `/admin/login`)
+- Marco jurídico: `http://localhost:5173/marco-juridico`
 
 ---
 

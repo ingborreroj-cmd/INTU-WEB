@@ -60,7 +60,7 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Correo de destino configurado
+    // Correo de destino configurado se tiene que modificar en produccion para colocarl el correo correcto
     const emailDestino = 'ingborreroj@gmail.com';
     
     // Codificación segura de caracteres y saltos de línea para la URL

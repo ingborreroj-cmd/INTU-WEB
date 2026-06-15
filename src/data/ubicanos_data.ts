@@ -16,7 +16,7 @@ export interface Ubicacion {
 export const locations: Ubicacion[] = [
   {
     estado: 'Amazonas',
-    correo: 'intuamazonas@gmail.com / pulgarlidia53@gmail.com',
+    correo: 'intuamazonas@gmail.com',
     telefono: '0426-8013498',
     direccion: 'AV EL EJERCITO CRUCE CO AV LA FLORIDA SEDE MINHVI ANTIGUA SEDE INAVI PUERTO AYACUCHO ESTADO AMAZONAS MUNICIPIO ATURES PARROQUIA LUIS ALBERTO GOMEZ',
     directores: 'Angel Sandoval',
@@ -28,7 +28,7 @@ export const locations: Ubicacion[] = [
   },
   {
     estado: 'Anzoátegui',
-    correo: 'intu.anz@gmail.com / cartografiaintuanz@gmail.com / intuoficialanzoategui@gmail.com',
+    correo: 'intuanzoategui@gmail.com',
     telefono: '0424-8738564',
     direccion: 'URBANIZACION BOYACA V, SECTOR 5 CALLE 4 EDIFICIO INAVI, PARROQUIA EL CARMEN, MUNICIPIO SIMON BOLIVAR DEL ESTADO ANZOATEGUI',
     directores: 'Jesús Marcano',
@@ -40,7 +40,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Apure',
-    correo: 'intu2025apure@gmail.com',
+    correo: 'intuapure@gmail.com',
     telefono: '0424-8738564',
     direccion: 'CALLE PLAZA CRUCE CON CALLE SUCRE, MUNICIPIO SAN FERNANDO DEL ESTADO APURE',
     directores: 'Daicy Mejías',
@@ -52,7 +52,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Aragua',
-    correo: 'intuaragua2023@gmail.com',
+    correo: 'intuaragua@gmail.com',
     telefono: '0412-9346003',
     direccion: 'PARROQUIA ANDRÉS ELOY BLANCO, SECTOR SUR OESTE III, PROLONGACIÓN CALLE PÉREZ ALMARZA, S/N, CON CALLE NEGRO PRIMERO, MUNICIPIO GIRARDOT DEL ESTADO ARAGUA',
     directores: '-',
@@ -64,7 +64,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Barinas',
-    correo: 'intubarinas2022@gmail.com',
+    correo: 'intubarinas@gmail.com',
     telefono: '0412-2665035',
     direccion: 'INSTALACIONES DE CORPOLLANO, UBICADO EN LA AVENIDA ORLANDO ARAUJO, SECTOR CAMPO LA MESA PARROQUIA ALTO BARINAS MUNICIPIO BARINAS',
     directores: 'José Juan Vivas',
@@ -76,7 +76,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Bolívar',
-    correo: 'intubolivar29082023@gmail.com',
+    correo: 'intubolivar@gmail.com',
     telefono: '0412-1197488',
     direccion: 'AVENIDA ESTADOS UNIDOS CON CALLE MÉXICO, PARROQUIA CACHAMAY, MUNICIPIO CARONÍ DEL ESTADO BOLÍVAR',
     directores: 'Yuraima Patricia Cabrera',
@@ -88,7 +88,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Carabobo',
-    correo: 'rafibe06@yahooo.com',
+    correo: 'intucarabobo@gmail.com',
     telefono: '0412-8434754 / 0414-3410934',
     direccion: 'SECTOR LOS SAUCES, AVENIDA 135, PARCELA N° 98-65, PARROQUIA SAN JOSÉ, MUNICIPIO VALENCIA, ESTADO CARABOBO',
     directores: 'Yulismar Carrillo',
@@ -100,7 +100,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Cojedes',
-    correo: 'intucojedes2@gmail.com / blancirf.05@gmail.com',
+    correo: 'intucojedes@gmail.com',
     telefono: '0414-5971128',
     direccion: 'AVENIDA INDUSTRIAL, PARCELA N° 13, SECTOR GOB, ZONA INDUSTRIAL, DE SAN CARLOS, PARROQUIA SAN CARLOS DE AUSTRIA, MUNICIPIO EZEQUIEL ZAMORA, ESTADO COJEDES',
     directores: 'Génesis Moreno',
@@ -112,7 +112,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Delta Amacuro',
-    correo: 'intudelta2016@gmail.com',
+    correo: 'intudeltaamacuro@gmail.com',
     telefono: '0424-9245489',
     direccion: 'AVENIDA GUASIMAL, DIAGONAL A TRAKI, PARROQUIA J. VIDAL MARCANO, MUNICIPIO TUCUPITA DEL ESTADO DELTA AMACURO',
     directores: 'Oswaldo Gonzalez',
@@ -124,7 +124,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'DTTO. Capital',
-    correo: 'Rosmelflores2404@gmail.com',
+    correo: 'intudttocapital@gmail.com',
     telefono: '0412-7260411 / 0412-9977426',
     direccion: 'EL SILENCIO, PARROQUIA SAN JUAN, MUNICIPIO LIBERTADOR DEL DISTRITO CAPITAL',
     directores: 'Robinson Toro',
@@ -136,7 +136,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Falcón',
-    correo: 'falconintu2025@gmail.com / vilmararodriguez@gmail.com',
+    correo: 'intufalcon@gmail.com',
     telefono: '0424-6497299',
     direccion: 'FALCON INTU CALLE MOZON CON CALLE COMERCIO, SEDE BANAVIH MUNICIPIO MIRANDA PARROQUIA SAN ANTONIO',
     directores: 'Jesús León',
@@ -148,7 +148,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Guárico',
-    correo: 'intu.guarico@gmail.com',
+    correo: 'intuguarico@gmail.com',
     telefono: '0426-4480847',
     direccion: 'AVENIDA ROMULO GALLEGO, LA REDOMA AL LADO DEL MINISTERIO PUBLICO EDIFICIO HABITAT Y VIVIENDA PRIMER PISO OFICINA INTU MUNICIPIO JUAN GERMAN ROCIO SAN JUAN DE LOS MORROS',
     directores: '-',
@@ -172,7 +172,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Lara',
-    correo: 'lara.intu2025@gmail.com',
+    correo: 'intulara@gmail.com',
     telefono: '0414-9546958',
     direccion: 'AVENIDA VENEZUELA ENTRE LAS CALLES 32 Y 33 PARROQUIA CONCEPCIÓN. MUNICIPIO AUTÓNOMO IRIBARREN DEL ESTADO LARA',
     directores: 'Pedro González',
@@ -196,7 +196,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Miranda',
-    correo: 'icarlos77santanam@gmail.com / intumirandag@gmail.com',
+    correo: 'intumiranda@gmail.com',
     telefono: '0424-1948929 / 0412-3901825',
     direccion: 'CALLE ORINOCO CON AV. PRINCIPAL DE LAS MERCEDES, INSTITUTO NACIONAL DE TIERRAS URBANAS, PISO 1 URB. LAS MERCEDES, MUNICIPIO BARUTA, ESTADO MIRANDA',
     directores: 'Henry Gudiño',
@@ -208,7 +208,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Monagas',
-    correo: 'intumonagasm@gmail.com / r.rivas.venalcasa@gmail.com',
+    correo: 'intumonagas@gmail.com',
     telefono: '0426-4881804',
     direccion: 'SECTOR LOS BLOQUES, PARROQUIA SAN SIMÓN, MUNICIPIO MATURÍN DEL ESTADO MONAGAS.',
     directores: 'Crismary Rodríguez',
@@ -220,7 +220,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Nueva Esparta',
-    correo: 'delvallemorrissalazar@gmail.com',
+    correo: 'intunuevaesparta@gmail.com',
     telefono: '0414-2021557 / 0426-5963585',
     direccion: 'AVENIDA LA AUYAMA ANTIGUO GOLF MARGARITA PARROQUIA PAMPATAR MUNICIPIO MANEIRO ESTADO NUEVA ESPARTA',
     directores: 'Ashaella Spadafora',
@@ -232,7 +232,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Portuguesa',
-    correo: 'josearraez73@gmail.com',
+    correo: 'intuportuguesa@gmail.com',
     telefono: '0412-5204215',
     direccion: 'MUNICIPIO PAEZ PARROQUIA ACARIGUA ESTADO PORTUGUESA EDIFICIO GOMEZ LOPEZ CENTRO COMERCIAL MEDITERRANEO',
     directores: '-',
@@ -244,7 +244,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Sucre',
-    correo: 'solorzano.leodersy@gmail.com',
+    correo: 'intusucre@gmail.com',
     telefono: '0426-2225638',
     direccion: 'AVENIDA BERMÚDEZ, CON CALLE SIMÓN RODRÍGUEZ PARROQUIA AYACUCHO, MUNICIPIO SUCRE DEL ESTADO SUCRE',
     directores: '-',
@@ -256,7 +256,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Táchira',
-    correo: 'Gerenciaintutachira@gmail.com',
+    correo: 'intutachira@gmail.com',
     telefono: '0426-5758170',
     direccion: 'AVENIDA LUCIO OQUENDO ANTIGUO EDIFICIO INAVI, PARROQUIA LA CONCORDIA, MUNICIPIO SAN CRISTÓBAL DEL ESTADO TÁCHIRA',
     directores: 'Franklin Guerrero',
@@ -268,7 +268,7 @@ export const locations: Ubicacion[] = [
   },
     {
     estado: 'Trujillo',
-    correo: 'richardkevinvillasmil@gmail.com',
+    correo: 'intutrujillo@gmail.com',
     telefono: '0426-5757175',
     direccion: 'AVENIDA CUATRICENTENARIA, SECTOR LA VEGA, EDIFICIO INAVI, MUNICIPIO TRUJILLO DEL ESTADO TRUJILLO',
     directores: 'Alexander Maldonado',
@@ -293,7 +293,7 @@ export const locations: Ubicacion[] = [
 
       {
     estado: 'Zulia',
-    correo: 'marcosazuaje279@gmail.com',
+    correo: 'intuzulia@gmail.com',
     telefono: '0412-6528900',
     direccion: 'EDIFICIO PAULA PIERINA AVENIDA 4 BELLA VISTA CON 67 MUNICIPIO MARACAIBO PARROQUIA CECILIO ACOSTA ESTADO ZULIA',
     directores: 'Randy Rodríguez',

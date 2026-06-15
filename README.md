@@ -110,6 +110,27 @@ La base de datos se creará según la variable `DATABASE_URL` en el archivo `.en
 > `psql -U postgres -c "CREATE DATABASE intuweb;"`
 >
 > En producción, reemplaza `JWT_SECRET`, `DATABASE_URL` y `GEMINI_API_KEY` con valores reales y seguros.
+>
+## 4.0.1 Rutas admin configurables
+
+La ruta administrativa se controla con dos variables diferentes porque el frontend y el backend usan entornos distintos:
+
+- `ADMIN_PATH`: ruta usada por el backend Express.
+  - Define dónde se montan los endpoints admin como `/AUTH`, `/news`, `/hero`, `/admins`, etc.
+  - Ejemplo: si `ADMIN_PATH=secret-admin`, el backend atiende `http://localhost:4000/secret-admin/auth`.
+- `VITE_ADMIN_PATH`: ruta usada por el frontend React/Vite.
+  - Define las rutas de React Router para el panel admin y la página de login.
+  - Ejemplo: si `VITE_ADMIN_PATH=secret-admin`, el frontend navega a `http://localhost:5173/secret-admin/login`.
+
+> Importante: ambos valores deben coincidir exactamente.
+> Si no coinciden, el frontend buscará una ruta que el backend no reconoce y el acceso fallará.
+
+> En Vite, sólo se exponen al navegador las variables que comienzan con `VITE_`, por eso el frontend no puede leer directamente `ADMIN_PATH`.
+
+> Si mantienes `admin`, las rutas por defecto son:
+> - `http://localhost:5173/admin/login`
+> - `http://localhost:5173/admin`
+
 
 ### 4.1 Entorno de producción
 
@@ -207,12 +228,29 @@ Ambos servidores deben quedar ejecutándose al mismo tiempo. El frontend escucha
 
 - Frontend: `http://localhost:5173`
 - Backend API: `http://localhost:4000`
-- Admin (panel de administración): `http://localhost:5173/admin` (login en `/admin/login`)
+- Admin (panel de administración): `http://localhost:5173/admin` (login en `/admin/login`) por defecto.
 - Marco jurídico: `http://localhost:5173/marco-juridico`
+
+> Nota: la ruta del panel de administración es configurable con `ADMIN_PATH` y `VITE_ADMIN_PATH`.
+> Si cambias ese valor a `secret-admin`, la página de login será `http://localhost:5173/secret-admin/login` y el panel admin será `http://localhost:5173/secret-admin`.
+
+## 8. Acceso al panel admin
+
+La ruta administrativa no es accesible para usuarios comunes:
+
+- El panel solo funciona si el usuario se autentica como admin.
+- El frontend redirige a `/${ADMIN_PATH}/login` cuando no hay sesión válida.
+- El backend protege los endpoints admin con JWT y `ensureAdmin`, de modo que solo cuentas administradoras pueden usar esos recursos.
+
+Para acceder desde un navegador en desarrollo:
+
+1. Crea un usuario admin con el comando de backend.
+2. Abre `http://localhost:5173/admin/login` o la ruta personalizada según `VITE_ADMIN_PATH`.
+3. Inicia sesión con el correo/usuario y contraseña del admin.
 
 ---
 
-## 8. Notas importantes
+## 9. Notas importantes
 
 - No subas el archivo `.env` al repositorio.
 - Usa un valor seguro en `JWT_SECRET`.

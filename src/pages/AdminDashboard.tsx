@@ -43,6 +43,7 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [savingSection, setSavingSection] = useState<string | null>(null);
+  const [selectedSection, setSelectedSection] = useState<'all'|'hero'|'news'|'official'|'admin'>('all');
 
   // modal removed: modal state and preview removed
 
@@ -52,6 +53,9 @@ const AdminDashboard: React.FC = () => {
   const [newAdminData, setNewAdminData] = useState<AdminFormData>(DEFAULT_ADMIN_FORM);
   const [adminRegisterStatus, setAdminRegisterStatus] = useState<string | null>(null);
   const [showAdminCreatedModal, setShowAdminCreatedModal] = useState(false);
+  const [adminsList, setAdminsList] = useState<any[]>([]);
+  const [editingAdminId, setEditingAdminId] = useState<number | null>(null);
+  const [editingAdminData, setEditingAdminData] = useState<Partial<AdminFormData> | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -65,6 +69,14 @@ const AdminDashboard: React.FC = () => {
         setHeroSlides(slides.length > 0 ? slides : DEFAULT_SLIDES);
         setNewsItems(news.length > 0 ? news : DEFAULT_NEWS);
         setOfficialNews(official);
+        // fetch admins list if endpoint available
+        try {
+          const admins = await adminService.getAdmins();
+          setAdminsList(admins || []);
+        } catch (e) {
+          // ignore if backend doesn't expose admin list
+          console.warn('Could not fetch admins list:', e);
+        }
       } catch (error) {
         console.error('Error cargando datos de administración:', error);
       } finally {
@@ -205,6 +217,11 @@ const AdminDashboard: React.FC = () => {
       setAdminRegisterStatus('Administrador creado correctamente.');
       setNewAdminData(DEFAULT_ADMIN_FORM);
       setShowAdminCreatedModal(true);
+      // refresh list
+      try {
+        const admins = await adminService.getAdmins();
+        setAdminsList(admins || []);
+      } catch (err) { console.warn('refresh admins failed', err); }
     } catch (error: any) {
       setAdminRegisterStatus(error?.message || 'Error al crear el administrador.');
     }
@@ -232,6 +249,42 @@ const AdminDashboard: React.FC = () => {
       return;
     }
     setOfficialNews((current) => current.filter((_, idx) => idx !== index));
+  };
+
+  // Admins management: edit, save, delete
+  const startEditAdmin = (admin: any) => {
+    setEditingAdminId(admin.id);
+    setEditingAdminData({ name: admin.name, lastName: admin.lastName, email: admin.email, phone: admin.phone, position: admin.position, username: admin.username });
+  };
+
+  const cancelEditAdmin = () => {
+    setEditingAdminId(null);
+    setEditingAdminData(null);
+  };
+
+  const saveEditAdmin = async () => {
+    if (!editingAdminId || !editingAdminData) return;
+    try {
+      await adminService.updateAdmin(editingAdminId, editingAdminData as any);
+      const admins = await adminService.getAdmins();
+      setAdminsList(admins || []);
+      cancelEditAdmin();
+      alert('Administrador actualizado');
+    } catch (err: any) {
+      alert(err?.message || 'Error al actualizar administrador');
+    }
+  };
+
+  const handleDeleteAdmin = async (id: number) => {
+    if (!confirm('¿Eliminar este administrador? Esta acción es irreversible.')) return;
+    try {
+      await adminService.deleteAdmin(id);
+      const admins = await adminService.getAdmins();
+      setAdminsList(admins || []);
+      alert('Administrador eliminado');
+    } catch (err: any) {
+      alert(err?.message || 'Error eliminando administrador');
+    }
   };
 
   // saveModal removed
@@ -366,24 +419,29 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Navegación rápida entre secciones internas del dashboard */}
+        {/* Navegación rápida entre secciones internas del dashboard (muestra solo la sección seleccionada) */}
         <div className="flex flex-wrap gap-3 rounded-[30px] border border-slate-200 bg-white p-5 shadow-sm">
-          {['hero', 'news', 'official', 'admin'].map((section) => (
-            <a
-              key={section}
-              href={`#${section}`}
-              className="rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-[#273376] hover:text-white"
+          {[
+            { key: 'all', label: 'Mostrar todo' },
+            { key: 'hero', label: 'Hero' },
+            { key: 'news', label: 'Noticias Nacionales' },
+            { key: 'official', label: 'Noticias INTU' },
+            { key: 'admin', label: 'Administradores' },
+          ].map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => setSelectedSection(item.key as any)}
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${selectedSection === item.key ? 'bg-[#273376] text-white border-[#273376]' : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-[#273376] hover:text-white'}`}
             >
-              {section === 'hero' && 'Hero'}
-              {section === 'news' && 'Noticias Nacionales'}
-              {section === 'official' && 'Noticias INTU'}
-              {section === 'admin' && 'Administradores'}
-            </a>
+              {item.label}
+            </button>
           ))}
         </div>
 
         {/* Sección de edición del carrusel Hero principal */}
-        <section id="hero" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+        {(selectedSection === 'all' || selectedSection === 'hero') && (
+          <section id="hero" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
@@ -483,10 +541,12 @@ const AdminDashboard: React.FC = () => {
               <Plus size={16} /> Agregar nueva diapositiva
             </button>
           </div>
-        </section>
+          </section>
+        )}
 
         {/* Sección para gestionar noticias públicas o destacadas */}
-        <section id="news" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+        {(selectedSection === 'all' || selectedSection === 'news') && (
+          <section id="news" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
@@ -602,10 +662,12 @@ const AdminDashboard: React.FC = () => {
               <Plus size={16} /> Agregar noticia destacada
             </button>
           </div>
-        </section>
+          </section>
+        )}
 
         {/* Sección para editar comunicados y noticias oficiales */}
-        <section id="official" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+        {(selectedSection === 'all' || selectedSection === 'official') && (
+          <section id="official" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#FFC907]/10 px-4 py-2 text-sm font-semibold text-[#FFC907]">
@@ -737,10 +799,12 @@ const AdminDashboard: React.FC = () => {
               <Plus size={16} /> Agregar noticia oficial
             </button>
           </div>
-        </section>
+          </section>
+        )}
 
         {/* Sección para registrar nuevos usuarios administradores */}
-        <section id="admin" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+        {(selectedSection === 'all' || selectedSection === 'admin') && (
+          <section id="admin" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
@@ -829,7 +893,67 @@ const AdminDashboard: React.FC = () => {
           {adminRegisterStatus && (
             <p className="mt-6 text-sm text-slate-700">{adminRegisterStatus}</p>
           )}
+          {/* List existing admins */}
+          <div className="mt-8">
+            <h4 className="text-lg font-bold text-[#273376] mb-4">Administradores existentes</h4>
+            <div className="space-y-3">
+              {adminsList.length === 0 && <p className="text-sm text-slate-500">No hay administradores registrados o no se pudo cargar la lista.</p>}
+              {adminsList.map((adm) => (
+                <div key={adm.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4 flex items-start justify-between">
+                  <div className="min-w-0 flex-1">
+                    {editingAdminId === adm.id ? (
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">Nombre</label>
+                          <input placeholder="Nombre" className="w-full rounded-2xl border p-2" value={editingAdminData?.name || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), name: e.target.value }))} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">Apellido</label>
+                          <input placeholder="Apellido" className="w-full rounded-2xl border p-2" value={editingAdminData?.lastName || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), lastName: e.target.value }))} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">Correo</label>
+                          <input placeholder="correo@ejemplo.com" className="w-full rounded-2xl border p-2" value={editingAdminData?.email || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), email: e.target.value }))} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">Usuario</label>
+                          <input placeholder="usuario" className="w-full rounded-2xl border p-2" value={editingAdminData?.username || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), username: e.target.value }))} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">Teléfono</label>
+                          <input placeholder="0414-1234567" className="w-full rounded-2xl border p-2" value={editingAdminData?.phone || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), phone: e.target.value }))} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">Cargo</label>
+                          <input placeholder="Cargo" className="w-full rounded-2xl border p-2" value={editingAdminData?.position || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), position: e.target.value }))} />
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="font-semibold text-slate-800 truncate">{adm.name} {adm.lastName} <span className="text-xs text-slate-500">({adm.username})</span></p>
+                        <p className="text-sm text-slate-600">{adm.email} • {adm.phone} • {adm.position}</p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex gap-2 ml-4">
+                    {editingAdminId === adm.id ? (
+                      <>
+                        <button onClick={saveEditAdmin} className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-3 py-2 text-sm font-semibold text-white">Guardar</button>
+                        <button onClick={cancelEditAdmin} className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold">Cancelar</button>
+                      </>
+                    ) : (
+                      <>
+                        <button onClick={() => startEditAdmin(adm)} className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold">Editar</button>
+                        <button onClick={() => handleDeleteAdmin(adm.id)} className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">Eliminar</button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
+        )}
       </div>
 
       {showAdminCreatedModal && (

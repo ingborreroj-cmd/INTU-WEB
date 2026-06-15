@@ -28,6 +28,8 @@ const resolveBackendAssetUrl = (path?: string | null): string => {
   return normalized;
 };
 
+const ADMIN_PATH: string = import.meta.env.VITE_ADMIN_PATH || 'admin';
+
 export { 
   API, 
   AUTH_TOKEN_KEY, 
@@ -35,3 +37,5 @@ export {
   authHeaders, 
   resolveBackendAssetUrl 
 };
+
+export { ADMIN_PATH };

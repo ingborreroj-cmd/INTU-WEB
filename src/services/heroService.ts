@@ -1,5 +1,5 @@
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
-import { resolveBackendAssetUrl, API, authHeaders } from './apiUtils';
+import { resolveBackendAssetUrl, API, authHeaders, ADMIN_PATH } from './apiUtils';
 
 const STORAGE_KEY = 'intu_web_hero_persisted_data';
 
@@ -10,7 +10,7 @@ export const heroService = {
    */
   getSlides: async (): Promise<HeroSlide[]> => {
     try {
-      const res = await fetch(`${API}/admin/hero`, { credentials: 'include', headers: authHeaders() });
+      const res = await fetch(`${API}/${ADMIN_PATH}/hero`, { credentials: 'include', headers: authHeaders() });
       if (res.ok) {
         const data = await res.json();
         return data.map((item: any) => ({
@@ -56,7 +56,7 @@ export const heroService = {
       order: idx + 1,
       active: true,
     }));
-      const res = await fetch(`${API}/admin/hero/bulk`, {
+      const res = await fetch(`${API}/${ADMIN_PATH}/hero/bulk`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', ...authHeaders() },
         credentials: 'include',

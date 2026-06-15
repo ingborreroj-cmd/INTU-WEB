@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API, AUTH_TOKEN_KEY } from '../services/apiUtils';
+import { API, AUTH_TOKEN_KEY, ADMIN_PATH } from '../services/apiUtils';
 
 const AdminLogin: React.FC = () => {
   const [identifier, setIdentifier] = useState('');
@@ -11,7 +11,7 @@ const AdminLogin: React.FC = () => {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API}/admin/auth/login`, {
+      const res = await fetch(`${API}/${ADMIN_PATH}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -24,7 +24,7 @@ const AdminLogin: React.FC = () => {
       if (json?.token) {
         localStorage.setItem(AUTH_TOKEN_KEY, json.token);
       }
-      navigate('/admin');
+      navigate(`/${ADMIN_PATH}`);
     } catch (err: any) {
       setError(err?.message || 'Error');
     }

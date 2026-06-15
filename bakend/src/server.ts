@@ -20,6 +20,7 @@ import authRoutes from './routes/auth';
 import heroRoutes from './routes/hero';
 import newsRoutes from './routes/news';
 import intuBotRoutes from './routes/intuBot';
+import adminsRoutes from './routes/admins';
 
 const app = express();
 
@@ -53,13 +54,19 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
 
 app.use('/uploads', express.static(UPLOAD_DIR));
 
-app.use('/admin/auth', authRoutes);
-app.use('/admin/hero', heroRoutes);
-app.use('/admin/news', newsRoutes);
+// Admin path configurable via root .env -> ADMIN_PATH (example: ADMIN_PATH=secret-admin)
+let ADMIN_PATH = process.env.ADMIN_PATH || 'admin';
+ADMIN_PATH = String(ADMIN_PATH).replace(/^\//, '').replace(/\/$/, '');
+const ADMIN_BASE = `/${ADMIN_PATH}`;
+
+app.use(`${ADMIN_BASE}/auth`, authRoutes);
+app.use(`${ADMIN_BASE}/hero`, heroRoutes);
+app.use(`${ADMIN_BASE}/news`, newsRoutes);
+app.use(`${ADMIN_BASE}`, adminsRoutes);
 
 app.use('/intu-bot', intuBotRoutes);
 app.use('/api/intu-bot', intuBotRoutes);
-app.use('/admin/intu-bot', intuBotRoutes);
+app.use(`${ADMIN_BASE}/intu-bot`, intuBotRoutes);
 
 app.get('/', (req, res) => {
   res.json({

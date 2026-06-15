@@ -6,14 +6,15 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
 import NewsDetail from './pages/NewsDetail';
 import MarcoJuridico from './pages/MarcoJuridico';
+import { ADMIN_PATH } from './services/apiUtils';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path={`/${ADMIN_PATH}/login`} element={<AdminLogin />} />
+        <Route path={`/${ADMIN_PATH}`} element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/marco-juridico" element={<MarcoJuridico />} />
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { API, authHeaders } from '../services/apiUtils';
+import { API, authHeaders, ADMIN_PATH } from '../services/apiUtils';
 
 const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -9,7 +9,7 @@ const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     const check = async () => {
       try {
-        const res = await fetch(`${API}/admin/auth/me`, { credentials: 'include', headers: authHeaders() });
+        const res = await fetch(`${API}/${ADMIN_PATH}/auth/me`, { credentials: 'include', headers: authHeaders() });
         const j = await res.json();
         setAuthed(!!j.authenticated);
       } catch (err) {
@@ -22,7 +22,7 @@ const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (!authed) return <Navigate to="/admin/login" replace />;
+  if (!authed) return <Navigate to={`/${ADMIN_PATH}/login`} replace />;
   return children;
 };
 

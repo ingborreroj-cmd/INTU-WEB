@@ -1,4 +1,6 @@
 // src/data/instaData.ts
+// DEPRECATED: Manual Instagram posts. This file is kept for reference but the
+// frontend no longer renders the Instagram community section by default.
 
 export interface InstaPost {
   id: number;

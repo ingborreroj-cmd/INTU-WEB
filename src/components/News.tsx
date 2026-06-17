@@ -1,11 +1,12 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink, Calendar, Instagram } from 'lucide-react';
-import { INSTA_POSTS } from '../data/instaData';
+// DEPRECATED: Instagram section is currently disabled. To re-enable, uncomment the imports below
+// import { INSTA_POSTS } from '../data/instaData';
 import { NewsItem } from '../data/newsData';
 import { newsService } from '../services/newsService';
 import { normalizeUrl } from '../utils/urlHelpers';
-import InstagramCard from './InstagramCard';
+// import InstagramCard from './InstagramCard';
 
 interface NewsCardProps {
   item: NewsItem;
@@ -102,6 +103,12 @@ const News: React.FC = () => {
 
   const navigate = useNavigate();
 
+  // Ensure header is solid while this component is mounted
+  useEffect(() => {
+    document.body.classList.add('force-solid-header');
+    return () => document.body.classList.remove('force-solid-header');
+  }, []);
+
   if (loading) {
     return (
       <div className="py-32 flex flex-col items-center justify-center text-[#273376] gap-3">
@@ -113,6 +120,18 @@ const News: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-20 relative">
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: "url('/assets/img/lineas_fondo.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundAttachment: 'fixed',
+          opacity: 0.4,
+        }}
+      />
+      <div className="relative z-10">
 
       <section className="mb-20">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-10">
@@ -185,6 +204,11 @@ const News: React.FC = () => {
 
       
 
+      {/* DEPRECATED: Instagram community section removed from UI.
+          To restore: uncomment the `INSTA_POSTS` and `InstagramCard` imports at top,
+          and uncomment the block below. Kept here for future reference. */}
+
+      {/*
       <div className="mt-20 px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-5">
@@ -206,6 +230,8 @@ const News: React.FC = () => {
             <InstagramCard key={post.id} post={post} />
           ))}
         </div>
+      </div>
+      */}
       </div>
     </div>
   );

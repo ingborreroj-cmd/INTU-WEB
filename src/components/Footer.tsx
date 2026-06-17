@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Instagram, Globe, Shield } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -42,7 +43,7 @@ const Footer: React.FC = () => {
 
             <div className="flex items-center gap-3.5 pt-2">
               <a
-                href="https://www.instagram.com/mivivienda_ve/"
+                href="https://www.instagram.com/minvivienda_ve/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm"
@@ -51,7 +52,7 @@ const Footer: React.FC = () => {
                 <Instagram size={16} />
               </a>
               <a
-                href="https://www.tiktok.com/@mivivienda_ve"
+                href="https://www.tiktok.com/@minvivienda_ve"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm"
@@ -67,7 +68,7 @@ const Footer: React.FC = () => {
                 </svg>
               </a>
               <a
-                href="https://www.minhiv.gob.ve"
+                href="https://www.minhvi.gob.ve"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/5 hover:bg-[#FFC907] rounded-xl text-white/60 hover:text-white transition-all shadow-sm"
@@ -85,7 +86,7 @@ const Footer: React.FC = () => {
               Legal e Institucional
             </h4>
             <ul className="space-y-3 text-[13px] md:text-sm text-white/60 font-medium">
-              <li><a href="https://www.asambleanacional.gob.ve/leyes/sancionadas/ley-de-tierras-urbanas" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Ley de Tierras Urbanas</a></li>
+              <li><Link to="/marco-juridico" className="hover:text-white hover:underline transition-all">Ley de Tierras Urbanas</Link></li>
               <li><a href="https://www.minhvi.gob.ve" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Ministerio Hábitat y Vivienda</a></li>
               <li><a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Comités de Tierra Urbana "CTU"</a></li>
               <li><a href="http://www.inmobiliarianacional.gob.ve" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Inmobiliaria Nacional</a></li>          

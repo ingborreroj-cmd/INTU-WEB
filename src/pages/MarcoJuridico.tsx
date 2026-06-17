@@ -4,9 +4,27 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const MarcoJuridico: React.FC = () => {
+  // Force solid header while this component is mounted
+  React.useEffect(() => {
+    document.body.classList.add('force-solid-header');
+    return () => document.body.classList.remove('force-solid-header');
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden relative bg-[#fcfcfc]">
-      <Header />
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: "url('/assets/img/lineas_fondo.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundAttachment: 'fixed',
+          opacity: 0.4,
+        }}
+      />
+      <div className="relative z-10">
+        <Header />
 
       <main className="flex-grow container mx-auto px-4 md:px-8 py-20">
         <article className="max-w-3xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden">
@@ -43,6 +61,8 @@ const MarcoJuridico: React.FC = () => {
           </div>
         </article>
       </main>
+
+      </div>
 
       <Footer />
     </div>

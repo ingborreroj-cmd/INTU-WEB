@@ -5,6 +5,7 @@ import CatastroModal from './CatastroModal';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [forceSolid, setForceSolid] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [catastroOpen, setCatastroOpen] = useState(false);
@@ -14,6 +15,15 @@ const Header: React.FC = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
+    // observe body class changes to allow pages to force a solid header
+    const updateForce = () => setForceSolid(typeof document !== 'undefined' && document.body.classList.contains('force-solid-header'));
+    updateForce();
+    const observer = new MutationObserver(() => updateForce());
+    try {
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    } catch (e) {
+      // ignore if document not available
+    }
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -61,7 +71,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-[#273376] py-2 shadow-md' : 'bg-transparent py-4'
+      (isScrolled || forceSolid) ? 'bg-[#273376] py-2 shadow-md' : 'bg-transparent py-4'
     }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">

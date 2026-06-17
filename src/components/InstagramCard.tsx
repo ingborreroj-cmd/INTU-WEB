@@ -1,3 +1,4 @@
+// DEPRECATED: `InstagramCard` component. Kept for reference; usage on pages is commented out.
 import React from 'react';
 import { Instagram, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import { InstaPost } from '../data/instaData';

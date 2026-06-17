@@ -89,8 +89,7 @@ const Footer: React.FC = () => {
               <li><Link to="/marco-juridico" className="hover:text-white hover:underline transition-all">Ley de Tierras Urbanas</Link></li>
               <li><a href="https://www.minhvi.gob.ve" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Ministerio Hábitat y Vivienda</a></li>
               <li><a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Comités de Tierra Urbana "CTU"</a></li>
-              <li><a href="http://www.inmobiliarianacional.gob.ve" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Inmobiliaria Nacional</a></li>          
-              <li><a href="https://www.saren.gob.ve" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">SAREN</a></li>          
+              
             </ul>
           </div>
 

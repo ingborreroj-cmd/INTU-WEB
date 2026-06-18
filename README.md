@@ -1,261 +1,292 @@
 # INTU WEB
 
-Guía rápida para instalar y ejecutar el sistema completo en local.
+Documentación completa para instalar, configurar y ejecutar el frontend y backend en local.
 
 ---
 
-## 1. Qué contiene este repositorio
+## 1. Estructura del repositorio
 
-- `src/`: frontend en **React + TypeScript** con Vite.
-- `bakend/`: backend en **Express + TypeScript + Prisma + PostgreSQL**.
-- `public/`: activos estáticos usados por el frontend.
+- `src/`: frontend en React + TypeScript con Vite.
+- `public/`: activos estáticos del frontend.
+- `bakend/`: backend en Express + TypeScript + Prisma + PostgreSQL.
+- `bakend/prisma/`: esquema y migraciones de Prisma.
+- `bakend/src/`: código backend.
+- `bakend/scripts/`: utilidades como creación de admin y verificación.
 
 ---
 
 ## 2. Requisitos previos
 
-- Node.js instalado (versión 18+ recomendada).
-- npm disponible en el sistema.
+- Node.js 18 o superior.
+- npm.
 - PostgreSQL instalado y en ejecución.
+- Un archivo `.env` en la raíz del proyecto.
+- Permisos para crear la base de datos `intuweb`.
 
 ---
 
-## 3. Instalación inicial
+## 3. Configuración de entorno
 
-> Nota: este repositorio usa un único archivo de entorno global:
-> - `./.env` para las variables del frontend / Vite y para las variables del backend y Prisma.
+Copia el archivo de ejemplo a `.env` en la raíz del proyecto.
 
-### 3.1 Frontend
-
-```bash
-cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB"
-npm install
-```
-
-### 3.2 Backend
-
-```bash
-cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB/bakend"
-npm install
-```
-
-
-
-
-4. Confirma que las dependencias se agregaron a `package.json` y `package-lock.json`.
-
----
-
-## 3.3 ¿Dónde ejecutar cada comando?
-
-- Comandos del frontend (`npm install`, `npm run dev`, `npm run build`) se ejecutan desde la raíz del proyecto: `INTU WEB`.
-- Comandos del backend que inician el servidor se ejecutan desde `INTU WEB/bakend`.
-- Comandos de Prisma deben ejecutarse desde la raíz del proyecto usando el backend local con `npx --prefix bakend ...`, para que se cargue el único `.env` global.
-- Si tu terminal ya está en `INTU WEB/bakend`, usa primero `cd ..` o ejecuta Prisma con rutas relativas internas (`./prisma/schema.prisma`).
-- No ejecutes `npx --prefix bakend prisma ... --schema bakend/prisma/schema.prisma` desde `INTU WEB/bakend`, porque el comando añadirá otra carpeta `bakend/` a la ruta y fallará con "file or directory not found".
-
-Ejemplo desde la raíz:
-
-```bash
-cd "INTU WEB"
-npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
-npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init
-``` 
-
----
-
-## 4. Configurar backend
-
-1. Copiar el archivo de ejemplo global de entorno:
-
-```bash
-cd "c:/Users/DPain/Desktop/Prototipos web intu/INTU WEB"
-# macOS / Linux / Git Bash
-cp .env.example .env
-# Windows PowerShell
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
 Copy-Item .env.example .env
-# cmd
-copy .env.example .env
 ```
 
-2. Instalar las dependencias del backend:
+> El backend y el frontend usan el mismo `.env` de la raíz.
+> Vite solo expone variables que comienzan con `VITE_`.
 
-```bash
-cd bakend
+### 3.1 Variables importantes en `.env`
+
+- `VITE_API_URL`: URL base del backend para el frontend (por defecto `http://localhost:4000`).
+- `VITE_ADMIN_PATH`: ruta del administrador en el frontend.
+- `ADMIN_PATH`: ruta del administrador en el backend.
+- `DATABASE_URL`: cadena de conexión PostgreSQL.
+- `JWT_SECRET`: clave secreta JWT.
+- `ALLOWED_ORIGINS`: orígenes permitidos para CORS.
+- `ENABLE_ADMIN_REGISTER`: habilita registro de administradores desde la API.
+- `GEMINI_API_KEY`: clave para el INTU Bot.
+- `LLM_PROVIDER`: proveedor LLM, actualmente `gemini`.
+- `LLM_TEMPERATURE`: temperatura del modelo.
+- `LLM_TOP_P`: top-p para la generación.
+- `LLM_MAX_TOKENS`: máximo de tokens de salida.
+
+> `ADMIN_PATH` y `VITE_ADMIN_PATH` deben coincidir exactamente para que el panel admin funcione.
+
+### 3.2 Ejemplo de `DATABASE_URL`
+
+- Con contraseña:
+  `postgresql://postgres:YourPassword@localhost:5432/intuweb?schema=public`
+- Sin contraseña:
+  `postgresql://postgres@localhost:5432/intuweb?schema=public`
+
+---
+
+## 4. Instalación
+
+### 4.1 Frontend
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
 npm install
-cd ..
 ```
 
-3. Generar el cliente Prisma y aplicar la migración usando el env global de la raíz:
-verifica estar en la ruta correcta sin bakend
+### 4.2 Backend
 
-```bash
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB\bakend"
+npm install
+```
+
+---
+
+## 5. Database y Prisma
+
+### 5.1 Crear la base de datos
+
+Si la base de datos `intuweb` no existe, créala:
+
+```powershell
+createdb intuweb
+```
+
+o:
+
+```powershell
+psql -U postgres -c "CREATE DATABASE intuweb;"
+```
+
+### 5.2 Generar Prisma y ejecutar migraciones
+
+Desde la raíz del proyecto:
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
 npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
 npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init
 ```
 
-Esto usa la versión de Prisma instalada en `bakend` y carga el `.env` global de la raíz.
+### 5.3 Migraciones en producción
 
-La base de datos se creará según la variable `DATABASE_URL` en el archivo `.env`, usando PostgreSQL.
-
-> Antes de ejecutar `prisma migrate`, asegúrate de que PostgreSQL esté en ejecución y de que `DATABASE_URL` contenga credenciales válidas.
-> Por ejemplo:
-> `postgresql://postgres:YourPassword@localhost:5432/intuweb?schema=public`
-> o, si tu usuario `postgres` no tiene contraseña:
-> `postgresql://postgres@localhost:5432/intuweb?schema=public`
->
-> Si la base de datos aún no existe, créala primero con:
-> `createdb intuweb`
-> o
-> `psql -U postgres -c "CREATE DATABASE intuweb;"`
->
-> En producción, reemplaza `JWT_SECRET`, `DATABASE_URL` y `GEMINI_API_KEY` con valores reales y seguros.
->
-## 4.0.1 Rutas admin configurables
-
-La ruta administrativa se controla con dos variables diferentes porque el frontend y el backend usan entornos distintos:
-
-- `ADMIN_PATH`: ruta usada por el backend Express.
-  - Define dónde se montan los endpoints admin como `/AUTH`, `/news`, `/hero`, `/admins`, etc.
-  - Ejemplo: si `ADMIN_PATH=secret-admin`, el backend atiende `http://localhost:4000/secret-admin/auth`.
-- `VITE_ADMIN_PATH`: ruta usada por el frontend React/Vite.
-  - Define las rutas de React Router para el panel admin y la página de login.
-  - Ejemplo: si `VITE_ADMIN_PATH=secret-admin`, el frontend navega a `http://localhost:5173/secret-admin/login`.
-
-> Importante: ambos valores deben coincidir exactamente.
-> Si no coinciden, el frontend buscará una ruta que el backend no reconoce y el acceso fallará.
-
-> En Vite, sólo se exponen al navegador las variables que comienzan con `VITE_`, por eso el frontend no puede leer directamente `ADMIN_PATH`.
-
-> Si mantienes `admin`, las rutas por defecto son:
-> - `http://localhost:5173/admin/login`
-> - `http://localhost:5173/admin`
-
-
-### 4.1 Entorno de producción
-
-- Usa un `DATABASE_URL` válido para PostgreSQL, por ejemplo:
-  `postgresql://user:password@host:5432/intuweb?schema=public`
-- No expongas secrets en el repositorio.
-- Asegúrate de que `ALLOWED_ORIGINS` solo incluya dominios autorizados.
-- Para migraciones en producción:
-
-```bash
-cd "INTU WEB"
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
 npx --prefix bakend prisma migrate deploy --schema bakend/prisma/schema.prisma
 ```
 
-> El archivo `.env` debe ser local y no debe subirse a Git.
-
-> Para que INTUBot funcione, agrega tu clave Gemini en `GEMINI_API_KEY` dentro de `.env` y deja `LLM_PROVIDER=gemini`.
-
-
-
 ---
 
-## 5. Crear usuario admin, SE EJECUTA DESDE LA RUTA DEL BAKEND INTU WEB/BAKEND
+## 6. Ejecución en desarrollo
 
-```bash
-cd bakend
-npm run create-admin -- --email admin@example.com --password admin --name "INTU Admin"
-```
+### 6.1 Iniciar frontend
 
-También puedes ejecutar el comando desde la raíz del proyecto usando `npx --prefix bakend`:
-
-```bash
-npx --prefix bakend npm run create-admin -- --email admin@example.com --password admin --name "INTU Admin"
-```
-
-Además de `name`, puedes usar estos datos opcionales para el usuario admin:
-
-- `--lastName` para el apellido.
-- `--username` para asignar un nombre de usuario de inicio de sesión.
-- `--phone` para el teléfono de contacto.
-- `--position` para el cargo o rol dentro del sistema.
-
-> Para iniciar sesión usa el `email` o el `username`, junto con la `password` que pasaste al crear el admin.
-
-Ejemplo completo:
-
-```bash
-npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU" --lastName "Admin" --username "intuadmin" --phone "0414-1234567" --position "Administrador"
-```
-
----
-
-## 6. Ejecutar en modo desarrollo
-
-Debes tener **dos terminales abiertas** simultáneamente: una para el frontend (raíz del proyecto) y otra para el backend (carpeta `bakend`). A continuación los comandos recomendados.
-
-Terminal 1 — Frontend (desde la raíz del repositorio):
-
-```bash
-# Sitúate en la raíz del proyecto
-cd "INTU WEB"
-# Inicia el servidor de desarrollo del frontend
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
 npm run dev
 ```
 
-> Importante: este bloque asume que el terminal está en la raíz `INTU WEB`.
-> Si tu terminal ya está en `INTU WEB/bakend`, primero sube a la raíz con `cd ..` o usa rutas locales como:
->
-> ```bash
-> # desde INTU WEB/bakend
-> npx prisma generate --schema ./prisma/schema.prisma
-> npx prisma migrate dev --schema ./prisma/schema.prisma --name init
-> ```
->
-> Si no lo haces, el comando `npx --prefix bakend prisma ... --schema bakend/prisma/schema.prisma` intentará leer `bakend/bakend/prisma/schema.prisma` y fallará.
->
-> El backend siempre usa el único `.env` en la raíz del proyecto. No crees ni uses `bakend/.env`.
+### 6.2 Iniciar backend
 
-```bash
-# 
-cd "INTU WEB"
-# Genera Prisma usando la versión instalada en bakend y el env global de la raíz
-npx --prefix bakend prisma generate --schema bakend/prisma/schema.prisma
-npx --prefix bakend prisma migrate dev --schema bakend/prisma/schema.prisma --name init
-# Luego entra al backend para iniciar el servidor
-cd bakend
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB\bakend"
 npm run dev
 ```
 
-
-
-Ambos servidores deben quedar ejecutándose al mismo tiempo. El frontend escucha por defecto en `http://localhost:5173` y el backend en `http://localhost:4000`.
-
-## 7. URLs principales
+### 6.3 Direcciones locales
 
 - Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:4000`
-- Admin (panel de administración): `http://localhost:5173/admin` (login en `/admin/login`) por defecto.
-- Marco jurídico: `http://localhost:5173/marco-juridico`
-
-> Nota: la ruta del panel de administración es configurable con `ADMIN_PATH` y `VITE_ADMIN_PATH`.
-> Si cambias ese valor a `secret-admin`, la página de login será `http://localhost:5173/secret-admin/login` y el panel admin será `http://localhost:5173/secret-admin`.
-
-## 8. Acceso al panel admin
-
-La ruta administrativa no es accesible para usuarios comunes:
-
-- El panel solo funciona si el usuario se autentica como admin.
-- El frontend redirige a `/${ADMIN_PATH}/login` cuando no hay sesión válida.
-- El backend protege los endpoints admin con JWT y `ensureAdmin`, de modo que solo cuentas administradoras pueden usar esos recursos.
-
-Para acceder desde un navegador en desarrollo:
-
-1. Crea un usuario admin con el comando de backend.
-2. Abre `http://localhost:5173/admin/login` o la ruta personalizada según `VITE_ADMIN_PATH`.
-3. Inicia sesión con el correo/usuario y contraseña del admin.
+- Backend: `http://localhost:4000`
 
 ---
 
-## 9. Notas importantes
+## 7. Administración del proyecto
+
+### 7.1 Crear usuario admin
+
+Desde `bakend`:
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB\bakend"
+npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU Admin"
+```
+
+Desde la raíz del proyecto:
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
+npx --prefix bakend npm run create-admin -- --email admin@example.com --password Secret123 --name "INTU Admin"
+```
+
+### 7.2 Opciones adicionales para admin
+
+- `--lastName`
+- `--username`
+- `--phone`
+- `--position`
+
+> El inicio de sesión se puede realizar con `email` o `username`, junto a la contraseña.
+
+### 7.3 Rutas del panel admin
+
+- Login de admin (por defecto): `http://localhost:5173/admin/login`
+- Panel admin (por defecto): `http://localhost:5173/admin`
+
+Si cambias `ADMIN_PATH` y `VITE_ADMIN_PATH`, usa la misma ruta personalizada en ambos.
+
+---
+
+## 8. INTU Bot
+
+### 8.1 Rutas disponibles
+
+El backend expone el bot en:
+
+- `/intu-bot`
+- `/api/intu-bot`
+- `/${ADMIN_PATH}/intu-bot`
+
+El frontend usa `VITE_API_URL/intu-bot`.
+
+### 8.2 Variables necesarias
+
+- `GEMINI_API_KEY`: clave Gemini.
+- `LLM_PROVIDER=gemini`
+- `LLM_TEMPERATURE`, `LLM_TOP_P`, `LLM_MAX_TOKENS`: opcionales.
+
+---
+
+## 9. Verificación y utilidades
+
+### 9.1 Verificar backend
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
+npx --prefix bakend npm run verify-setup
+```
+
+### 9.2 Build y preview frontend
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
+npm run build
+npm run preview
+```
+
+### 9.3 Build backend
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB\bakend"
+npm run build
+```
+
+---
+
+## 10. Notas importantes
 
 - No subas el archivo `.env` al repositorio.
 - Usa un valor seguro en `JWT_SECRET`.
-- En producción, desactiva o protege el endpoint `/admin/auth/register`.
-- Si el backend está en otra máquina, actualiza `ALLOWED_ORIGINS` en el archivo raíz `.env`.
+- No crees ni uses un `.env` dentro de `bakend/`; el backend carga el `.env` de la raíz.
+- `ADMIN_PATH` y `VITE_ADMIN_PATH` deben coincidir.
+- Asegúrate de que PostgreSQL esté en ejecución antes de correr Prisma.
+- Si el backend usa otro puerto, actualiza `PORT` y `VITE_API_URL`.
+- Si hay errores de CORS, actualiza `ALLOWED_ORIGINS`.
+
+---
+
+## 11. Dependencias clave
+
+### Frontend
+
+- `react`
+- `react-dom`
+- `react-router-dom`
+- `react-leaflet`
+- `leaflet`
+- `lucide-react`
+- `@vis.gl/react-google-maps`
+
+### Backend
+
+- `express`
+- `@prisma/client`
+- `bcrypt`
+- `cookie-parser`
+- `cors`
+- `dotenv`
+- `express-rate-limit`
+- `helmet`
+- `jsonwebtoken`
+- `multer`
+
+### Desarrollo
+
+- `typescript`
+- `vite`
+- `eslint`
+- `@typescript-eslint/parser`
+- `@typescript-eslint/eslint-plugin`
+- `@vitejs/plugin-react`
+- `ts-node-dev`
+
+---
+
+## 12. Estructura de carpetas clave
+
+- `src/components/`: componentes React.
+- `src/pages/`: páginas de la aplicación.
+- `src/services/`: utilidades de API y datos.
+- `bakend/src/routes/`: rutas del backend.
+- `bakend/prisma/`: esquema y migraciones.
+- `bakend/scripts/`: scripts de utilidad.
+
+---
+
+## 13. Cómo probar el sistema
+
+1. Arranca el backend.
+2. Arranca el frontend.
+3. Abre `http://localhost:5173`.
+4. Accede al panel admin en `http://localhost:5173/admin/login`.
 
 ---
 

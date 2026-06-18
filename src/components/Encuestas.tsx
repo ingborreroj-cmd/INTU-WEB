@@ -1,48 +1,45 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ClipboardList, CheckCircle2, X, BarChart3 } from 'lucide-react';
+import { surveyService } from '../services/surveyService';
+import { DEFAULT_SURVEY_QUESTIONS } from '../data/surveyData';
 
 interface SurveyQuestion {
-  id: string;
+  id: number;
   label: string;
   type: 'radio' | 'text';
   options?: string[];
   placeholder?: string;
+  active?: boolean;
 }
-
-const SURVEY_QUESTIONS: SurveyQuestion[] = [
-  {
-    id: 'navigation',
-    label: '¿Cómo calificarías la navegación del sitio web?',
-    type: 'radio',
-    options: ['Excelente', 'Buena', 'Aceptable', 'Difícil', 'Muy difícil'],
-  },
-  {
-    id: 'useful_section',
-    label: '¿Qué sección te pareció más útil?',
-    type: 'radio',
-    options: ['Inicio', 'Servicios', 'Trámites', 'Noticias', 'Contacto'],
-  },
-  {
-    id: 'improvement',
-    label: '¿Qué mejorarías en la página?',
-    type: 'text',
-    placeholder: 'Escribe una idea de mejora o sugerencia...',
-  },
-  {
-    id: 'updates',
-    label: '¿Te gustaría recibir noticias sobre actualizaciones del sitio?',
-    type: 'radio',
-    options: ['Sí', 'No'],
-  },
-];
 
 const Encuestas: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [responses, setResponses] = useState<Record<string, string>>({});
+  const [questions, setQuestions] = useState<SurveyQuestion[]>(DEFAULT_SURVEY_QUESTIONS);
+  const [responses, setResponses] = useState<Record<number, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const activeQuestion = useMemo(() => SURVEY_QUESTIONS[currentStep], [currentStep]);
+  const activeQuestion = useMemo(() => questions[currentStep], [questions, currentStep]);
+
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        const loaded = await surveyService.getQuestions();
+        const filtered = loaded.filter((question) => question.active !== false);
+        setQuestions(filtered.length > 0 ? filtered : DEFAULT_SURVEY_QUESTIONS);
+      } catch (err) {
+        console.warn('Unable to load survey questions:', err);
+        setError('No se pudieron cargar las preguntas de la encuesta.');
+        setQuestions(DEFAULT_SURVEY_QUESTIONS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadQuestions();
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -58,21 +55,44 @@ const Encuestas: React.FC = () => {
   }, []);
 
   const handleSelectOption = (value: string) => {
-    setResponses(prev => ({ ...prev, [activeQuestion.id]: value }));
+    if (!activeQuestion) return;
+    setResponses((prev) => ({ ...prev, [activeQuestion.id]: value }));
   };
 
   const handleInputChange = (value: string) => {
-    setResponses(prev => ({ ...prev, [activeQuestion.id]: value }));
+    if (!activeQuestion) return;
+    setResponses((prev) => ({ ...prev, [activeQuestion.id]: value }));
+  };
+
+  const submitSurvey = async () => {
+    try {
+      const answers: Record<number, string> = {};
+      Object.entries(responses).forEach(([key, value]) => {
+        const questionId = Number(key);
+        if (!Number.isNaN(questionId) && value.trim()) answers[questionId] = value.trim();
+      });
+
+      if (Object.keys(answers).length === 0) {
+        throw new Error('No se encontraron respuestas válidas.');
+      }
+
+      await surveyService.submitResponses(answers);
+      setSubmitted(true);
+    } catch (err) {
+      console.warn('Survey submit failed, saving locally instead:', err);
+      localStorage.setItem('intu_web_survey', JSON.stringify({ answers: responses, date: new Date().toISOString() }));
+      setSubmitted(true);
+    }
   };
 
   const handleNext = () => {
-    if (!responses[activeQuestion.id]) return;
-    if (currentStep + 1 < SURVEY_QUESTIONS.length) {
+    if (!activeQuestion) return;
+    if (!responses[activeQuestion.id] || !responses[activeQuestion.id].trim()) return;
+    if (currentStep + 1 < questions.length) {
       setCurrentStep(currentStep + 1);
       return;
     }
-    setSubmitted(true);
-    localStorage.setItem('intu_web_survey', JSON.stringify({ answers: responses, date: new Date().toISOString() }));
+    submitSurvey();
   };
 
   const handleRestart = () => {
@@ -80,6 +100,10 @@ const Encuestas: React.FC = () => {
     setCurrentStep(0);
     setSubmitted(false);
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-[70]">
@@ -114,16 +138,17 @@ const Encuestas: React.FC = () => {
             <div className="mb-4 rounded-3xl bg-[#f8fafc] p-4 text-sm text-slate-700">
               <p className="font-semibold">Responde estas preguntas rápidas.</p>
               <p className="mt-2 text-xs text-slate-500">Esta ventana es una base lista para ir ampliando más encuestas y opiniones.</p>
+              {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
             </div>
 
             {submitted ? (
               <div className="space-y-4">
                 <div className="rounded-3xl border border-[#273376]/10 bg-[#f8fafc] p-4 text-slate-700">
                   <p className="font-semibold text-[#273376]">¡Gracias por participar!</p>
-                  <p className="mt-2 text-sm text-slate-600">Tus respuestas se guardaron localmente como base para mejoras futuras.</p>
+                  <p className="mt-2 text-sm text-slate-600">Tus respuestas se guardaron y se enviaron si el servidor estaba disponible.</p>
                 </div>
                 <div className="space-y-3">
-                  {SURVEY_QUESTIONS.map(question => (
+                  {questions.map((question) => (
                     <div key={question.id} className="rounded-3xl border border-slate-200 bg-white p-3 text-sm">
                       <p className="font-semibold text-slate-700">{question.label}</p>
                       <p className="mt-2 text-slate-600">{responses[question.id] || 'No respondida'}</p>
@@ -139,32 +164,36 @@ const Encuestas: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-5">
-                <div>
-                  <p className="text-sm font-semibold text-slate-800 mb-3">{activeQuestion.label}</p>
-                  {activeQuestion.type === 'radio' && (
-                    <div className="space-y-2">
-                      {activeQuestion.options?.map(option => (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() => handleSelectOption(option)}
-                          className={`w-full text-left rounded-2xl border px-4 py-3 text-sm transition ${responses[activeQuestion.id] === option ? 'border-[#273376] bg-[#273376] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}
-                        >
-                          {option}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {activeQuestion.type === 'text' && (
-                    <textarea
-                      rows={4}
-                      value={responses[activeQuestion.id] || ''}
-                      onChange={(e) => handleInputChange(e.target.value)}
-                      placeholder={activeQuestion.placeholder}
-                      className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none focus:border-[#273376] transition"
-                    />
-                  )}
-                </div>
+                {activeQuestion ? (
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800 mb-3">{activeQuestion.label}</p>
+                    {activeQuestion.type === 'radio' && (
+                      <div className="space-y-2">
+                        {activeQuestion.options?.map((option) => (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() => handleSelectOption(option)}
+                            className={`w-full text-left rounded-2xl border px-4 py-3 text-sm transition ${responses[activeQuestion.id] === option ? 'border-[#273376] bg-[#273376] text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'}`}
+                          >
+                            {option}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {activeQuestion.type === 'text' && (
+                      <textarea
+                        rows={4}
+                        value={responses[activeQuestion.id] || ''}
+                        onChange={(e) => handleInputChange(e.target.value)}
+                        placeholder={activeQuestion.placeholder || 'Escribe tu respuesta...'}
+                        className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none focus:border-[#273376] transition"
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-600">No hay preguntas disponibles por el momento.</p>
+                )}
 
                 <div className="flex items-center justify-between gap-3">
                   <button
@@ -182,7 +211,7 @@ const Encuestas: React.FC = () => {
                     onClick={handleNext}
                     className="rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1d2f5a] transition"
                   >
-                    {currentStep + 1 < SURVEY_QUESTIONS.length ? 'Siguiente' : 'Enviar'}
+                    {currentStep + 1 < questions.length ? 'Siguiente' : 'Enviar'}
                   </button>
                 </div>
               </div>

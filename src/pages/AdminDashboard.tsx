@@ -15,6 +15,7 @@ import {
 import { heroService } from '../services/heroService';
 import { newsService } from '../services/newsService';
 import { adminService } from '../services/adminService';
+import { surveyService, SurveyQuestion, SurveyStatsQuestion } from '../services/surveyService';
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 
@@ -43,7 +44,7 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [savingSection, setSavingSection] = useState<string | null>(null);
-  const [selectedSection, setSelectedSection] = useState<'all'|'hero'|'news'|'official'|'admin'>('all');
+  const [selectedSection, setSelectedSection] = useState<'all'|'hero'|'news'|'official'|'admin'|'survey'>('all');
 
   // modal removed: modal state and preview removed
 
@@ -54,6 +55,18 @@ const AdminDashboard: React.FC = () => {
   const [adminRegisterStatus, setAdminRegisterStatus] = useState<string | null>(null);
   const [showAdminCreatedModal, setShowAdminCreatedModal] = useState(false);
   const [adminsList, setAdminsList] = useState<any[]>([]);
+  const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestion[]>([]);
+  const [surveyStats, setSurveyStats] = useState<SurveyStatsQuestion[]>([]);
+  const [surveyTotalResponses, setSurveyTotalResponses] = useState(0);
+  const [surveyLoading, setSurveyLoading] = useState(false);
+  const [surveyError, setSurveyError] = useState<string | null>(null);
+  const [newSurveyQuestion, setNewSurveyQuestion] = useState<Partial<SurveyQuestion>>({
+    label: '',
+    type: 'radio',
+    options: [''],
+    order: 0,
+    active: true,
+  });
   const [editingAdminId, setEditingAdminId] = useState<number | null>(null);
   const [editingAdminData, setEditingAdminData] = useState<Partial<AdminFormData> | null>(null);
 
@@ -76,6 +89,18 @@ const AdminDashboard: React.FC = () => {
         } catch (e) {
           // ignore if backend doesn't expose admin list
           console.warn('Could not fetch admins list:', e);
+        }
+
+        try {
+          const [questions, stats] = await Promise.all([
+            surveyService.getAdminQuestions(),
+            surveyService.getStats(),
+          ]);
+          setSurveyQuestions(questions);
+          setSurveyStats(stats.questions || []);
+          setSurveyTotalResponses(stats.totalResponses || 0);
+        } catch (error) {
+          console.warn('Could not fetch survey admin data:', error);
         }
       } catch (error) {
         console.error('Error cargando datos de administración:', error);
@@ -249,6 +274,127 @@ const AdminDashboard: React.FC = () => {
       return;
     }
     setOfficialNews((current) => current.filter((_, idx) => idx !== index));
+  };
+
+  const refreshSurveyAdminData = async () => {
+    setSurveyLoading(true);
+    setSurveyError(null);
+    try {
+      const [questions, stats] = await Promise.all([
+        surveyService.getAdminQuestions(),
+        surveyService.getStats(),
+      ]);
+      setSurveyQuestions(questions);
+      setSurveyStats(stats.questions || []);
+      setSurveyTotalResponses(stats.totalResponses || 0);
+    } catch (error: any) {
+      console.error('Error cargando datos de encuestas:', error);
+      setSurveyError(error?.message || 'No se pudieron cargar los datos de encuestas.');
+    } finally {
+      setSurveyLoading(false);
+    }
+  };
+
+  const handleSurveyQuestionChange = (index: number, field: keyof SurveyQuestion, value: any) => {
+    setSurveyQuestions((current) => {
+      const next = [...current];
+      next[index] = { ...next[index], [field]: value };
+      return next;
+    });
+  };
+
+  const handleSurveyQuestionOptionChange = (questionIndex: number, optionIndex: number, value: string) => {
+    setSurveyQuestions((current) => {
+      const next = [...current];
+      const question = next[questionIndex];
+      const options = Array.isArray(question.options) ? [...question.options] : [];
+      options[optionIndex] = value;
+      next[questionIndex] = { ...question, options };
+      return next;
+    });
+  };
+
+  const addSurveyQuestionOption = (questionIndex: number) => {
+    setSurveyQuestions((current) => {
+      const next = [...current];
+      const question = next[questionIndex];
+      const options = Array.isArray(question.options) ? [...question.options, ''] : [''];
+      next[questionIndex] = { ...question, options };
+      return next;
+    });
+  };
+
+  const removeSurveyQuestionOption = (questionIndex: number, optionIndex: number) => {
+    setSurveyQuestions((current) => {
+      const next = [...current];
+      const question = next[questionIndex];
+      const options = Array.isArray(question.options) ? [...question.options] : [];
+      options.splice(optionIndex, 1);
+      next[questionIndex] = { ...question, options };
+      return next;
+    });
+  };
+
+  const createSurveyQuestion = async () => {
+    if (!newSurveyQuestion.label?.trim()) {
+      alert('El texto de la pregunta es obligatorio.');
+      return;
+    }
+    if (newSurveyQuestion.type === 'radio' && (!newSurveyQuestion.options || newSurveyQuestion.options.length === 0)) {
+      alert('Agrega al menos una opción para preguntas de tipo radio.');
+      return;
+    }
+
+    setSavingSection('survey');
+    try {
+      await surveyService.createQuestion({
+        label: newSurveyQuestion.label,
+        type: newSurveyQuestion.type as 'radio' | 'text',
+        options: newSurveyQuestion.options?.filter((opt) => opt.trim().length > 0),
+        order: Number(newSurveyQuestion.order) || 0,
+        active: newSurveyQuestion.active !== false,
+      });
+      setNewSurveyQuestion({ label: '', type: 'radio', options: [''], order: surveyQuestions.length + 1, active: true });
+      await refreshSurveyAdminData();
+      alert('Pregunta de encuesta creada correctamente.');
+    } catch (error: any) {
+      alert(error?.message || 'Error al crear la pregunta de la encuesta.');
+    } finally {
+      setSavingSection(null);
+    }
+  };
+
+  const saveSurveyQuestion = async (question: SurveyQuestion) => {
+    setSavingSection('survey');
+    try {
+      await surveyService.updateQuestion(question.id, {
+        label: question.label,
+        type: question.type as 'radio' | 'text',
+        options: Array.isArray(question.options) ? question.options : [],
+        order: question.order,
+        active: question.active,
+      });
+      await refreshSurveyAdminData();
+      alert('Pregunta actualizada correctamente.');
+    } catch (error: any) {
+      alert(error?.message || 'Error al actualizar la pregunta de la encuesta.');
+    } finally {
+      setSavingSection(null);
+    }
+  };
+
+  const deleteSurveyQuestion = async (questionId: number) => {
+    if (!window.confirm('¿Eliminar esta pregunta de la encuesta? Esta acción no se puede deshacer.')) return;
+    setSavingSection('survey');
+    try {
+      await surveyService.deleteQuestion(questionId);
+      await refreshSurveyAdminData();
+      alert('Pregunta eliminada correctamente.');
+    } catch (error: any) {
+      alert(error?.message || 'Error al eliminar la pregunta de la encuesta.');
+    } finally {
+      setSavingSection(null);
+    }
   };
 
   // Admins management: edit, save, delete
@@ -426,6 +572,7 @@ const AdminDashboard: React.FC = () => {
             { key: 'hero', label: 'Hero' },
             { key: 'news', label: 'Noticias Nacionales' },
             { key: 'official', label: 'Noticias INTU' },
+            { key: 'survey', label: 'Encuestas' },
             { key: 'admin', label: 'Administradores' },
           ].map((item) => (
             <button
@@ -799,6 +946,260 @@ const AdminDashboard: React.FC = () => {
               <Plus size={16} /> Agregar noticia oficial
             </button>
           </div>
+          </section>
+        )}
+
+        {(selectedSection === 'all' || selectedSection === 'survey') && (
+          <section id="survey" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
+                  <Bell size={16} /> Encuestas
+                </div>
+                <h2 className="mt-4 text-2xl font-bold text-[#273376]">Preguntas de encuesta</h2>
+                <p className="mt-2 text-sm text-slate-500">Administra preguntas, opciones y revisa estadísticas en tiempo real.</p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={refreshSurveyAdminData}
+                  disabled={surveyLoading}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <RefreshCw size={16} /> {surveyLoading ? 'Actualizando...' : 'Actualizar datos'}
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_0.9fr]">
+              <div className="space-y-6">
+                <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                  <h3 className="text-lg font-semibold text-[#273376]">Nueva pregunta</h3>
+                  <div className="mt-6 space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700 mb-2">Texto de la pregunta</label>
+                      <input
+                        type="text"
+                        value={newSurveyQuestion.label || ''}
+                        onChange={(e) => setNewSurveyQuestion((prev) => ({ ...prev, label: e.target.value }))}
+                        className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                      />
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Tipo</label>
+                        <select
+                          value={newSurveyQuestion.type}
+                          onChange={(e) => setNewSurveyQuestion((prev) => ({ ...prev, type: e.target.value as 'radio' | 'text', options: e.target.value === 'radio' ? prev.options || [''] : [] }))}
+                          className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        >
+                          <option value="radio">Opción múltiple</option>
+                          <option value="text">Respuesta abierta</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Orden</label>
+                        <input
+                          type="number"
+                          min={0}
+                          value={newSurveyQuestion.order ?? 0}
+                          onChange={(e) => setNewSurveyQuestion((prev) => ({ ...prev, order: Number(e.target.value) }))}
+                          className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
+                    </div>
+
+                    {newSurveyQuestion.type === 'radio' && (
+                      <div className="space-y-3 rounded-3xl border border-slate-200 bg-white p-4">
+                        <p className="text-sm font-semibold text-slate-700">Opciones</p>
+                        {newSurveyQuestion.options?.map((option, optionIndex) => (
+                          <div key={`${option}-${optionIndex}`} className="flex items-center gap-3">
+                            <input
+                              type="text"
+                              value={option}
+                              onChange={(e) => setNewSurveyQuestion((prev) => {
+                                const nextOptions = Array.isArray(prev.options) ? [...prev.options] : [];
+                                nextOptions[optionIndex] = e.target.value;
+                                return { ...prev, options: nextOptions };
+                              })}
+                              className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setNewSurveyQuestion((prev) => {
+                                const nextOptions = Array.isArray(prev.options) ? [...prev.options] : [];
+                                nextOptions.splice(optionIndex, 1);
+                                return { ...prev, options: nextOptions };
+                              })}
+                              className="rounded-full border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                            >Eliminar</button>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() => setNewSurveyQuestion((prev) => ({ ...prev, options: Array.isArray(prev.options) ? [...prev.options, ''] : [''] }))}
+                          className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                        >Agregar opción</button>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-3">
+                      <label className="inline-flex items-center gap-2 text-sm text-slate-700">
+                        <input
+                          type="checkbox"
+                          checked={newSurveyQuestion.active !== false}
+                          onChange={(e) => setNewSurveyQuestion((prev) => ({ ...prev, active: e.target.checked }))}
+                          className="h-4 w-4 rounded border-slate-300 text-[#273376] focus:ring-[#273376]"
+                        />
+                        Activa esta pregunta
+                      </label>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={createSurveyQuestion}
+                      disabled={savingSection === 'survey'}
+                      className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      <Save size={16} /> Crear pregunta
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  {surveyQuestions.length === 0 && (
+                    <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6 text-sm text-slate-500">
+                      No hay preguntas cargadas todavía.
+                    </div>
+                  )}
+                  {surveyQuestions.map((question, index) => (
+                    <div key={question.id} className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-[#273376]">Pregunta #{index + 1}</p>
+                          <p className="text-sm text-slate-600">ID: {question.id}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => saveSurveyQuestion(question)}
+                            disabled={savingSection === 'survey'}
+                            className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
+                          >Guardar cambios</button>
+                          <button
+                            type="button"
+                            onClick={() => deleteSurveyQuestion(question.id)}
+                            disabled={savingSection === 'survey'}
+                            className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
+                          >Eliminar</button>
+                        </div>
+                      </div>
+                      <div className="mt-6 grid gap-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-slate-700 mb-2">Etiqueta</label>
+                          <input
+                            type="text"
+                            value={question.label}
+                            onChange={(e) => handleSurveyQuestionChange(index, 'label', e.target.value)}
+                            className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                          />
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-700 mb-2">Tipo</label>
+                            <select
+                              value={question.type}
+                              onChange={(e) => handleSurveyQuestionChange(index, 'type', e.target.value)}
+                              className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                            >
+                              <option value="radio">Opción múltiple</option>
+                              <option value="text">Respuesta abierta</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-700 mb-2">Orden</label>
+                            <input
+                              type="number"
+                              min={0}
+                              value={question.order}
+                              onChange={(e) => handleSurveyQuestionChange(index, 'order', Number(e.target.value))}
+                              className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                            />
+                          </div>
+                        </div>
+                        <label className="inline-flex items-center gap-2 text-sm text-slate-700">
+                          <input
+                            type="checkbox"
+                            checked={question.active}
+                            onChange={(e) => handleSurveyQuestionChange(index, 'active', e.target.checked)}
+                            className="h-4 w-4 rounded border-slate-300 text-[#273376] focus:ring-[#273376]"
+                          />
+                          Activar pregunta
+                        </label>
+                        {question.type === 'radio' && (
+                          <div className="space-y-3 rounded-3xl border border-slate-200 bg-white p-4">
+                            <p className="text-sm font-semibold text-slate-700">Opciones</p>
+                            {Array.isArray(question.options) && question.options.map((option, optionIndex) => (
+                              <div key={`${question.id}-${optionIndex}`} className="flex items-center gap-3">
+                                <input
+                                  type="text"
+                                  value={option}
+                                  onChange={(e) => handleSurveyQuestionOptionChange(index, optionIndex, e.target.value)}
+                                  className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => removeSurveyQuestionOption(index, optionIndex)}
+                                  className="rounded-full border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                                >Eliminar</button>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => addSurveyQuestionOption(index)}
+                              className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                            >Agregar opción</button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                <h3 className="text-lg font-semibold text-[#273376]">Estadísticas de encuesta</h3>
+                <p className="mt-2 text-sm text-slate-500">Total de respuestas registradas: {surveyTotalResponses}</p>
+                {surveyError && <p className="mt-4 text-sm text-red-600">{surveyError}</p>}
+                <div className="mt-6 space-y-4">
+                  {surveyStats.length === 0 && (
+                    <p className="text-sm text-slate-500">Aún no hay respuestas registradas o no hay preguntas activas.</p>
+                  )}
+                  {surveyStats.map((stat) => (
+                    <div key={stat.questionId} className="rounded-3xl border border-slate-200 bg-white p-4">
+                      <p className="font-semibold text-slate-800">{stat.label}</p>
+                      <p className="text-sm text-slate-500 mb-3">Respuestas totales: {stat.totalResponses}</p>
+                      {stat.type === 'text' ? (
+                        <div className="space-y-2">
+                          {stat.latestResponses?.length ? stat.latestResponses.map((item, idx) => (
+                            <p key={idx} className="text-sm text-slate-600">• {item}</p>
+                          )) : <p className="text-sm text-slate-500">No hay respuestas de texto disponibles.</p>}
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          {Object.entries(stat.optionCounts).map(([option, count]) => (
+                            <div key={option} className="flex justify-between text-sm text-slate-600">
+                              <span>{option}</span>
+                              <span>{count}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
         )}
 

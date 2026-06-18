@@ -137,13 +137,13 @@ const Contact: React.FC = () => {
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
             <div className="bg-[#A70336] w-fit p-3 rounded-xl text-white mb-4"><Phone size={24} /></div>
             <h4 className="font-bold text-slate-900">Atención Telefónica</h4>
-            <p className="text-slate-600 text-sm mt-2">(0000) 555 5555</p>
+            <p className="text-slate-600 text-sm mt-2">(0212) 991 9940</p>
           </div>
 
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
             <div className="bg-[#273376] w-fit p-3 rounded-xl text-white mb-4"><Mail size={24} /></div>
             <h4 className="font-bold text-slate-900">Correo Electrónico</h4>
-            <p className="text-slate-600 text-sm mt-2">intuve@example.com</p>
+            <p className="text-slate-600 text-sm mt-2">intuenlacalle@gmail.com</p>
           </div>
         </section>
 

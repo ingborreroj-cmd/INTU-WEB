@@ -1,35 +1,37 @@
-INTU Bot - integración con Gemini
+# INTU Bot - Integración con Gemini
 
-Este documento explica cómo está montado el proxy de backend para el `INTU Bot`, qué archivos son los relevantes y qué variables de entorno usa. El foco actual está en el adaptador de Gemini.
+Esta guía describe cómo funciona el proxy del INTU Bot, qué archivos son relevantes y qué variables de entorno se deben configurar.
 
-Archivos clave
+## Archivos clave
 
-- `bakend/src/llmProviders/gemini.ts` — Adaptador que construye la petición para Gemini y extrae la respuesta.
-- `bakend/src/llmProviders/index.ts` — Selector de proveedor según `LLM_PROVIDER`.
-- `bakend/src/routes/intuBot.ts` — Ruta POST que expone el bot como API.
-- `src/components/Intubot.tsx` — Componente del chat que envía el historial al backend.
+- `bakend/src/llmProviders/gemini.ts`: adaptador que construye la petición a Gemini y extrae la respuesta.
+- `bakend/src/llmProviders/index.ts`: selecciona el proveedor según `LLM_PROVIDER`.
+- `bakend/src/routes/intuBot.ts`: ruta POST que expone la API del bot.
+- `src/components/Intubot.tsx`: componente que envía el historial de chat al backend.
 
-Rutas disponibles
+## Rutas disponibles en el backend
 
-La ruta del bot está montada en el servidor en:
+El backend monta la ruta del bot en varias rutas:
 
 - `/intu-bot`
 - `/api/intu-bot`
-- `/admin/intu-bot`
+- `/{ADMIN_PATH}/intu-bot`
 
-El frontend usa `/api/intu-bot`.
+El frontend actual usa la ruta `${API}/intu-bot`, donde `API` viene de `VITE_API_URL`.
 
-Variables de entorno
+## Variables de entorno
 
-- `LLM_PROVIDER` — Proveedor de LLM. Actualmente solo `gemini`.
-- `GEMINI_API_KEY` — Clave para acceder a la API de Gemini.
-- `LLM_TEMPERATURE` — Temperatura del modelo. Valor por defecto `0.7`.
-- `LLM_TOP_P` — Valor de top-p para la generación. Valor por defecto `0.95`.
-- `LLM_MAX_TOKENS` — Máximo de tokens de salida. Valor por defecto `450`.
+- `LLM_PROVIDER`: proveedor LLM, actualmente `gemini`.
+- `GEMINI_API_KEY`: clave de Gemini.
+- `LLM_TEMPERATURE`: temperatura del modelo (por defecto `0.7`).
+- `LLM_TOP_P`: top-p (por defecto `0.95`).
+- `LLM_MAX_TOKENS`: máximo de tokens de salida (por defecto `450`).
 
-Formato del payload
+> Estas variables se deben definir en el `.env` de la raíz del proyecto.
 
-El backend espera un cuerpo con el historial en `history`:
+## Formato esperado del payload
+
+El backend recibe el historial en `history`:
 
 ```json
 {
@@ -40,55 +42,65 @@ El backend espera un cuerpo con el historial en `history`:
 }
 ```
 
-En el frontend se construye ese historial usando `{ role: 'user' | 'model', parts: [{ text }] }`.
+En el frontend, `src/components/Intubot.tsx` envía esta estructura con roles `user` y `model`.
 
-Internamente el backend convierte ese historial en un prompt de texto y llama a Gemini con `instances` y `parameters`, que es el formato compatible con la API actual.
+## Flujo de la petición
 
-Flujo de la petición
-
-1. El cliente envía el historial completo a `/api/intu-bot`.
-2. El backend lee `body.history` y valida que sea un arreglo no vacío.
-3. `getProviderAdapter()` selecciona el adaptador para `gemini`.
-4. El adaptador llama a Gemini, procesa la respuesta y devuelve `{ text, raw }`.
+1. El cliente envía el historial completo a `/intu-bot`.
+2. El backend valida `body.history`.
+3. `getProviderAdapter()` selecciona el adaptador `gemini`.
+4. El adaptador llama a Gemini y procesa la respuesta.
 5. El backend responde con `{ reply: text, raw }`.
 
-Detalles del adaptador de Gemini
+## Detalles del adaptador Gemini
 
-- Usa la URL fija: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateText?key=${GEMINI_API_KEY}`.
+- Usa la URL de la API de Gemini.
 - Construye el prompt con un mensaje de sistema para que el asistente responda como representante del INTU.
-- Envía los mensajes en el formato que espera Gemini.
-- Extrae el texto principal de `json.candidates[0].content`, `json.candidates[0].output.text` o `json.outputText`.
+- Envía la petición con `instances` y `parameters`.
+- Extrae el texto principal de la respuesta de Gemini.
 
-Manejo de errores
+## Manejo de errores
 
-- Si falta `GEMINI_API_KEY`, el adaptador falla con un mensaje claro.
-- Si Gemini devuelve un error HTTP, el backend registra el fallo y responde con `500`.
-- Si la solicitud de frontend no incluye `history` o está vacío, el backend responde `400`.
+- Si falta `GEMINI_API_KEY`, la petición falla con un error claro.
+- Si Gemini devuelve un error HTTP, el backend responde con `500`.
+- Si `history` no está presente o está vacío, el backend responde con `400`.
 
-Recomendaciones para producción
+## Prueba rápida
 
-- Mantén `GEMINI_API_KEY` fuera del repositorio y en un `.env` local o en las variables de entorno del despliegue.
-- Protege las rutas del bot si no deben ser públicas.
-- Ajusta `rateLimit` y agrega registros de uso para monitorear acceso y consumo.
-- Revisa `JWT_SECRET` en el archivo raíz `.env` para no dejar el valor por defecto.
+1. Configura las variables en `.env`:
 
-Prueba rápida
-
-1. Define las variables de entorno:
-
-```powershell
-$env:GEMINI_API_KEY = "sk-..."
-$env:LLM_PROVIDER = "gemini"
+```text
+GEMINI_API_KEY=tu_clave_gemini
+LLM_PROVIDER=gemini
 ```
 
-2. Arranca el backend desde `bakend`.
-3. Arranca el frontend desde la raíz del proyecto.
-4. Abre el chat del INTU Bot y prueba una consulta.
+2. Inicia el backend:
 
-Extensión futura
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB\bakend"
+npm run dev
+```
+
+3. Inicia el frontend:
+
+```powershell
+cd "c:\Users\DPain\Desktop\Prototipos web intu\INTU WEB"
+npm run dev
+```
+
+4. Abre el sitio y prueba el INTU Bot.
+
+## Recomendaciones
+
+- Mantén `GEMINI_API_KEY` fuera del repositorio.
+- Protege las rutas si el bot no debe ser público.
+- Ajusta el `rateLimit` en el backend si necesitas controlar el tráfico.
+- Revisa que `JWT_SECRET` no sea el valor por defecto.
+
+## Extensiones futuras
 
 - Añadir adaptadores para otros proveedores como `openai`.
-- Implementar persistencia de conversaciones si se quiere guardar contexto entre sesiones.
-- Mejorar el UI del chat con respuestas en tiempo real o streaming.
+- Guardar contexto o persistencia de conversaciones.
+- Mejorar la UI del chat con streaming o respuestas en tiempo real.
 
 

@@ -21,6 +21,7 @@ import heroRoutes from './routes/hero';
 import newsRoutes from './routes/news';
 import intuBotRoutes from './routes/intuBot';
 import adminsRoutes from './routes/admins';
+import { surveyPublicRouter, surveyAdminRouter } from './routes/surveys';
 
 const app = express();
 
@@ -63,6 +64,8 @@ app.use(`${ADMIN_BASE}/auth`, authRoutes);
 app.use(`${ADMIN_BASE}/hero`, heroRoutes);
 app.use(`${ADMIN_BASE}/news`, newsRoutes);
 app.use(`${ADMIN_BASE}`, adminsRoutes);
+app.use(`${ADMIN_BASE}/surveys`, surveyAdminRouter);
+app.use('/surveys', surveyPublicRouter);
 
 app.use('/intu-bot', intuBotRoutes);
 app.use('/api/intu-bot', intuBotRoutes);

@@ -43,3 +43,23 @@ model NewsItem {
   active    Boolean  @default(true)
   updatedAt DateTime @updatedAt
 }
+
+model SurveyQuestion {
+  id        Int      @id @default(autoincrement())
+  label     String
+  type      String
+  options   Json?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  responses SurveyResponse[]
+}
+
+model SurveyResponse {
+  id         Int           @id @default(autoincrement())
+  questionId Int
+  response   String
+  createdAt  DateTime      @default(now())
+  question   SurveyQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}

@@ -56,10 +56,31 @@ model SurveyQuestion {
   responses SurveyResponse[]
 }
 
+model SurveyRespondent {
+  id         Int              @id @default(autoincrement())
+  cedula     String           @unique
+  createdAt  DateTime         @default(now())
+  responses  SurveyResponse[]
+}
+
 model SurveyResponse {
-  id         Int           @id @default(autoincrement())
-  questionId Int
-  response   String
-  createdAt  DateTime      @default(now())
-  question   SurveyQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  id           Int              @id @default(autoincrement())
+  questionId   Int
+  respondentId Int
+  response     String
+  createdAt    DateTime         @default(now())
+  question     SurveyQuestion   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  respondent   SurveyRespondent @relation(fields: [respondentId], references: [id], onDelete: Cascade)
+}
+
+model SurveySettings {
+  id             Int      @id @default(autoincrement())
+  active         Boolean  @default(true)
+  startDate      DateTime?
+  endDate        DateTime?
+  dailyStartTime String?
+  dailyEndTime   String?
+  durationMinutes Int     @default(5)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

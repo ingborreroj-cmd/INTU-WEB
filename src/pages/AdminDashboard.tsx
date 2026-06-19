@@ -15,7 +15,7 @@ import {
 import { heroService } from '../services/heroService';
 import { newsService } from '../services/newsService';
 import { adminService } from '../services/adminService';
-import { surveyService, SurveyQuestion, SurveyStatsQuestion } from '../services/surveyService';
+import { surveyService, SurveyQuestion, SurveySettings, SurveyStatsQuestion } from '../services/surveyService';
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 
@@ -57,9 +57,12 @@ const AdminDashboard: React.FC = () => {
   const [adminsList, setAdminsList] = useState<any[]>([]);
   const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestion[]>([]);
   const [surveyStats, setSurveyStats] = useState<SurveyStatsQuestion[]>([]);
+  const [surveySettings, setSurveySettings] = useState<SurveySettings | null>(null);
   const [surveyTotalResponses, setSurveyTotalResponses] = useState(0);
   const [surveyLoading, setSurveyLoading] = useState(false);
+  const [surveySettingsSaving, setSurveySettingsSaving] = useState(false);
   const [surveyError, setSurveyError] = useState<string | null>(null);
+  const [surveySettingsError, setSurveySettingsError] = useState<string | null>(null);
   const [newSurveyQuestion, setNewSurveyQuestion] = useState<Partial<SurveyQuestion>>({
     label: '',
     type: 'radio',
@@ -92,13 +95,15 @@ const AdminDashboard: React.FC = () => {
         }
 
         try {
-          const [questions, stats] = await Promise.all([
+          const [questions, stats, settings] = await Promise.all([
             surveyService.getAdminQuestions(),
             surveyService.getStats(),
+            surveyService.getAdminSettings(),
           ]);
           setSurveyQuestions(questions);
           setSurveyStats(stats.questions || []);
           setSurveyTotalResponses(stats.totalResponses || 0);
+          setSurveySettings(settings);
         } catch (error) {
           console.warn('Could not fetch survey admin data:', error);
         }
@@ -280,13 +285,15 @@ const AdminDashboard: React.FC = () => {
     setSurveyLoading(true);
     setSurveyError(null);
     try {
-      const [questions, stats] = await Promise.all([
+      const [questions, stats, settings] = await Promise.all([
         surveyService.getAdminQuestions(),
         surveyService.getStats(),
+        surveyService.getAdminSettings(),
       ]);
       setSurveyQuestions(questions);
       setSurveyStats(stats.questions || []);
       setSurveyTotalResponses(stats.totalResponses || 0);
+      setSurveySettings(settings);
     } catch (error: any) {
       console.error('Error cargando datos de encuestas:', error);
       setSurveyError(error?.message || 'No se pudieron cargar los datos de encuestas.');
@@ -394,6 +401,32 @@ const AdminDashboard: React.FC = () => {
       alert(error?.message || 'Error al eliminar la pregunta de la encuesta.');
     } finally {
       setSavingSection(null);
+    }
+  };
+
+  const handleSurveySettingsChange = (field: keyof SurveySettings, value: string | number | boolean) => {
+    setSurveySettings((current) => current ? { ...current, [field]: value } : current);
+  };
+
+  const saveSurveySettings = async () => {
+    if (!surveySettings) return;
+    setSurveySettingsSaving(true);
+    setSurveySettingsError(null);
+    try {
+      const updated = await surveyService.updateSettings({
+        active: surveySettings.active,
+        startDate: surveySettings.startDate || null,
+        endDate: surveySettings.endDate || null,
+        dailyStartTime: surveySettings.dailyStartTime || null,
+        dailyEndTime: surveySettings.dailyEndTime || null,
+        durationMinutes: surveySettings.durationMinutes || 5,
+      });
+      setSurveySettings(updated);
+      alert('Configuración de la encuesta guardada correctamente.');
+    } catch (error: any) {
+      setSurveySettingsError(error?.message || 'No se pudieron guardar los ajustes de encuesta.');
+    } finally {
+      setSurveySettingsSaving(false);
     }
   };
 
@@ -1013,7 +1046,7 @@ const AdminDashboard: React.FC = () => {
                       <div className="space-y-3 rounded-3xl border border-slate-200 bg-white p-4">
                         <p className="text-sm font-semibold text-slate-700">Opciones</p>
                         {newSurveyQuestion.options?.map((option, optionIndex) => (
-                          <div key={`${option}-${optionIndex}`} className="flex items-center gap-3">
+                          <div key={optionIndex} className="flex items-center gap-3">
                             <input
                               type="text"
                               value={option}
@@ -1140,7 +1173,7 @@ const AdminDashboard: React.FC = () => {
                           <div className="space-y-3 rounded-3xl border border-slate-200 bg-white p-4">
                             <p className="text-sm font-semibold text-slate-700">Opciones</p>
                             {Array.isArray(question.options) && question.options.map((option, optionIndex) => (
-                              <div key={`${question.id}-${optionIndex}`} className="flex items-center gap-3">
+                              <div key={optionIndex} className="flex items-center gap-3">
                                 <input
                                   type="text"
                                   value={option}
@@ -1167,36 +1200,117 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
-                <h3 className="text-lg font-semibold text-[#273376]">Estadísticas de encuesta</h3>
-                <p className="mt-2 text-sm text-slate-500">Total de respuestas registradas: {surveyTotalResponses}</p>
-                {surveyError && <p className="mt-4 text-sm text-red-600">{surveyError}</p>}
-                <div className="mt-6 space-y-4">
-                  {surveyStats.length === 0 && (
-                    <p className="text-sm text-slate-500">Aún no hay respuestas registradas o no hay preguntas activas.</p>
-                  )}
-                  {surveyStats.map((stat) => (
-                    <div key={stat.questionId} className="rounded-3xl border border-slate-200 bg-white p-4">
-                      <p className="font-semibold text-slate-800">{stat.label}</p>
-                      <p className="text-sm text-slate-500 mb-3">Respuestas totales: {stat.totalResponses}</p>
-                      {stat.type === 'text' ? (
-                        <div className="space-y-2">
-                          {stat.latestResponses?.length ? stat.latestResponses.map((item, idx) => (
-                            <p key={idx} className="text-sm text-slate-600">• {item}</p>
-                          )) : <p className="text-sm text-slate-500">No hay respuestas de texto disponibles.</p>}
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          {Object.entries(stat.optionCounts).map(([option, count]) => (
-                            <div key={option} className="flex justify-between text-sm text-slate-600">
-                              <span>{option}</span>
-                              <span>{count}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+              <div className="space-y-6">
+                <div className="rounded-[28px] border border-slate-200 bg-white p-6">
+                  <h3 className="text-lg font-semibold text-[#273376]">Configuración de encuesta</h3>
+                  <p className="mt-2 text-sm text-slate-500">Define fechas y horarios para controlar cuándo la encuesta está disponible.</p>
+                  {surveySettingsError && <p className="mt-4 text-sm text-red-600">{surveySettingsError}</p>}
+                  <div className="mt-6 space-y-4">
+                    <label className="inline-flex items-center gap-3 text-sm text-slate-700">
+                      <input
+                        type="checkbox"
+                        checked={surveySettings?.active ?? false}
+                        onChange={(e) => handleSurveySettingsChange('active', e.target.checked)}
+                        className="h-4 w-4 rounded border-slate-300 text-[#273376] focus:ring-[#273376]"
+                      />
+                      Encuesta activa
+                    </label>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Fecha de inicio</label>
+                        <input
+                          type="date"
+                          value={surveySettings?.startDate?.slice(0, 10) || ''}
+                          onChange={(e) => handleSurveySettingsChange('startDate', e.target.value || null)}
+                          className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Fecha de cierre</label>
+                        <input
+                          type="date"
+                          value={surveySettings?.endDate?.slice(0, 10) || ''}
+                          onChange={(e) => handleSurveySettingsChange('endDate', e.target.value || null)}
+                          className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
                     </div>
-                  ))}
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Apertura diaria</label>
+                        <input
+                          type="time"
+                          value={surveySettings?.dailyStartTime || ''}
+                          onChange={(e) => handleSurveySettingsChange('dailyStartTime', e.target.value || null)}
+                          className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Cierre diario</label>
+                        <input
+                          type="time"
+                          value={surveySettings?.dailyEndTime || ''}
+                          onChange={(e) => handleSurveySettingsChange('dailyEndTime', e.target.value || null)}
+                          className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700 mb-2">Duración de encuesta (minutos)</label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={surveySettings?.durationMinutes ?? 5}
+                        onChange={(e) => handleSurveySettingsChange('durationMinutes', Number(e.target.value))}
+                        className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={saveSurveySettings}
+                      disabled={surveySettingsSaving}
+                      className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      <Save size={16} /> Guardar ajustes
+                    </button>
+                  </div>
+                </div>
+
+                <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-6">
+                  <h3 className="text-lg font-semibold text-[#273376]">Estadísticas de encuesta</h3>
+                  <p className="mt-2 text-sm text-slate-500">Total de respuestas registradas: {surveyTotalResponses}</p>
+                  {surveyError && <p className="mt-4 text-sm text-red-600">{surveyError}</p>}
+                  <div className="mt-6 space-y-4">
+                    {surveyStats.length === 0 && (
+                      <p className="text-sm text-slate-500">Aún no hay respuestas registradas o no hay preguntas activas.</p>
+                    )}
+                    {surveyStats.map((stat) => (
+                      <div key={stat.questionId} className="rounded-3xl border border-slate-200 bg-white p-4">
+                        <p className="font-semibold text-slate-800">{stat.label}</p>
+                        <p className="text-sm text-slate-500 mb-3">Respuestas totales: {stat.totalResponses}</p>
+                        {stat.type === 'text' ? (
+                          <div className="space-y-2">
+                            {stat.latestResponses?.length ? stat.latestResponses.map((item, idx) => (
+                              <p key={idx} className="text-sm text-slate-600">• {item}</p>
+                            )) : <p className="text-sm text-slate-500">No hay respuestas de texto disponibles.</p>}
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            {Object.entries(stat.optionCounts).map(([option, count]) => (
+                              <div key={option} className="flex justify-between text-sm text-slate-600">
+                                <span>{option}</span>
+                                <span>{count}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 
 // Importamos tus datos
 import { locations, Ubicacion } from '../data/ubicanos_data';
+import { SURVEYS_ENABLED } from '../featureFlags';
 
 // --- CONFIGURACIÓN DE ICONOS DE LEAFLET (ESTILO PUNTO DE INTERÉS DE GOOGLE) ---
 const GoogleMarker = L.divIcon({
@@ -99,10 +100,6 @@ const Contact: React.FC = () => {
     setSelectedLocation(null);
   };
 
-  const openEncuesta = () => {
-    window.dispatchEvent(new CustomEvent('openEncuesta'));
-  };
-
   // Bloqueo de scroll del body cuando el modal de detalles esté abierto
   useEffect(() => {
     if (!isModalOpen) return;
@@ -121,9 +118,11 @@ const Contact: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-montserrat font-extrabold leading-tight text-slate-900 max-w-3xl">
             Estamos listos para ayudarte desde nuestras sedes regionales.
           </h2>
-          <p className="mt-6 max-w-2xl text-sm text-slate-600">
-            ¿Quieres contarnos tu experiencia de usuario? <button type="button" onClick={openEncuesta} className="font-semibold text-[#273376] underline hover:text-[#FFC907]">Realiza nuestra encuesta</button> y ayúdanos a mejorar la web.
-          </p>
+          {SURVEYS_ENABLED && (
+            <p className="mt-6 max-w-2xl text-sm text-slate-600">
+              ¿Quieres contarnos tu experiencia de usuario? <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('openEncuesta'))} className="font-semibold text-[#273376] underline hover:text-[#FFC907]">Realiza nuestra encuesta</button> y ayúdanos a mejorar la web.
+            </p>
+          )}
         </section>
 
         {/* SECCIÓN 2: TARJETAS DE CONTACTO RÁPIDO */}
@@ -198,14 +197,14 @@ const Contact: React.FC = () => {
           </div>
         </section>
 
-        {/* SECCIÓN 4: EL MAPA CON ESTILO EXACTO DE GOOGLE MAPS */}
+        {/* SECCIÓN 4: MAPA DE SEDES */}
         <section className="w-full">
             <h3 className="text-2xl font-montserrat font-bold text-[#273376] mb-6">Ubicación Geográfica de Sedes</h3>
             <div className="rounded-[30px] overflow-hidden border-4 border-white shadow-2xl h-[550px] relative z-0">
                 <MapContainer center={currentCoords} zoom={currentZoom} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                   <TileLayer
-                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-                    attribution='&copy; Google Maps Style'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
                   {locations.map((loc, idx) => (
                     <Marker 

@@ -9,6 +9,7 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import INTUBot from '../components/Intubot';
 import Encuestas from '../components/Encuestas';
+import { SURVEYS_ENABLED } from '../featureFlags';
 
 const Home: React.FC = () => {
   return (
@@ -55,7 +56,7 @@ const Home: React.FC = () => {
         </main>
 
         <Footer />
-        <Encuestas />
+        {SURVEYS_ENABLED && <Encuestas />}
         <INTUBot />
       </div>
     </div>

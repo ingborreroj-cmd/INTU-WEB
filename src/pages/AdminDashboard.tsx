@@ -18,6 +18,7 @@ import { adminService } from '../services/adminService';
 import { surveyService, SurveyQuestion, SurveySettings, SurveyStatsQuestion } from '../services/surveyService';
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
+import { SURVEYS_ENABLED } from '../featureFlags';
 
 
 interface AdminFormData {
@@ -94,18 +95,20 @@ const AdminDashboard: React.FC = () => {
           console.warn('Could not fetch admins list:', e);
         }
 
-        try {
-          const [questions, stats, settings] = await Promise.all([
-            surveyService.getAdminQuestions(),
-            surveyService.getStats(),
-            surveyService.getAdminSettings(),
-          ]);
-          setSurveyQuestions(questions);
-          setSurveyStats(stats.questions || []);
-          setSurveyTotalResponses(stats.totalResponses || 0);
-          setSurveySettings(settings);
-        } catch (error) {
-          console.warn('Could not fetch survey admin data:', error);
+        if (SURVEYS_ENABLED) {
+          try {
+            const [questions, stats, settings] = await Promise.all([
+              surveyService.getAdminQuestions(),
+              surveyService.getStats(),
+              surveyService.getAdminSettings(),
+            ]);
+            setSurveyQuestions(questions);
+            setSurveyStats(stats.questions || []);
+            setSurveyTotalResponses(stats.totalResponses || 0);
+            setSurveySettings(settings);
+          } catch (error) {
+            console.warn('Could not fetch survey admin data:', error);
+          }
         }
       } catch (error) {
         console.error('Error cargando datos de administración:', error);
@@ -404,7 +407,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleSurveySettingsChange = (field: keyof SurveySettings, value: string | number | boolean) => {
+  const handleSurveySettingsChange = (field: keyof SurveySettings, value: string | number | boolean | null) => {
     setSurveySettings((current) => current ? { ...current, [field]: value } : current);
   };
 
@@ -607,7 +610,7 @@ const AdminDashboard: React.FC = () => {
             { key: 'official', label: 'Noticias INTU' },
             { key: 'survey', label: 'Encuestas' },
             { key: 'admin', label: 'Administradores' },
-          ].map((item) => (
+          ].filter((item) => SURVEYS_ENABLED || item.key !== 'survey').map((item) => (
             <button
               key={item.key}
               type="button"
@@ -982,7 +985,7 @@ const AdminDashboard: React.FC = () => {
           </section>
         )}
 
-        {(selectedSection === 'all' || selectedSection === 'survey') && (
+        {SURVEYS_ENABLED && (selectedSection === 'all' || selectedSection === 'survey') && (
           <section id="survey" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>

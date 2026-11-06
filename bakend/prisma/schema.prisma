@@ -29,6 +29,12 @@ model HeroItem {
   updatedAt DateTime @updatedAt
 }
 
+model SiteSettings {
+  id            Int      @id @default(1)
+  navbarLogoPath String?
+  updatedAt     DateTime @updatedAt
+}
+
 model NewsItem {
   id        Int      @id @default(autoincrement())
   title     String

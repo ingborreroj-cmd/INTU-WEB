@@ -19,6 +19,7 @@ import { surveyService, SurveyQuestion, SurveySettings, SurveyStatsQuestion } fr
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 import { SURVEYS_ENABLED } from '../featureFlags';
+import { siteSettingsService } from '../services/siteSettingsService';
 
 
 interface AdminFormData {
@@ -45,13 +46,16 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [savingSection, setSavingSection] = useState<string | null>(null);
-  const [selectedSection, setSelectedSection] = useState<'all'|'hero'|'news'|'official'|'admin'|'survey'>('all');
+  const [selectedSection, setSelectedSection] = useState<'all'|'hero'|'branding'|'news'|'official'|'admin'|'survey'>('all');
 
   // modal removed: modal state and preview removed
 
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>(DEFAULT_SLIDES);
   const [newsItems, setNewsItems] = useState<NewsItem[]>(DEFAULT_NEWS);
   const [officialNews, setOfficialNews] = useState<NewsItem[]>([]);
+  const [navbarLogo, setNavbarLogo] = useState<string | null>(null);
+  const [navbarLogoFile, setNavbarLogoFile] = useState<File | null>(null);
+  const [navbarLogoPreview, setNavbarLogoPreview] = useState<string | null>(null);
   const [newAdminData, setNewAdminData] = useState<AdminFormData>(DEFAULT_ADMIN_FORM);
   const [adminRegisterStatus, setAdminRegisterStatus] = useState<string | null>(null);
   const [showAdminCreatedModal, setShowAdminCreatedModal] = useState(false);
@@ -86,6 +90,11 @@ const AdminDashboard: React.FC = () => {
         setHeroSlides(slides.length > 0 ? slides : DEFAULT_SLIDES);
         setNewsItems(news.length > 0 ? news : DEFAULT_NEWS);
         setOfficialNews(official);
+        try {
+          setNavbarLogo(await siteSettingsService.getNavbarLogo());
+        } catch (error) {
+          console.warn('Could not fetch navbar logo setting:', error);
+        }
         // fetch admins list if endpoint available
         try {
           const admins = await adminService.getAdmins();
@@ -143,6 +152,53 @@ const AdminDashboard: React.FC = () => {
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleNavbarLogoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('El logo no puede superar los 5MB.');
+      e.target.value = '';
+      return;
+    }
+
+    setNavbarLogoFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') setNavbarLogoPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const saveNavbarLogo = async () => {
+    if (!navbarLogoFile) return;
+    setSavingSection('branding');
+    try {
+      setNavbarLogo(await siteSettingsService.saveNavbarLogo(navbarLogoFile));
+      setNavbarLogoFile(null);
+      setNavbarLogoPreview(null);
+      alert('Logo del navbar guardado correctamente.');
+    } catch (error: any) {
+      alert(error?.message || 'No se pudo guardar el logo.');
+    } finally {
+      setSavingSection(null);
+    }
+  };
+
+  const removeNavbarLogo = async () => {
+    setSavingSection('branding');
+    try {
+      await siteSettingsService.removeNavbarLogo();
+      setNavbarLogo(null);
+      setNavbarLogoFile(null);
+      setNavbarLogoPreview(null);
+      alert('Logo del navbar eliminado.');
+    } catch (error: any) {
+      alert(error?.message || 'No se pudo eliminar el logo.');
+    } finally {
+      setSavingSection(null);
+    }
   };
 
   const addHeroSlide = () => {
@@ -606,6 +662,7 @@ const AdminDashboard: React.FC = () => {
           {[
             { key: 'all', label: 'Mostrar todo' },
             { key: 'hero', label: 'Hero' },
+            { key: 'branding', label: 'Identidad visual' },
             { key: 'news', label: 'Noticias Nacionales' },
             { key: 'official', label: 'Noticias INTU' },
             { key: 'survey', label: 'Encuestas' },
@@ -724,6 +781,62 @@ const AdminDashboard: React.FC = () => {
               <Plus size={16} /> Agregar nueva diapositiva
             </button>
           </div>
+          </section>
+        )}
+
+        {(selectedSection === 'all' || selectedSection === 'branding') && (
+          <section id="branding" className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#273376]/10 px-4 py-2 text-sm font-semibold text-[#273376]">
+                  <ImagePlus size={16} /> Identidad visual
+                </div>
+                <h2 className="mt-4 text-2xl font-bold text-[#273376]">Logo secundario del navbar</h2>
+                <p className="mt-2 text-sm text-slate-500">Se muestra junto a Instagram. Si no cargas una imagen, ese espacio permanece vacío.</p>
+              </div>
+            </div>
+
+            <div className="mt-8 grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(220px,0.7fr)]">
+              <div className="space-y-4">
+                <label className="flex min-h-16 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 transition hover:border-[#FFC907] hover:bg-slate-100">
+                  <span className="flex items-center gap-2">
+                    <Upload size={16} /> {navbarLogo || navbarLogoFile ? 'Cambiar logo' : 'Cargar logo'}
+                  </span>
+                  <input type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleNavbarLogoFileChange} />
+                </label>
+                <p className="text-xs text-slate-500">Formatos PNG, JPG o WEBP. Máximo 5 MB.</p>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={saveNavbarLogo}
+                    disabled={!navbarLogoFile || savingSection === 'branding'}
+                    className="inline-flex items-center gap-2 rounded-full bg-[#273376] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1d2f5a] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Save size={16} /> {savingSection === 'branding' ? 'Guardando...' : 'Guardar logo'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={removeNavbarLogo}
+                    disabled={!navbarLogo || savingSection === 'branding'}
+                    className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Trash2 size={16} /> Quitar logo
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex min-h-32 items-center justify-center rounded-2xl border border-slate-200 bg-[#273376] p-6">
+                {(navbarLogoPreview || navbarLogo) ? (
+                  <img
+                    src={navbarLogoPreview || navbarLogo || ''}
+                    alt="Vista previa del logo secundario"
+                    className="max-h-12 max-w-full object-contain sm:max-h-14"
+                  />
+                ) : (
+                  <span className="text-sm text-white/60">Sin logo cargado</span>
+                )}
+              </div>
+            </div>
           </section>
         )}
 

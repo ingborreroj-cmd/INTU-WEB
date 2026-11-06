@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Instagram } from 'lucide-react';
 import CatastroModal from './CatastroModal';
+import { siteSettingsService } from '../services/siteSettingsService';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -9,6 +10,11 @@ const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [catastroOpen, setCatastroOpen] = useState(false);
+  const [navbarLogo, setNavbarLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    siteSettingsService.getNavbarLogo().then(setNavbarLogo).catch(() => setNavbarLogo(null));
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +87,7 @@ const Header: React.FC = () => {
             <img 
               src="/assets/img/intu_logo_blank.png" 
               alt="Logo INTU" 
-              className="h-10 md:h-12 w-auto object-contain" 
+              className="h-11 md:h-[52px] w-auto object-contain" 
             />
           </div>
 
@@ -151,7 +157,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* LADO DERECHO: ICONO DE INSTAGRAM + MENÚ MÓVIL */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4">
             <a
               href="https://www.instagram.com/intu_ve/"
               target="_blank"
@@ -161,6 +167,13 @@ const Header: React.FC = () => {
             >
               <Instagram size={24} />
             </a>
+            {navbarLogo && (
+              <img
+                src={navbarLogo}
+                alt="Logo institucional"
+                className="max-h-10 max-w-28 object-contain sm:max-h-12 sm:max-w-40"
+              />
+            )}
             <button 
               className="xl:hidden p-2 rounded-lg bg-white/10"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

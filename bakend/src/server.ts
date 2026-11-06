@@ -18,6 +18,7 @@ if (_jwtSecret === 'change_this_secret') {
 
 import authRoutes from './routes/auth';
 import heroRoutes from './routes/hero';
+import siteSettingsRoutes from './routes/siteSettings';
 import newsRoutes from './routes/news';
 import intuBotRoutes from './routes/intuBot';
 import adminsRoutes from './routes/admins';
@@ -62,6 +63,8 @@ const ADMIN_BASE = `/${ADMIN_PATH}`;
 
 app.use(`${ADMIN_BASE}/auth`, authRoutes);
 app.use(`${ADMIN_BASE}/hero`, heroRoutes);
+app.use('/site-settings', siteSettingsRoutes);
+app.use(`${ADMIN_BASE}/site-settings`, siteSettingsRoutes);
 app.use(`${ADMIN_BASE}/news`, newsRoutes);
 app.use(`${ADMIN_BASE}`, adminsRoutes);
 app.use(`${ADMIN_BASE}/surveys`, surveyAdminRouter);

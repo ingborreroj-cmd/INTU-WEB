@@ -89,7 +89,10 @@ const INTUBot: React.FC = () => {
     <div className="fixed bottom-20 right-6 z-[60]">
       {!isOpen && (
         <button 
+          type="button"
           onClick={() => setIsOpen(true)}
+          aria-label="Abrir INTUBot"
+          aria-expanded={isOpen}
           className="bg-[#273376] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform animate-bounce hover:animate-none border-2 border-white"
         >
           <MessageSquare size={28} />
@@ -111,7 +114,7 @@ const INTUBot: React.FC = () => {
                 </div>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="bg-white/10 p-1.5 rounded-lg hover:bg-red-500 transition-colors">
+            <button type="button" onClick={() => setIsOpen(false)} aria-label="Cerrar INTUBot" className="bg-white/10 p-1.5 rounded-lg hover:bg-red-500 transition-colors">
               <X size={18} />
             </button>
           </div>

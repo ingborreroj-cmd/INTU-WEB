@@ -20,6 +20,7 @@ import authRoutes from './routes/auth';
 import heroRoutes from './routes/hero';
 import siteSettingsRoutes from './routes/siteSettings';
 import newsRoutes from './routes/news';
+import optimizedMediaRoutes from './routes/optimizedMedia';
 import intuBotRoutes from './routes/intuBot';
 import adminsRoutes from './routes/admins';
 import { surveyPublicRouter, surveyAdminRouter } from './routes/surveys';
@@ -54,7 +55,8 @@ app.use(cors({
 
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
 
-app.use('/uploads', express.static(UPLOAD_DIR));
+app.use('/optimized', optimizedMediaRoutes);
+app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '1y', immutable: true }));
 
 // Admin path configurable via root .env -> ADMIN_PATH (example: ADMIN_PATH=secret-admin)
 let ADMIN_PATH = process.env.ADMIN_PATH || 'admin';

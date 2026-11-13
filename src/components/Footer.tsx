@@ -32,6 +32,8 @@ const Footer: React.FC = () => {
                 <img
                   src="/assets/img/habitat_vivienda_blank.png"
                   alt="Logo Ministerio"
+                  loading="lazy"
+                  decoding="async"
                   className="h-16 md:h-20 w-auto object-contain select-none"
                 />
               </div>
@@ -81,14 +83,14 @@ const Footer: React.FC = () => {
 
           {/* Columna 2: Legal e Institucional */}
           <div className="flex flex-col">
-            <h4 className="font-montserrat font-bold text-xs tracking-widest uppercase text-white/90 mb-5 flex items-center gap-2 border-b border-white/5 pb-2">
+            <h2 className="font-montserrat font-bold text-xs tracking-widest uppercase text-white/90 mb-5 flex items-center gap-2 border-b border-white/5 pb-2">
               <Shield size={16} className="text-[#FFC907]" />
               Legal e Institucional
-            </h4>
+            </h2>
             <ul className="space-y-3 text-[13px] md:text-sm text-white/60 font-medium">
               <li><Link to="/marco-juridico" className="hover:text-white hover:underline transition-all">Ley de Tierras Urbanas</Link></li>
               <li><a href="https://www.minhvi.gob.ve" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Ministerio Hábitat y Vivienda</a></li>
-              <li><a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-all">Comités de Tierra Urbana "CTU"</a></li>
+              <li><span>Comités de Tierra Urbana "CTU"</span></li>
               
             </ul>
           </div>
@@ -99,6 +101,8 @@ const Footer: React.FC = () => {
               <img 
                 src="/assets/img/intu_footer.png" 
                 alt="Logo INTU" 
+                loading="lazy"
+                decoding="async"
                 className="h-16 md:h-20 w-auto object-contain brightness-200 select-none" 
               />
             </div>

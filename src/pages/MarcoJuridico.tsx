@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { usePageMetadata } from '../utils/usePageMetadata';
 
 const MarcoJuridico: React.FC = () => {
+  usePageMetadata({
+    title: 'Ley de Tierras Urbanas | INTU',
+    description: 'Consulta el marco jurídico institucional y la Ley de Tierras Urbanas que orientan el trabajo del INTU.',
+  });
+
   // Force solid header while this component is mounted
   React.useEffect(() => {
     document.body.classList.add('force-solid-header');

@@ -20,6 +20,7 @@ import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
 import { SURVEYS_ENABLED } from '../featureFlags';
 import { siteSettingsService } from '../services/siteSettingsService';
+import { usePageMetadata } from '../utils/usePageMetadata';
 
 
 interface AdminFormData {
@@ -43,6 +44,11 @@ const DEFAULT_ADMIN_FORM: AdminFormData = {
 };
 
 const AdminDashboard: React.FC = () => {
+  usePageMetadata({
+    title: 'Panel de administración | INTU',
+    description: 'Panel privado para gestionar los contenidos del sitio web del INTU.',
+    robots: 'noindex,nofollow',
+  });
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [savingSection, setSavingSection] = useState<string | null>(null);
@@ -729,8 +735,9 @@ const AdminDashboard: React.FC = () => {
                 <div className="mt-6 grid gap-5 lg:grid-cols-[2fr_1fr]">
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Título</label>
+                      <label htmlFor={`hero-title-${slide.id}`} className="block text-xs font-bold text-slate-700 mb-2">Título</label>
                       <input
+                        id={`hero-title-${slide.id}`}
                         type="text"
                         value={slide.label}
                         onChange={(e) => handleHeroChange(idx, 'label', e.target.value)}
@@ -738,8 +745,9 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Subtítulo</label>
+                      <label htmlFor={`hero-caption-${slide.id}`} className="block text-xs font-bold text-slate-700 mb-2">Subtítulo</label>
                       <textarea
+                        id={`hero-caption-${slide.id}`}
                         rows={3}
                         value={slide.caption}
                         onChange={(e) => handleHeroChange(idx, 'caption', e.target.value)}
@@ -882,8 +890,9 @@ const AdminDashboard: React.FC = () => {
                   <div className="space-y-4">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-2">Fecha</label>
+                        <label htmlFor={`news-date-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Fecha</label>
                         <input
+                          id={`news-date-${item.id}`}
                           type="text"
                           value={item.date}
                           onChange={(e) => handleNewsChange(idx, 'date', e.target.value)}
@@ -891,8 +900,9 @@ const AdminDashboard: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-2">Fuente</label>
+                        <label htmlFor={`news-source-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Fuente</label>
                         <input
+                          id={`news-source-${item.id}`}
                           type="text"
                           value={item.source}
                           onChange={(e) => handleNewsChange(idx, 'source', e.target.value)}
@@ -901,8 +911,9 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Titular</label>
+                      <label htmlFor={`news-title-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Titular</label>
                       <textarea
+                        id={`news-title-${item.id}`}
                         rows={3}
                         value={item.title}
                         onChange={(e) => handleNewsChange(idx, 'title', e.target.value)}
@@ -910,8 +921,9 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Enlace</label>
+                      <label htmlFor={`news-url-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Enlace</label>
                       <input
+                        id={`news-url-${item.id}`}
                         type="text"
                         value={item.url}
                         placeholder="https://ejemplo.com"
@@ -1003,8 +1015,9 @@ const AdminDashboard: React.FC = () => {
                   <div className="space-y-4">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-2">Fecha</label>
+                        <label htmlFor={`official-date-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Fecha</label>
                         <input
+                          id={`official-date-${item.id}`}
                           type="text"
                           value={item.date || ''}
                           onChange={(e) => handleOfficialNewsChange(idx, 'date', e.target.value)}
@@ -1012,8 +1025,9 @@ const AdminDashboard: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-2">Fuente</label>
+                        <label htmlFor={`official-source-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Fuente</label>
                         <input
+                          id={`official-source-${item.id}`}
                           type="text"
                           value={item.source || ''}
                           onChange={(e) => handleOfficialNewsChange(idx, 'source', e.target.value)}
@@ -1022,8 +1036,9 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Titular</label>
+                      <label htmlFor={`official-title-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Titular</label>
                       <input
+                        id={`official-title-${item.id}`}
                         type="text"
                         value={item.title || ''}
                         onChange={(e) => handleOfficialNewsChange(idx, 'title', e.target.value)}
@@ -1032,8 +1047,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-2">URL</label>
+                        <label htmlFor={`official-url-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">URL</label>
                         <input
+                          id={`official-url-${item.id}`}
                           type="text"
                           value={item.url || ''}
                           placeholder="https://ejemplo.com"
@@ -1042,8 +1058,9 @@ const AdminDashboard: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-2">Creado por</label>
+                        <label htmlFor={`official-creator-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Creado por</label>
                         <input
+                          id={`official-creator-${item.id}`}
                           type="text"
                           value={item.createdBy || ''}
                           onChange={(e) => handleOfficialNewsChange(idx, 'createdBy', e.target.value)}
@@ -1052,8 +1069,9 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-2">Contenido del modal</label>
+                      <label htmlFor={`official-content-${item.id}`} className="block text-xs font-bold text-slate-700 mb-2">Contenido del modal</label>
                       <textarea
+                        id={`official-content-${item.id}`}
                         rows={6}
                         value={item.content || ''}
                         onChange={(e) => handleOfficialNewsChange(idx, 'content', e.target.value)}
@@ -1126,8 +1144,9 @@ const AdminDashboard: React.FC = () => {
                   <h3 className="text-lg font-semibold text-[#273376]">Nueva pregunta</h3>
                   <div className="mt-6 space-y-4">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">Texto de la pregunta</label>
+                      <label htmlFor="survey-new-label" className="block text-sm font-semibold text-slate-700 mb-2">Texto de la pregunta</label>
                       <input
+                        id="survey-new-label"
                         type="text"
                         value={newSurveyQuestion.label || ''}
                         onChange={(e) => setNewSurveyQuestion((prev) => ({ ...prev, label: e.target.value }))}
@@ -1136,8 +1155,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Tipo</label>
+                        <label htmlFor="survey-new-type" className="block text-sm font-semibold text-slate-700 mb-2">Tipo</label>
                         <select
+                          id="survey-new-type"
                           value={newSurveyQuestion.type}
                           onChange={(e) => setNewSurveyQuestion((prev) => ({ ...prev, type: e.target.value as 'radio' | 'text', options: e.target.value === 'radio' ? prev.options || [''] : [] }))}
                           className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
@@ -1147,8 +1167,9 @@ const AdminDashboard: React.FC = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Orden</label>
+                        <label htmlFor="survey-new-order" className="block text-sm font-semibold text-slate-700 mb-2">Orden</label>
                         <input
+                          id="survey-new-order"
                           type="number"
                           min={0}
                           value={newSurveyQuestion.order ?? 0}
@@ -1165,6 +1186,7 @@ const AdminDashboard: React.FC = () => {
                           <div key={optionIndex} className="flex items-center gap-3">
                             <input
                               type="text"
+                              aria-label={`Opción ${optionIndex + 1}`}
                               value={option}
                               onChange={(e) => setNewSurveyQuestion((prev) => {
                                 const nextOptions = Array.isArray(prev.options) ? [...prev.options] : [];
@@ -1245,8 +1267,9 @@ const AdminDashboard: React.FC = () => {
                       </div>
                       <div className="mt-6 grid gap-4">
                         <div>
-                          <label className="block text-sm font-semibold text-slate-700 mb-2">Etiqueta</label>
+                          <label htmlFor={`survey-question-${question.id}-label`} className="block text-sm font-semibold text-slate-700 mb-2">Etiqueta</label>
                           <input
+                            id={`survey-question-${question.id}-label`}
                             type="text"
                             value={question.label}
                             onChange={(e) => handleSurveyQuestionChange(index, 'label', e.target.value)}
@@ -1255,8 +1278,9 @@ const AdminDashboard: React.FC = () => {
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                           <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-2">Tipo</label>
+                            <label htmlFor={`survey-question-${question.id}-type`} className="block text-sm font-semibold text-slate-700 mb-2">Tipo</label>
                             <select
+                              id={`survey-question-${question.id}-type`}
                               value={question.type}
                               onChange={(e) => handleSurveyQuestionChange(index, 'type', e.target.value)}
                               className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
@@ -1266,8 +1290,9 @@ const AdminDashboard: React.FC = () => {
                             </select>
                           </div>
                           <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-2">Orden</label>
+                            <label htmlFor={`survey-question-${question.id}-order`} className="block text-sm font-semibold text-slate-700 mb-2">Orden</label>
                             <input
+                              id={`survey-question-${question.id}-order`}
                               type="number"
                               min={0}
                               value={question.order}
@@ -1292,6 +1317,7 @@ const AdminDashboard: React.FC = () => {
                               <div key={optionIndex} className="flex items-center gap-3">
                                 <input
                                   type="text"
+                                  aria-label={`Opción ${optionIndex + 1} de ${question.label}`}
                                   value={option}
                                   onChange={(e) => handleSurveyQuestionOptionChange(index, optionIndex, e.target.value)}
                                   className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#FFC907]"
@@ -1334,8 +1360,9 @@ const AdminDashboard: React.FC = () => {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Fecha de inicio</label>
+                        <label htmlFor="survey-start-date" className="block text-sm font-semibold text-slate-700 mb-2">Fecha de inicio</label>
                         <input
+                          id="survey-start-date"
                           type="date"
                           value={surveySettings?.startDate?.slice(0, 10) || ''}
                           onChange={(e) => handleSurveySettingsChange('startDate', e.target.value || null)}
@@ -1343,8 +1370,9 @@ const AdminDashboard: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Fecha de cierre</label>
+                        <label htmlFor="survey-end-date" className="block text-sm font-semibold text-slate-700 mb-2">Fecha de cierre</label>
                         <input
+                          id="survey-end-date"
                           type="date"
                           value={surveySettings?.endDate?.slice(0, 10) || ''}
                           onChange={(e) => handleSurveySettingsChange('endDate', e.target.value || null)}
@@ -1355,8 +1383,9 @@ const AdminDashboard: React.FC = () => {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Apertura diaria</label>
+                        <label htmlFor="survey-daily-start" className="block text-sm font-semibold text-slate-700 mb-2">Apertura diaria</label>
                         <input
+                          id="survey-daily-start"
                           type="time"
                           value={surveySettings?.dailyStartTime || ''}
                           onChange={(e) => handleSurveySettingsChange('dailyStartTime', e.target.value || null)}
@@ -1364,8 +1393,9 @@ const AdminDashboard: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Cierre diario</label>
+                        <label htmlFor="survey-daily-end" className="block text-sm font-semibold text-slate-700 mb-2">Cierre diario</label>
                         <input
+                          id="survey-daily-end"
                           type="time"
                           value={surveySettings?.dailyEndTime || ''}
                           onChange={(e) => handleSurveySettingsChange('dailyEndTime', e.target.value || null)}
@@ -1375,8 +1405,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">Duración de encuesta (minutos)</label>
+                      <label htmlFor="survey-duration" className="block text-sm font-semibold text-slate-700 mb-2">Duración de encuesta (minutos)</label>
                       <input
+                        id="survey-duration"
                         type="number"
                         min={1}
                         value={surveySettings?.durationMinutes ?? 5}
@@ -1457,8 +1488,9 @@ const AdminDashboard: React.FC = () => {
 
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Nombre</label>
+              <label htmlFor="new-admin-name" className="block text-sm font-semibold text-slate-700 mb-2">Nombre</label>
               <input
+                id="new-admin-name"
                 type="text"
                 value={newAdminData.name}
                 onChange={(e) => handleNewAdminChange('name', e.target.value)}
@@ -1466,8 +1498,9 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Apellido</label>
+              <label htmlFor="new-admin-last-name" className="block text-sm font-semibold text-slate-700 mb-2">Apellido</label>
               <input
+                id="new-admin-last-name"
                 type="text"
                 value={newAdminData.lastName}
                 onChange={(e) => handleNewAdminChange('lastName', e.target.value)}
@@ -1475,8 +1508,9 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Correo</label>
+              <label htmlFor="new-admin-email" className="block text-sm font-semibold text-slate-700 mb-2">Correo</label>
               <input
+                id="new-admin-email"
                 type="email"
                 value={newAdminData.email}
                 onChange={(e) => handleNewAdminChange('email', e.target.value)}
@@ -1484,8 +1518,9 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Teléfono</label>
+              <label htmlFor="new-admin-phone" className="block text-sm font-semibold text-slate-700 mb-2">Teléfono</label>
               <input
+                id="new-admin-phone"
                 type="tel"
                 value={newAdminData.phone}
                 onChange={(e) => handleNewAdminChange('phone', e.target.value)}
@@ -1493,8 +1528,9 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Cargo</label>
+              <label htmlFor="new-admin-position" className="block text-sm font-semibold text-slate-700 mb-2">Cargo</label>
               <input
+                id="new-admin-position"
                 type="text"
                 value={newAdminData.position}
                 onChange={(e) => handleNewAdminChange('position', e.target.value)}
@@ -1502,8 +1538,9 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Usuario</label>
+              <label htmlFor="new-admin-username" className="block text-sm font-semibold text-slate-700 mb-2">Usuario</label>
               <input
+                id="new-admin-username"
                 type="text"
                 value={newAdminData.username}
                 onChange={(e) => handleNewAdminChange('username', e.target.value)}
@@ -1511,8 +1548,9 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div className="lg:col-span-2">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Contraseña</label>
+              <label htmlFor="new-admin-password" className="block text-sm font-semibold text-slate-700 mb-2">Contraseña</label>
               <input
+                id="new-admin-password"
                 type="password"
                 value={newAdminData.password}
                 onChange={(e) => handleNewAdminChange('password', e.target.value)}
@@ -1535,28 +1573,28 @@ const AdminDashboard: React.FC = () => {
                     {editingAdminId === adm.id ? (
                       <div className="grid gap-3 sm:grid-cols-2">
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Nombre</label>
-                          <input placeholder="Nombre" className="w-full rounded-2xl border p-2" value={editingAdminData?.name || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), name: e.target.value }))} />
+                          <label htmlFor={`edit-admin-${adm.id}-name`} className="block text-xs font-semibold text-slate-700 mb-1">Nombre</label>
+                          <input id={`edit-admin-${adm.id}-name`} placeholder="Nombre" className="w-full rounded-2xl border p-2" value={editingAdminData?.name || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), name: e.target.value }))} />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Apellido</label>
-                          <input placeholder="Apellido" className="w-full rounded-2xl border p-2" value={editingAdminData?.lastName || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), lastName: e.target.value }))} />
+                          <label htmlFor={`edit-admin-${adm.id}-last-name`} className="block text-xs font-semibold text-slate-700 mb-1">Apellido</label>
+                          <input id={`edit-admin-${adm.id}-last-name`} placeholder="Apellido" className="w-full rounded-2xl border p-2" value={editingAdminData?.lastName || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), lastName: e.target.value }))} />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Correo</label>
-                          <input placeholder="correo@ejemplo.com" className="w-full rounded-2xl border p-2" value={editingAdminData?.email || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), email: e.target.value }))} />
+                          <label htmlFor={`edit-admin-${adm.id}-email`} className="block text-xs font-semibold text-slate-700 mb-1">Correo</label>
+                          <input id={`edit-admin-${adm.id}-email`} placeholder="correo@ejemplo.com" className="w-full rounded-2xl border p-2" value={editingAdminData?.email || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), email: e.target.value }))} />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Usuario</label>
-                          <input placeholder="usuario" className="w-full rounded-2xl border p-2" value={editingAdminData?.username || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), username: e.target.value }))} />
+                          <label htmlFor={`edit-admin-${adm.id}-username`} className="block text-xs font-semibold text-slate-700 mb-1">Usuario</label>
+                          <input id={`edit-admin-${adm.id}-username`} placeholder="usuario" className="w-full rounded-2xl border p-2" value={editingAdminData?.username || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), username: e.target.value }))} />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Teléfono</label>
-                          <input placeholder="0414-1234567" className="w-full rounded-2xl border p-2" value={editingAdminData?.phone || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), phone: e.target.value }))} />
+                          <label htmlFor={`edit-admin-${adm.id}-phone`} className="block text-xs font-semibold text-slate-700 mb-1">Teléfono</label>
+                          <input id={`edit-admin-${adm.id}-phone`} placeholder="0414-1234567" className="w-full rounded-2xl border p-2" value={editingAdminData?.phone || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), phone: e.target.value }))} />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-700 mb-1">Cargo</label>
-                          <input placeholder="Cargo" className="w-full rounded-2xl border p-2" value={editingAdminData?.position || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), position: e.target.value }))} />
+                          <label htmlFor={`edit-admin-${adm.id}-position`} className="block text-xs font-semibold text-slate-700 mb-1">Cargo</label>
+                          <input id={`edit-admin-${adm.id}-position`} placeholder="Cargo" className="w-full rounded-2xl border p-2" value={editingAdminData?.position || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), position: e.target.value }))} />
                         </div>
                       </div>
                     ) : (

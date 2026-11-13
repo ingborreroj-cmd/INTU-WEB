@@ -1,9 +1,30 @@
 import { HeroSlide, DEFAULT_SLIDES } from '../data/heroSlides';
-import { resolveBackendAssetUrl, API, authHeaders, ADMIN_PATH } from './apiUtils';
+import { resolveOptimizedBackendAssetUrl, API, authHeaders, ADMIN_PATH } from './apiUtils';
 
 const STORAGE_KEY = 'intu_web_hero_persisted_data';
 
+const getInitialSlides = (): HeroSlide[] => {
+  if (typeof window === 'undefined') return DEFAULT_SLIDES;
+  try {
+    const localData = window.localStorage.getItem(STORAGE_KEY);
+    if (localData) {
+      const parsedData = JSON.parse(localData);
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        return parsedData.map((slide: HeroSlide) => ({
+          ...slide,
+          imageUrl: resolveOptimizedBackendAssetUrl(slide.imageUrl),
+        }));
+      }
+    }
+  } catch (error) {
+    console.warn('Unable to read cached hero slides:', error);
+  }
+  return DEFAULT_SLIDES;
+};
+
 export const heroService = {
+  getInitialSlides,
+
   /**
    * Recupera las diapositivas desde la persistencia de forma asíncrona.
    * Incluye protección contra corrupción de datos JSON.
@@ -13,34 +34,20 @@ export const heroService = {
       const res = await fetch(`${API}/${ADMIN_PATH}/hero`, { credentials: 'include', headers: authHeaders() });
       if (res.ok) {
         const data = await res.json();
-        return data.map((item: any) => ({
-          id: item.id,
-          imageUrl: resolveBackendAssetUrl(item.imagePath) || '',
-          label: item.title || '',
-          caption: item.subtitle || ''
-        }));
+        if (Array.isArray(data) && data.length > 0) {
+          return data.map((item: any) => ({
+            id: item.id,
+            imageUrl: resolveOptimizedBackendAssetUrl(item.imagePath) || '',
+            label: item.title || '',
+            caption: item.subtitle || ''
+          }));
+        }
       }
     } catch (err) {
       console.warn('Backend hero fetch failed, falling back to localStorage', err);
     }
 
-    return new Promise((resolve) => {
-      try {
-        const localData = localStorage.getItem(STORAGE_KEY);
-        if (localData) {
-          try {
-            const parsedData = JSON.parse(localData);
-            resolve(parsedData);
-            return;
-          } catch (parseError) {
-            console.error("JSON corrupto en localStorage, restaurando valores base:", parseError);
-          }
-        }
-      } catch (error) {
-        console.error("Error accediendo al almacenamiento local del navegador:", error);
-      }
-      resolve(DEFAULT_SLIDES);
-    });
+    return getInitialSlides();
   },
 
   /**

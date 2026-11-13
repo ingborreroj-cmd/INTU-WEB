@@ -84,7 +84,7 @@ const Services: React.FC = () => {
                 </div>
                 <h3 className="text-[#273376] font-montserrat font-bold text-xl">¿Cómo solicitar estos servicios?</h3>
               </div>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-red-500 transition-colors">
+              <button type="button" onClick={() => setIsModalOpen(false)} aria-label="Cerrar guía de servicios" className="text-gray-400 hover:text-red-500 transition-colors">
                 <X size={28} />
               </button>
             </div>
@@ -140,15 +140,15 @@ const Services: React.FC = () => {
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="flex gap-4">
             <CheckCircle2 className="text-[#FFC907] flex-shrink-0" size={32} />
-            <div><h4 className="font-bold text-lg mb-2">Trámites Agilizados</h4><p className="text-[#cfdcff] text-sm">Simplificación de procesos de validación administrativa.</p></div>
+            <div><h3 className="font-bold text-lg mb-2">Trámites Agilizados</h3><p className="text-[#cfdcff] text-sm">Simplificación de procesos de validación administrativa.</p></div>
           </div>
           <div className="flex gap-4">
             <CheckCircle2 className="text-[#FFC907] flex-shrink-0" size={32} />
-            <div><h4 className="font-bold text-lg mb-2">Calidad Garantizada</h4><p className="text-[#cfdcff] text-sm">Personal bajo los estándares técnicos más exigentes.</p></div>
+            <div><h3 className="font-bold text-lg mb-2">Calidad Garantizada</h3><p className="text-[#cfdcff] text-sm">Personal bajo los estándares técnicos más exigentes.</p></div>
           </div>
           <div className="flex gap-4">
             <CheckCircle2 className="text-[#FFC907] flex-shrink-0" size={32} />
-            <div><h4 className="font-bold text-lg mb-2">Precios Competitivos</h4><p className="text-[#cfdcff] text-sm">Costos sociales para personas naturales y jurídicas.</p></div>
+            <div><h3 className="font-bold text-lg mb-2">Precios Competitivos</h3><p className="text-[#cfdcff] text-sm">Costos sociales para personas naturales y jurídicas.</p></div>
           </div>
         </div>
       </div>

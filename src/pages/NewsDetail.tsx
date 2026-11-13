@@ -5,11 +5,16 @@ import Footer from '../components/Footer';
 import { newsService } from '../services/newsService';
 import { NewsItem } from '../data/newsData';
 import { normalizeUrl } from '../utils/urlHelpers';
+import { usePageMetadata } from '../utils/usePageMetadata';
 
 const NewsDetail: React.FC = () => {
   const { id } = useParams();
   const [article, setArticle] = useState<NewsItem | null>(null);
   const [loading, setLoading] = useState(true);
+  usePageMetadata({
+    title: article ? `${article.title} | INTU` : 'Noticias | INTU',
+    description: article?.content?.slice(0, 160) || 'Noticias institucionales del Instituto Nacional de Tierras Urbanas.',
+  });
 
   useEffect(() => {
     const load = async () => {

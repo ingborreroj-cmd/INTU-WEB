@@ -1,20 +1,20 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { ArrowRight, CheckCircle } from 'lucide-react';
-import { HeroSlide } from '../data/heroSlides';
+import { DEFAULT_SLIDES, HeroSlide } from '../data/heroSlides';
 import { heroService } from '../services/heroService';
 
 const Hero: React.FC = () => {
-  const [slides, setSlides] = useState<HeroSlide[]>([]);
+  const [slides, setSlides] = useState<HeroSlide[]>(() => heroService.getInitialSlides());
   const [activeIndex, setActiveIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initApp = async () => {
+    let active = true;
+    const loadSlides = async () => {
       const persistedData = await heroService.getSlides();
-      setSlides(persistedData);
-      setLoading(false);
+      if (active && persistedData.length > 0) setSlides(persistedData);
     };
-    initApp();
+    loadSlides();
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
@@ -26,24 +26,23 @@ const Hero: React.FC = () => {
   }, [slides]);
 
   const currentIndex = activeIndex >= slides.length ? 0 : activeIndex;
-  const currentSlide = slides[currentIndex] || slides[0];
-
-  if (loading || slides.length === 0) {
-    return (
-      <div className="h-[85vh] bg-[#273376] flex flex-col items-center justify-center text-white font-montserrat gap-3">
-        <div className="animate-spin rounded-full h-7 w-7 border-4 border-white border-t-[#FFC907]"></div>
-        <span className="text-xs tracking-wider text-white/70 font-semibold">Cargando Módulo de Inicio...</span>
-      </div>
-    );
-  }
+  const currentSlide = slides[currentIndex] || slides[0] || DEFAULT_SLIDES[0];
 
   return (
     <div className="relative h-[85vh] md:h-[80vh] flex items-center overflow-hidden w-full">
 
-      <div
-        className="absolute inset-0 z-0 scale-105 transition-all duration-700 ease-out filter brightness-110 contrast-105"
-        style={{ backgroundImage: `url("${currentSlide.imageUrl}")`, backgroundPosition: 'center', backgroundSize: 'cover' }}
-      >
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src={currentSlide.imageUrl}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width={2160}
+          height={1350}
+          className="absolute inset-0 h-full w-full scale-105 object-cover transition-all duration-700 ease-out brightness-110 contrast-105"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-[#273376]/70 via-[#273376]/40 to-transparent" />
       </div>
       <div className="absolute inset-0 bg-slate-950/15" />
@@ -75,6 +74,9 @@ const Hero: React.FC = () => {
           {slides.map((_, index) => (
             <button
               key={index}
+              type="button"
+              aria-label={`Mostrar diapositiva ${index + 1}: ${slides[index].label}`}
+              aria-current={index === currentIndex ? 'true' : undefined}
               onClick={() => setActiveIndex(index)}
               className={`h-2.5 w-2.5 rounded-full transition-all ${index === currentIndex ? 'bg-[#FFC907] w-6' : 'bg-white/40 hover:bg-white'}`}
             />

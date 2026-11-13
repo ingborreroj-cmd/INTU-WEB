@@ -51,6 +51,8 @@ const About: React.FC = () => {
         <img 
           src="/assets/img/intu_logo2.png" 
           alt="Insignia INTU Grande" 
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain select-none drop-shadow-[0_8px_16px_rgba(39,51,118,0.12)]"
         />
       </div>
@@ -89,7 +91,7 @@ const About: React.FC = () => {
                     <div className="p-2 bg-slate-50 rounded-xl text-[#FFC907]">
                       <Target size={20} />
                     </div>
-                    <h4 className="font-montserrat font-bold text-base text-[#273376]">Valores</h4>
+                    <h3 className="font-montserrat font-bold text-base text-[#273376]">Valores</h3>
                   </div>
                   <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-light line-clamp-4 mb-4">
                     Democratización, innovación, compromiso social, seguridad jurídica y calidad humana como pilares del INTU.
@@ -100,9 +102,11 @@ const About: React.FC = () => {
                   <img 
                     src="/assets/img/valores.jpeg" 
                     alt="Valores INTU" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.src = "https://picsum.photos/seed/valores/600/400";
+                      e.currentTarget.src = "/assets/img/About_1.jpeg";
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-3">
@@ -126,7 +130,7 @@ const About: React.FC = () => {
                     <div className="p-2 bg-slate-50 rounded-xl text-[#FFC907]">
                       <Eye size={20} />
                     </div>
-                    <h4 className="font-montserrat font-bold text-base text-[#273376]">Visión</h4>
+                    <h3 className="font-montserrat font-bold text-base text-[#273376]">Visión</h3>
                   </div>
                   <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-light line-clamp-4 mb-4">
                     Nuestra visión institucional representa el compromiso, responsabilidad y operatividad para garantizar el derecho a la tierra urbana.                  </p>
@@ -136,6 +140,8 @@ const About: React.FC = () => {
                   <img 
                     src="/assets/img/vision.jpeg" 
                     alt="Visión INTU" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end p-3">
@@ -178,28 +184,28 @@ const About: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white p-6 rounded-[15px] border-t-4 border-[#273376] shadow-sm hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Reordenamiento Urbano</h5>
+            <h4 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Reordenamiento Urbano</h4>
             <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
               Definición de normas urbanísticas y uso de espacios, validados por la Asamblea de Ciudadanos.
             </p>
           </div>
 
           <div className="bg-white p-6 rounded-[15px] border-t-4 border-[#FFC907] shadow-sm hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Regularización Nacional</h5>
+            <h4 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Regularización Nacional</h4>
             <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
               Coadyuvamos con OTM y CTU en la regularización de la tenencia de tierra urbana en todo el país.
             </p>
           </div>
 
           <div className="bg-white p-6 rounded-[15px] border-t-4 border-[#273376] shadow-sm hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Cartografía Popular</h5>
+            <h4 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Cartografía Popular</h4>
             <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
               Abordaje participativo mediante la Agenda Concreta de Acción (ACA) y microzonificación de riesgos.
             </p>
           </div>
 
           <div className="bg-white p-6 rounded-[15px] border-t-4 border-[#FFC907] shadow-sm hover:shadow-md transition-shadow">
-            <h5 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Transformación Integral</h5>
+            <h4 className="font-bold text-[#273376] mb-3 text-sm md:text-base">Transformación Integral</h4>
             <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
               Basado en la Carta del Barrio, articulamos políticas de rehabilitación de viviendas y espacios públicos.
             </p>

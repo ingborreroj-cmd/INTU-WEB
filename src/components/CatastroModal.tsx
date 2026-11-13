@@ -27,13 +27,13 @@ const CatastroModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[1050] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white rounded-[18px] max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div role="dialog" aria-modal="true" aria-labelledby="catastro-modal-title" className="bg-white rounded-[18px] max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="flex items-start justify-between p-6 border-b">
           <div>
-            <h3 className="text-2xl font-montserrat font-extrabold text-[#273376]">{catastroData.title}</h3>
+            <h3 id="catastro-modal-title" className="text-2xl font-montserrat font-extrabold text-[#273376]">{catastroData.title}</h3>
             <p className="text-sm text-slate-600 mt-1">Información oficial sobre el Catastro Popular</p>
           </div>
-          <button onClick={onClose} className="text-slate-500 hover:text-red-500 p-2">
+          <button type="button" onClick={onClose} aria-label="Cerrar información de Catastro Popular" className="text-slate-500 hover:text-red-500 p-2">
             <X size={20} />
           </button>
         </div>

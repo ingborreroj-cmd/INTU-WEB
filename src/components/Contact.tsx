@@ -1,48 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { MapPin, Phone, Mail, CheckCircle2, Eye, X, Navigation } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import L from 'leaflet';
-
-// Importante: Asegúrate de tener el archivo src/env.d.ts con: declare module "*.css";
-import 'leaflet/dist/leaflet.css';
-
-// Importamos tus datos
 import { locations, Ubicacion } from '../data/ubicanos_data';
 import { SURVEYS_ENABLED } from '../featureFlags';
 
-// --- CONFIGURACIÓN DE ICONOS DE LEAFLET (ESTILO PUNTO DE INTERÉS DE GOOGLE) ---
-const GoogleMarker = L.divIcon({
-  className: 'custom-google-marker',
-  html: `<div style="
-    background-color: #EA4335; 
-    width: 14px; 
-    height: 14px; 
-    border-radius: 50%; 
-    border: 2px solid white; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  "></div>`,
-  iconSize: [14, 14],
-  iconAnchor: [7, 7],
-});
-
-L.Marker.prototype.options.icon = GoogleMarker;
-
-// --- COMPONENTE PARA MOVER EL MAPA Y CORREGIR EL ERROR DE CARGA (GRIS) ---
-const ChangeView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
-  const map = useMap();
-  
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      map.invalidateSize();
-    }, 300);
-    
-    map.setView(center, zoom);
-    
-    return () => clearTimeout(timer);
-  }, [center, zoom, map]);
-  
-  return null;
-};
+const OfficeMap = lazy(() => import('./OfficeMap'));
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -50,6 +11,8 @@ const Contact: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<Ubicacion | null>(null);
   const [currentCoords, setCurrentCoords] = useState<[number, number]>([7.5, -66.5]);
   const [currentZoom, setCurrentZoom] = useState<number>(6);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const mapSectionRef = useRef<HTMLElement | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -62,7 +25,7 @@ const Contact: React.FC = () => {
     e.preventDefault();
 
     // Correo de destino configurado se tiene que modificar en produccion para colocarl el correo correcto
-    const emailDestino = 'ingborreroj@gmail.com';
+    const emailDestino = 'intuenlacalle@gmail.com';
     
     // Codificación segura de caracteres y saltos de línea para la URL
     const asunto = encodeURIComponent(formData.subject || `Contacto Web: Mensaje de ${formData.name}`);
@@ -108,6 +71,25 @@ const Contact: React.FC = () => {
     return () => { document.body.style.overflow = prev; };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    const section = mapSectionRef.current;
+    if (!section) return;
+    if (!('IntersectionObserver' in window)) {
+      setShouldLoadMap(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldLoadMap(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '300px 0px' });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="bg-transparent pt-0 pb-16">
       <div className="container mx-auto px-4 md:px-6">
@@ -129,19 +111,19 @@ const Contact: React.FC = () => {
         <section className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
             <div className="bg-[#273376] w-fit p-3 rounded-xl text-white mb-4"><MapPin size={24} /></div>
-            <h4 className="font-bold text-slate-900">Sede Central</h4>
+            <h3 className="font-bold text-slate-900">Sede Central</h3>
             <p className="text-slate-600 text-sm mt-2">Av. Orinoco de las Mercedes, Torre INTU, Municipio Baruta, Caracas 1080.</p>
           </div>
           
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
             <div className="bg-[#A70336] w-fit p-3 rounded-xl text-white mb-4"><Phone size={24} /></div>
-            <h4 className="font-bold text-slate-900">Atención Telefónica</h4>
+            <h3 className="font-bold text-slate-900">Atención Telefónica</h3>
             <p className="text-slate-600 text-sm mt-2">(0212) 991 9940</p>
           </div>
 
           <div className="rounded-[25px] border border-slate-200 bg-white/80 backdrop-blur-sm p-8 shadow-sm">
             <div className="bg-[#273376] w-fit p-3 rounded-xl text-white mb-4"><Mail size={24} /></div>
-            <h4 className="font-bold text-slate-900">Correo Electrónico</h4>
+            <h3 className="font-bold text-slate-900">Correo Electrónico</h3>
             <p className="text-slate-600 text-sm mt-2">intuenlacalle@gmail.com</p>
           </div>
         </section>
@@ -155,7 +137,6 @@ const Contact: React.FC = () => {
                 <div 
                   key={index} 
                   className="border border-slate-200 rounded-2xl p-6 bg-white/80 backdrop-blur-sm shadow-sm flex justify-between items-center transition-all hover:border-[#FFC907] group cursor-pointer"
-                  onClick={() => handleLocationClick(location)}
                 >
                   <div className="pr-4 min-w-0 flex-1">
                     <h4 className="font-bold text-slate-900 group-hover:text-[#273376] transition-colors break-words leading-tight">{location.estado}</h4>
@@ -168,7 +149,7 @@ const Contact: React.FC = () => {
                     >
                       <Navigation size={16} /> Ver en mapa
                     </button>
-                    <button className="text-[#FFC907] font-bold text-sm flex items-center gap-1 group-hover:text-[#273376]">
+                    <button type="button" onClick={() => handleLocationClick(location)} aria-label={`Ver detalles de ${location.estado}`} className="text-[#FFC907] font-bold text-sm flex items-center gap-1 group-hover:text-[#273376]">
                       <Eye size={16} /> Detalles
                     </button>
                   </div>
@@ -187,10 +168,14 @@ const Contact: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input required type="text" placeholder="Nombre completo" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                <input required type="email" placeholder="Correo electrónico" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
-                <input required type="text" placeholder="Asunto" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})} />
-                <textarea required rows={3} placeholder="¿En qué podemos ayudarte?" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
+                <label htmlFor="contact-name" className="sr-only">Nombre completo</label>
+                <input id="contact-name" autoComplete="name" required type="text" placeholder="Nombre completo" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                <label htmlFor="contact-email" className="sr-only">Correo electrónico</label>
+                <input id="contact-email" autoComplete="email" required type="email" placeholder="Correo electrónico" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                <label htmlFor="contact-subject" className="sr-only">Asunto</label>
+                <input id="contact-subject" required type="text" placeholder="Asunto" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})} />
+                <label htmlFor="contact-message" className="sr-only">Mensaje</label>
+                <textarea id="contact-message" required rows={3} placeholder="¿En qué podemos ayudarte?" className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:border-[#FFC907]" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} />
                 <button type="submit" className="w-full bg-[#273376] text-white py-3 rounded-xl font-bold hover:bg-[#FFC907] transition-all transform hover:scale-[1.01]">Enviar Mensaje</button>
               </form>
             )}
@@ -198,30 +183,19 @@ const Contact: React.FC = () => {
         </section>
 
         {/* SECCIÓN 4: MAPA DE SEDES */}
-        <section className="w-full">
+        <section ref={mapSectionRef} className="w-full">
             <h3 className="text-2xl font-montserrat font-bold text-[#273376] mb-6">Ubicación Geográfica de Sedes</h3>
             <div className="rounded-[30px] overflow-hidden border-4 border-white shadow-2xl h-[550px] relative z-0">
-                <MapContainer center={currentCoords} zoom={currentZoom} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  {locations.map((loc, idx) => (
-                    <Marker 
-                      key={idx} 
-                      position={[loc.coords.lat, loc.coords.lng]}
-                      eventHandlers={{ click: () => handleLocationClick(loc) }}
-                    >
-                      <Popup>
-                        <div className="p-1">
-                          <strong className="text-[#273376] block border-b mb-1 break-words">{loc.estado}</strong>
-                          <span className="text-xs text-slate-600 break-words block">{loc.correo}</span>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  ))}
-                  <ChangeView center={currentCoords} zoom={currentZoom} />
-                </MapContainer>
+                {shouldLoadMap ? (
+                  <Suspense fallback={<div className="flex h-full items-center justify-center bg-slate-100 text-sm text-slate-500" role="status">Cargando mapa de sedes...</div>}>
+                    <OfficeMap
+                      center={currentCoords}
+                      zoom={currentZoom}
+                      locations={locations}
+                      onLocationClick={handleLocationClick}
+                    />
+                  </Suspense>
+                ) : <div className="h-full bg-slate-100" aria-hidden="true" />}
             </div>
         </section>
       </div>
@@ -234,7 +208,7 @@ const Contact: React.FC = () => {
             
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-[#273376] break-words pr-4 leading-tight">{selectedLocation.estado}</h3>
-              <button onClick={closeModal} className="text-slate-400 hover:text-red-500 transition-colors p-1 shrink-0"><X size={24} /></button>
+              <button type="button" onClick={closeModal} aria-label="Cerrar detalles de la sede" className="text-slate-400 hover:text-red-500 transition-colors p-1 shrink-0"><X size={24} /></button>
             </div>
             
             <div className="space-y-5">

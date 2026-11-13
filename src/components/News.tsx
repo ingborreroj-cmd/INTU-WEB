@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ExternalLink, Calendar, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ExternalLink, Calendar } from 'lucide-react';
 // DEPRECATED: Instagram section is currently disabled. To re-enable, uncomment the imports below
 // import { INSTA_POSTS } from '../data/instaData';
 import { NewsItem } from '../data/newsData';
@@ -11,19 +11,32 @@ import { normalizeUrl } from '../utils/urlHelpers';
 interface NewsCardProps {
   item: NewsItem;
   isOfficial?: boolean;
-  onAction?: () => void;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ item, isOfficial = false, onAction }) => {
+const NewsCard: React.FC<NewsCardProps> = ({ item, isOfficial = false }) => {
   const link = normalizeUrl(item.url);
   const hasExternalLink = !!link && !isOfficial;
   const previewText = item.content ? item.content.slice(0, 120) : undefined;
+  const imageSource = item.image && !item.image.includes('picsum.photos')
+    ? item.image
+    : '/assets/img/jornada-titulos.jpg';
 
   return (
     <div className="group relative overflow-hidden rounded-[20px] min-h-[420px] shadow-xl bg-[#121a38]">
       <img
-        src={item.image || 'https://picsum.photos/seed/intu/600/400'}
+        src={imageSource}
         alt={item.title}
+        loading="lazy"
+        decoding="async"
+        width={600}
+        height={420}
+        onError={(event) => {
+          const image = event.currentTarget;
+          if (image.dataset.fallbackApplied !== 'true') {
+            image.dataset.fallbackApplied = 'true';
+            image.src = '/assets/img/jornada-titulos.jpg';
+          }
+        }}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#273376] via-[#273376]/20 to-transparent"></div>
@@ -50,15 +63,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ item, isOfficial = false, onAction 
           {item.source}
         </p>
 
-        <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+        <div className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0">
           {isOfficial ? (
-            <button
-              type="button"
-              onClick={onAction}
+            <Link
+              to={`/news/${item.id}`}
               className="inline-flex items-center gap-2 bg-[#FFC907] text-[#273376] px-5 py-2.5 rounded-full text-xs font-bold transition-all hover:bg-white hover:text-[#273376] shadow-lg"
             >
               Leer más
-            </button>
+            </Link>
           ) : hasExternalLink ? (
             <a
               href={link}
@@ -100,8 +112,6 @@ const News: React.FC = () => {
     };
     fetchArticles();
   }, []);
-
-  const navigate = useNavigate();
 
   // Ensure header is solid while this component is mounted
   useEffect(() => {
@@ -148,16 +158,16 @@ const News: React.FC = () => {
         {officialNews.length > 0 ? (
           officialNews.length > 4 ? (
             <div className="flex gap-8 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
-              {officialNews.map((item) => (
-                <div key={item.id} className="min-w-[320px] flex-shrink-0 snap-start">
-                  <NewsCard item={item} isOfficial onAction={() => navigate(`/news/${item.id}`)} />
-                </div>
-              ))}
+                {officialNews.map((item) => (
+                  <div key={item.id} className="min-w-[320px] flex-shrink-0 snap-start">
+                    <NewsCard item={item} isOfficial />
+                  </div>
+                ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {officialNews.map((item) => (
-                <NewsCard key={item.id} item={item} isOfficial onAction={() => navigate(`/news/${item.id}`)} />
+                <NewsCard key={item.id} item={item} isOfficial />
               ))}
             </div>
           )

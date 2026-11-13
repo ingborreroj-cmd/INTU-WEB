@@ -1,5 +1,5 @@
 import { NewsItem, DEFAULT_NEWS } from '../data/newsData';
-import { resolveBackendAssetUrl, API, authHeaders, ADMIN_PATH } from './apiUtils';
+import { resolveOptimizedBackendAssetUrl, API, authHeaders, ADMIN_PATH } from './apiUtils';
 
 const STORAGE_KEY = 'intu_web_news_persisted_data';
 const OFFICIAL_STORAGE_KEY = 'intu_web_official_news';
@@ -16,7 +16,7 @@ export const newsService = {
         const j = await res.json();
         return j.map((item: any) => ({
           id: item.id,
-          image: resolveBackendAssetUrl(item.imagePath) || '',
+          image: resolveOptimizedBackendAssetUrl(item.imagePath) || '',
           date: item.date || item.published || '',
           title: item.title || '',
           source: item.source || '',
@@ -97,7 +97,7 @@ export const newsService = {
         const items = await res.json();
         return items.map((item: any) => ({
           id: item.id,
-          image: resolveBackendAssetUrl(item.imagePath) || '',
+          image: resolveOptimizedBackendAssetUrl(item.imagePath) || '',
           date: item.date || item.published || '',
           title: item.title || '',
           source: item.source || '',

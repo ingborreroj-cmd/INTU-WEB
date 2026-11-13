@@ -8,7 +8,7 @@ export interface HeroSlide {
 export const DEFAULT_SLIDES: HeroSlide[] = [
   {
     id: 1,
-    imageUrl: '/assets/img/hero-bg.jpg',
+    imageUrl: '/assets/img/hero-bg-optimized.jpg',
     label: 'Regularización y justicia para el pueblo venezolano',
     caption: 'INTU trabaja para garantizar seguridad jurídica y acceso al suelo urbano para todas las familias.'
   },

@@ -28,6 +28,15 @@ const resolveBackendAssetUrl = (path?: string | null): string => {
   return normalized;
 };
 
+const resolveOptimizedBackendAssetUrl = (path?: string | null): string => {
+  const resolved = resolveBackendAssetUrl(path);
+  const uploadsPrefix = `${API}/uploads/`;
+  if (resolved.startsWith(uploadsPrefix)) {
+    return `${API}/optimized/${resolved.slice(uploadsPrefix.length)}`;
+  }
+  return resolved;
+};
+
 const ADMIN_PATH: string = import.meta.env.VITE_ADMIN_PATH || 'admin';
 
 export { 
@@ -35,7 +44,8 @@ export {
   AUTH_TOKEN_KEY, 
   getAuthToken, 
   authHeaders, 
-  resolveBackendAssetUrl 
+  resolveBackendAssetUrl,
+  resolveOptimizedBackendAssetUrl,
 };
 
 export { ADMIN_PATH };

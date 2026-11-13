@@ -1,12 +1,68 @@
-/* Estilos globales del proyecto */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto Variable', 'Roboto', sans-serif;
   background-color: #f8f9fa;
 }
+
 * {
   box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-montserrat {
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+}
+
+.clamp-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.nav-underline {
+  position: relative;
+}
+
+.nav-underline::after {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #b8860b;
+  content: '';
+  transition: width 0.3s ease;
+}
+
+.nav-underline:hover::after {
+  width: 100%;
+}
+
+.custom-shadow {
+  box-shadow: 0 4px 20px -2px rgba(0, 51, 102, 0.1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.8s ease-out forwards;
 }

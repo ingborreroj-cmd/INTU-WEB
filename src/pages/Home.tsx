@@ -46,11 +46,11 @@ const Home: React.FC = () => {
             <About />
           </section>
 
-          <section id="proyectos" className="py-8 bg-transparent">
+          <section id="proyectos" className="pt-8 pb-0 bg-transparent">
             <News />
           </section>
 
-          <section id="contacto" className="py-20 bg-transparent">
+          <section id="contacto" className="pt-6 pb-20 bg-transparent">
             <Contact />
           </section>
         </main>

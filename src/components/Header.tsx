@@ -87,7 +87,7 @@ const Header: React.FC = () => {
             <img 
               src="/assets/img/intu_logo_blank.png" 
               alt="Logo INTU" 
-              className="h-11 md:h-[52px] w-auto object-contain" 
+              className="h-12 md:h-14 w-auto object-contain" 
             />
           </div>
 
@@ -171,7 +171,7 @@ const Header: React.FC = () => {
               <img
                 src={navbarLogo}
                 alt="Logo institucional"
-                className="max-h-10 max-w-28 object-contain sm:max-h-12 sm:max-w-40"
+                className="max-h-12 max-w-32 object-contain sm:max-h-14 sm:max-w-44"
               />
             )}
             <button 

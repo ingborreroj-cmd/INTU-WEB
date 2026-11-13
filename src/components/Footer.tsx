@@ -131,7 +131,7 @@ const Footer: React.FC = () => {
 
         {/* Barra de Créditos / Footer de Cierre */}
         <div className="pt-6 border-t border-white/5 flex flex-col lg:flex-row justify-between items-center gap-4 text-[11px] text-white/40 uppercase tracking-[0.1em] font-medium text-center lg:text-left">
-          <p>© Instituto Nacional de Tierras Urbanas (INTU). RIF: G-200101873</p>
+          <p>© {new Date().getFullYear()} Instituto Nacional de Tierras Urbanas (INTU). Todos los derechos reservados. RIF: G-200101873</p>
           <p>Esquina de Av. Orinoco, Las Mercedes, Caracas, Miranda</p>
         </div>
 

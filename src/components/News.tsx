@@ -119,7 +119,7 @@ const News: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-20 relative">
+    <div className="container mx-auto px-4 md:px-8 pt-20 pb-8 relative">
       <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
@@ -186,7 +186,7 @@ const News: React.FC = () => {
 
   {/* GRID DE PRENSA EXTERNA */}
   {globalNews.length > 4 ? (
-    <div className="flex gap-8 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide mb-32">
+    <div className="flex gap-8 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide mb-4">
       {globalNews.map((item) => (
         <div key={item.id} className="min-w-[320px] flex-shrink-0 snap-start">
           <NewsCard item={item} />
@@ -194,7 +194,7 @@ const News: React.FC = () => {
       ))}
     </div>
   ) : (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-32">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-4">
       {globalNews.map((item) => (
         <NewsCard key={item.id} item={item} />
       ))}

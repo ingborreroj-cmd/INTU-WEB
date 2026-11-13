@@ -1587,6 +1587,10 @@ const AdminDashboard: React.FC = () => {
         )}
       </div>
 
+      <footer className="mx-auto mt-8 w-full max-w-7xl border-t border-slate-200 px-6 py-6 text-center text-xs text-slate-500 md:px-12">
+        © {new Date().getFullYear()} Instituto Nacional de Tierras Urbanas (INTU). Todos los derechos reservados.
+      </footer>
+
       {showAdminCreatedModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
           <div className="w-full max-w-sm rounded-[32px] bg-white p-6 text-center shadow-2xl">

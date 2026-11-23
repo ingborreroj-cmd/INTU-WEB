@@ -21,7 +21,6 @@ import heroRoutes from './routes/hero';
 import siteSettingsRoutes from './routes/siteSettings';
 import newsRoutes from './routes/news';
 import optimizedMediaRoutes from './routes/optimizedMedia';
-import intuBotRoutes from './routes/intuBot';
 import adminsRoutes from './routes/admins';
 import { surveyPublicRouter, surveyAdminRouter } from './routes/surveys';
 
@@ -72,9 +71,10 @@ app.use(`${ADMIN_BASE}`, adminsRoutes);
 app.use(`${ADMIN_BASE}/surveys`, surveyAdminRouter);
 app.use('/surveys', surveyPublicRouter);
 
-app.use('/intu-bot', intuBotRoutes);
-app.use('/api/intu-bot', intuBotRoutes);
-app.use(`${ADMIN_BASE}/intu-bot`, intuBotRoutes);
+// INTUBot temporalmente deshabilitado:
+// app.use('/intu-bot', intuBotRoutes);
+// app.use('/api/intu-bot', intuBotRoutes);
+// app.use(`${ADMIN_BASE}/intu-bot`, intuBotRoutes);
 
 app.get('/', (req, res) => {
   res.json({

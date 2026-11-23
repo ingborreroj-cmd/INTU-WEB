@@ -21,7 +21,7 @@ async function main() {
     if (!HASH_REGEX.test(admin.password)) {
       console.log(`Rehashing admin id=${admin.id} email=${admin.email}`);
       const hash = await bcrypt.hash(admin.password, 10);
-      await prisma.admin.update({ where: { id: admin.id }, data: { password: hash } });
+      await prisma.admin.update({ where: { id: admin.id }, data: { password: hash, passwordChangedAt: new Date(), failedLoginAttempts: 0, lockedUntil: null } });
       updatedCount += 1;
     } else {
       console.log(`Already hashed: id=${admin.id} email=${admin.email}`);

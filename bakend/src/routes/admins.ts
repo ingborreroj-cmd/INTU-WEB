@@ -35,6 +35,9 @@ router.put('/admins/:id', ensureAdmin, async (req: AuthRequest, res) => {
     if (password) {
       const hash = await bcrypt.hash(password, 10);
       data.password = hash;
+      data.passwordChangedAt = new Date();
+      data.failedLoginAttempts = 0;
+      data.lockedUntil = null;
     }
 
     const updated = await prisma.admin.update({ where: { id }, data });

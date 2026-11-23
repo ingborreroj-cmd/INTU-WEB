@@ -498,7 +498,7 @@ const AdminDashboard: React.FC = () => {
   // Admins management: edit, save, delete
   const startEditAdmin = (admin: any) => {
     setEditingAdminId(admin.id);
-    setEditingAdminData({ name: admin.name, lastName: admin.lastName, email: admin.email, phone: admin.phone, position: admin.position, username: admin.username });
+    setEditingAdminData({ name: admin.name, lastName: admin.lastName, email: admin.email, phone: admin.phone, position: admin.position, username: admin.username, password: '' });
   };
 
   const cancelEditAdmin = () => {
@@ -1595,6 +1595,10 @@ const AdminDashboard: React.FC = () => {
                         <div>
                           <label htmlFor={`edit-admin-${adm.id}-position`} className="block text-xs font-semibold text-slate-700 mb-1">Cargo</label>
                           <input id={`edit-admin-${adm.id}-position`} placeholder="Cargo" className="w-full rounded-2xl border p-2" value={editingAdminData?.position || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), position: e.target.value }))} />
+                        </div>
+                        <div className="sm:col-span-2">
+                          <label htmlFor={`edit-admin-${adm.id}-password`} className="block text-xs font-semibold text-slate-700 mb-1">Nueva contraseña (opcional)</label>
+                          <input id={`edit-admin-${adm.id}-password`} type="password" autoComplete="new-password" placeholder="Dejar vacío para conservar la actual" className="w-full rounded-2xl border p-2" value={editingAdminData?.password || ''} onChange={(e) => setEditingAdminData((s) => ({ ...(s||{}), password: e.target.value }))} />
                         </div>
                       </div>
                     ) : (

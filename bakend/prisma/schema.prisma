@@ -15,9 +15,12 @@ model Admin {
   username  String?  @unique
   phone     String?
   position  String?
-  password  String
-  role      String   @default("admin")
-  createdAt DateTime @default(now())
+  password            String
+  role                String    @default("admin")
+  passwordChangedAt   DateTime  @default(now())
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  createdAt           DateTime  @default(now())
 }
 model HeroItem {
   id        Int      @id @default(autoincrement())

@@ -5,7 +5,7 @@ import { Instagram, Globe, Shield } from 'lucide-react';
 const Footer: React.FC = () => {
   return (
     <footer 
-      className="relative bg-[#273376] text-white pt-14 pb-8 overflow-hidden"
+      className="relative bg-[#273376] text-white pt-8 pb-5 overflow-hidden"
     >
       {/* Imagen institucional de fondo */}
       <div 
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         
         {/* Sección de Columnas */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-5">
           
           {/* Columna 1: Logo del Ministerio (Más Grande), Texto de Relleno y Redes Genéricas */}
           <div className="flex flex-col justify-between gap-6">
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
                   alt="Logo Ministerio"
                   loading="lazy"
                   decoding="async"
-                  className="h-16 md:h-20 w-auto object-contain select-none"
+                  className="h-12 md:h-14 w-auto object-contain select-none"
                 />
               </div>
 
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
 
           {/* Columna 2: Legal e Institucional */}
           <div className="flex flex-col">
-            <h2 className="font-montserrat font-bold text-xs tracking-widest uppercase text-white/90 mb-5 flex items-center gap-2 border-b border-white/5 pb-2">
+            <h2 className="font-montserrat font-bold text-xs tracking-widest uppercase text-white/90 mb-3 flex items-center gap-2 border-b border-white/5 pb-2">
               <Shield size={16} className="text-[#FFC907]" />
               Legal e Institucional
             </h2>
@@ -97,13 +97,13 @@ const Footer: React.FC = () => {
 
           {/* Columna 3: Logo INTU (Más Grande) + Información del INTU + Instagram Oficial */}
           <div className="flex flex-col gap-5">
-            <div className="h-16 md:h-20 w-fit flex items-center">
+            <div className="h-12 md:h-14 w-fit flex items-center">
               <img 
                 src="/assets/img/intu_footer.png" 
                 alt="Logo INTU" 
                 loading="lazy"
                 decoding="async"
-                className="h-16 md:h-20 w-auto object-contain brightness-200 select-none" 
+                className="h-12 md:h-14 w-auto object-contain brightness-200 select-none" 
               />
             </div>
             
@@ -128,13 +128,13 @@ const Footer: React.FC = () => {
 
         </div>
 
-        <div className="mb-8 flex items-center gap-3">
+        <div className="mb-4 flex items-center gap-3">
           <span className="h-1.5 w-10 rounded-full bg-[#A70336]" />
           <p className="text-[11px] text-white/60 uppercase tracking-[0.15em] font-semibold">Sitio oficial de comunicaciones INTU</p>
         </div>
 
         {/* Barra de Créditos / Footer de Cierre */}
-        <div className="pt-6 border-t border-white/5 flex flex-col lg:flex-row justify-between items-center gap-4 text-[11px] text-white/40 uppercase tracking-[0.1em] font-medium text-center lg:text-left">
+        <div className="pt-4 border-t border-white/5 flex flex-col lg:flex-row justify-between items-center gap-2 text-[10px] text-white/40 uppercase tracking-[0.1em] font-medium text-center lg:text-left">
           <p>© {new Date().getFullYear()} Instituto Nacional de Tierras Urbanas (INTU). Todos los derechos reservados. RIF: G-200101873</p>
           <p>Esquina de Av. Orinoco, Las Mercedes, Caracas, Miranda</p>
         </div>

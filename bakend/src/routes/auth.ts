@@ -24,7 +24,7 @@ router.post('/register', ensureAdmin, async (req, res) => {
     if (existing) return res.status(400).json({ message: 'Email or username already in use' });
     const hash = await bcrypt.hash(password, 10);
     const admin = await prisma.admin.create({
-      data: { name, lastName, email, username, phone, position, password: hash },
+      data: { name, lastName, email, username, phone, position, password: hash, passwordChangedAt: new Date(), failedLoginAttempts: 0, lockedUntil: null },
     });
     return res.json({ id: admin.id, email: admin.email, username: admin.username });
   } catch (err) {
@@ -39,10 +39,48 @@ router.post('/login', async (req, res) => {
   try {
     // Avoid logging credentials or identifiers to prevent sensitive data exposure
     const admin = await prisma.admin.findFirst({ where: { OR: [{ email: credential }, { username: credential }] } });
-    if (!admin) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!admin) return res.status(401).json({ message: 'Credenciales inválidas' });
+
+    if (admin.lockedUntil && admin.lockedUntil > new Date()) {
+      const minutes = Math.max(1, Math.ceil((admin.lockedUntil.getTime() - Date.now()) / 60000));
+      return res.status(423).json({
+        message: `Cuenta bloqueada temporalmente. Intenta nuevamente en ${minutes} minuto(s).`,
+        lockedUntil: admin.lockedUntil,
+      });
+    }
+
     const ok = await bcrypt.compare(password, admin.password);
-    if (!ok) return res.status(401).json({ message: 'Invalid credentials' });
-    const token = jwt.sign({ id: admin.id, email: admin.email }, JWT_SECRET, { expiresIn: '8h' });
+    if (!ok) {
+      const failedAttempts = (admin.failedLoginAttempts || 0) + 1;
+      const shouldLock = failedAttempts >= 5;
+      await prisma.admin.update({
+        where: { id: admin.id },
+        data: {
+          failedLoginAttempts: failedAttempts,
+          lockedUntil: shouldLock ? new Date(Date.now() + 15 * 60 * 1000) : null,
+        },
+      });
+
+      if (shouldLock) {
+        return res.status(423).json({ message: 'Cuenta bloqueada temporalmente por intentos fallidos. Intenta nuevamente en 15 minutos.' });
+      }
+      return res.status(401).json({
+        message: `Credenciales inválidas. Intentos restantes: ${Math.max(0, 5 - failedAttempts)}.`,
+        remainingAttempts: Math.max(0, 5 - failedAttempts),
+      });
+    }
+
+    await prisma.admin.update({
+      where: { id: admin.id },
+      data: { failedLoginAttempts: 0, lockedUntil: null },
+    });
+
+    const passwordExpiresInMs = 90 * 24 * 60 * 60 * 1000;
+    if (admin.passwordChangedAt && Date.now() - admin.passwordChangedAt.getTime() > passwordExpiresInMs) {
+      return res.status(403).json({ code: 'PASSWORD_EXPIRED', message: 'Tu contraseña venció. Debes renovarla antes de iniciar sesión.' });
+    }
+
+    const token = jwt.sign({ id: admin.id, email: admin.email }, JWT_SECRET, { expiresIn: '5m' });
     const isSecureCookie = process.env.NODE_ENV === 'production' || ['localhost', '127.0.0.1', '::1'].includes(req.hostname);
     const cookieOptions = {
       httpOnly: true,

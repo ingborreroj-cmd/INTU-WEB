@@ -81,7 +81,7 @@ const Header: React.FC = () => {
   return (
     <header className={`fixed w-full z-50 transition-all duration-300 ${
       hasSolidBackground ? 'bg-[#273376] shadow-md' : 'bg-transparent'
-    } ${isCompact ? 'py-2' : 'py-6'}`}>
+    } ${isCompact ? 'py-2' : 'py-2 md:py-6'}`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           
@@ -90,7 +90,7 @@ const Header: React.FC = () => {
             <img 
               src="/assets/img/intu_logo_blank.png" 
               alt="Logo INTU" 
-              className={`w-auto object-contain transition-all duration-300 ${isCompact ? 'h-12 md:h-14' : 'h-16 md:h-[76px]'}`} 
+              className={`h-12 w-auto object-contain transition-all duration-300 md:h-14 ${isCompact ? '' : 'md:h-[76px]'}`} 
             />
           </div>
 
@@ -100,7 +100,7 @@ const Header: React.FC = () => {
             <a
               href={navItems[0].href}
               onClick={(event) => { event.preventDefault(); handleNav(navItems[0].href); }}
-              className={`nav-underline font-medium font-montserrat text-white hover:text-gray-200 transition-all ${isCompact ? 'text-sm' : 'text-base'}`}
+              className={`nav-underline font-medium font-montserrat text-white hover:text-gray-200 transition-all ${isCompact ? 'text-sm' : 'text-sm xl:text-base'}`}
             >
               {navItems[0].label}
             </a>
@@ -116,7 +116,7 @@ const Header: React.FC = () => {
                 onClick={() => setServicesMenuOpen((s) => !s)}
                 aria-expanded={servicesMenuOpen}
                 aria-haspopup="true"
-                className={`nav-underline inline-flex items-center gap-1 font-medium font-montserrat text-white hover:text-gray-200 transition-all ${isCompact ? 'text-sm' : 'text-base'}`}
+                className={`nav-underline inline-flex items-center gap-1 font-medium font-montserrat text-white hover:text-gray-200 transition-all ${isCompact ? 'text-sm' : 'text-sm xl:text-base'}`}
               >
                 Servicios
                 <ChevronDown className="h-4 w-4" />
@@ -154,7 +154,7 @@ const Header: React.FC = () => {
                 key={item.label}
                 href={item.href}
                 onClick={(event) => { event.preventDefault(); handleNav(item.href); }}
-                className={`nav-underline font-medium font-montserrat text-white hover:text-gray-200 transition-all ${isCompact ? 'text-sm' : 'text-base'}`}
+                className={`nav-underline font-medium font-montserrat text-white hover:text-gray-200 transition-all ${isCompact ? 'text-sm' : 'text-sm xl:text-base'}`}
               >
                 {item.label}
               </a>
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* LADO DERECHO: ICONO DE INSTAGRAM + MENÚ MÓVIL */}
-          <div className={`flex items-center transition-all duration-300 ${isCompact ? 'gap-3 md:gap-4' : 'gap-4 md:gap-6'}`}>
+          <div className={`flex items-center transition-all duration-300 ${isCompact ? 'gap-3 md:gap-4' : 'gap-3 md:gap-6'}`}>
             <a
               href="https://www.instagram.com/intu_ve/"
               target="_blank"
@@ -170,26 +170,26 @@ const Header: React.FC = () => {
               aria-label="Instagram INTU"
               className="text-white transition-all hover:text-pink-300"
             >
-              <Instagram size={isCompact ? 24 : 28} />
+              <Instagram size={24} />
             </a>
             {navbarLogo && (
               <img
                 src={navbarLogo}
                 alt="Logo institucional"
-                className={`object-contain transition-all duration-300 ${isCompact ? 'max-h-12 max-w-32 sm:max-h-14 sm:max-w-44' : 'max-h-16 max-w-32 sm:max-h-20 sm:max-w-52'}`}
+                className={`object-contain transition-all duration-300 max-h-12 max-w-32 ${isCompact ? 'sm:max-h-14 sm:max-w-44' : 'md:max-h-16 md:max-w-40 lg:max-h-20 lg:max-w-52'}`}
               />
             )}
             <button 
-              className={`xl:hidden rounded-lg bg-white/10 transition-all duration-300 ${isCompact ? 'p-2' : 'p-3'}`}
+              className="xl:hidden rounded-lg bg-white/10 p-2 transition-all duration-300"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-site-menu"
               aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             >
               {mobileMenuOpen ? (
-                <X className="text-white" size={isCompact ? 24 : 28} />
+                <X className="text-white" size={24} />
               ) : (
-                <Menu className="text-white" size={isCompact ? 24 : 28} />
+                <Menu className="text-white" size={24} />
               )}
             </button>
           </div>

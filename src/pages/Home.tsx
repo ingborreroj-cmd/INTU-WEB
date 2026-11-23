@@ -7,7 +7,7 @@ import About from '../components/About';
 import News from '../components/News';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
-import INTUBot from '../components/Intubot';
+// import INTUBot from '../components/Intubot';
 import Encuestas from '../components/Encuestas';
 import { SURVEYS_ENABLED } from '../featureFlags';
 
@@ -57,7 +57,8 @@ const Home: React.FC = () => {
 
         <Footer />
         {SURVEYS_ENABLED && <Encuestas />}
-        <INTUBot />
+        {/* INTUBot deshabilitado temporalmente. Reactivar importación y componente cuando se retome. */}
+        {/* <INTUBot /> */}
       </div>
     </div>
   );

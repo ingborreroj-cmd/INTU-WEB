@@ -40,7 +40,7 @@ const AdminLogin: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <form onSubmit={submit} className="p-8 bg-white rounded shadow w-full max-w-md">
         <h1 className="text-2xl font-semibold mb-4">Admin Login</h1>
-        {error && <div className="text-red-600 mb-2">{error}</div>}
+        {error && <div role="alert" className="text-red-600 mb-2">{error}</div>}
         <div className="mb-4">
           <label htmlFor="admin-identifier" className="block text-sm">Email o usuario</label>
           <input id="admin-identifier" autoComplete="username" required value={identifier} onChange={e => setIdentifier(e.target.value)} className="w-full border p-2 rounded" />

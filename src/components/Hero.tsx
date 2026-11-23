@@ -84,17 +84,7 @@ const Hero: React.FC = () => {
         </div>
       )}
 
-      <div className="hidden lg:flex absolute bottom-12 right-12 gap-8 bg-white/10 backdrop-blur-xl p-6 rounded-[20px] border border-white/15 shadow-2xl">
-        <div className="text-center">
-          <p className="text-[#FFC907] text-2xl font-extrabold font-montserrat">+2.5M</p>
-          <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold mt-0.5">Títulos Entregados</p>
-        </div>
-        <div className="w-px bg-white/15"></div>
-        <div className="text-center">
-          <p className="text-[#FFC907] text-2xl font-extrabold font-montserrat">1,200</p>
-          <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold mt-0.5">Comités Activos</p>
-        </div>
-      </div>
+      {/* Contadores institucionales retirados temporalmente. */}
     </div>
   );
 };
